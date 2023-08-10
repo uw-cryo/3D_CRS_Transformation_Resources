@@ -3,6 +3,8 @@
 A centralized repository for resources, documentation and code samples to help people navigate the infinitely confusing, complex, but very important topic of 3D coordinate reference system (CRS) transformations.  Specifically those involving ICESat-2 data.
 
 ## Background
+* Awesome ICESat-2 Hackweek 2022 Tutorial from Tyler, Hannah and Scott: https://icesat-2-2022.hackweek.io/tutorials/geospatial/geospatial-advanced.html?highlight=datum
+* NSIDC iceflow correction notes: https://github.com/nsidc/NSIDC-Data-Tutorials/blob/main/notebooks/iceflow/corrections.ipynb
 
 ### Why is this so complicated!?
 * The Earth's surface/shape is constantly changing
@@ -31,21 +33,39 @@ A centralized repository for resources, documentation and code samples to help p
 * There is hope! https://geodesy.noaa.gov/datums/newdatums/index.shtml
 
 ### Transformations
-Going back and forth between different CRS
+* Allows you to go back and forth between different CRS
+* You've all done this - convert from cartesian to polar coordiantes (high school math)
+* Can be 2D or 3D
+* Most open-source packages depend on PROJ library (https://proj.org/) for CRS support and transformations
+### Vector
+* `pyproj`: Python interface for PROJ
+* `GeoPandas` uses pyproj under the hood for CRS transformations, with support for compound 3D CRS
+### Raster
+* `gdalwarp` with proper CRS definitions (and available vertical offset grids) should work
 
-## Resources
-* PROJ (https://proj.org/)
-* pyproj
-* GeoPandas uses pyproj under the hood for CRS transformations
-
-## ICESat-2 CRS definitions
-## Common datasets combined with ICESat-2
+## Common datasets and CRS definitions
+### ICESat-2
 ### Raster DEMs
 #### ArcticDEM/REMA/EarthDEM products from PGC
+* These are distributed as 2D projected CRS (EPSG:3031 or EPSG:3413), without a vertical datum definition
+* Elevation values are "height above the WGS84 ellipsoid" - but no details about specific realization used by vendor (Maxar) providing source stereo imagery
+* Most of the Maxar data were acquired and delivered after 2008, so should be using more modern realizations of ITRF (2008, 2014, 2020), which are similar
+* Can likely assume ITRF2014 for most of the available DEM products
+* Can use custom WKT2 definintions for these 3D CRS:
+    * Antarctica: https://github.com/ICESat2-SlideRule/sliderule/blob/cb8ead40d761c8d637397a28e7b6d53fcf1de3c4/plugins/pgc/plugin/ITRF2014_3031.wkt
+    * Arctic: https://github.com/ICESat2-SlideRule/sliderule/blob/cb8ead40d761c8d637397a28e7b6d53fcf1de3c4/plugins/pgc/plugin/ITRF2014_3413.wkt
 #### Copernicus 30 m DEM
+* EPSG:9518 (WGS84 + EGM2008)
 ### Point clouds and altimetry
 #### 3DEP lidar
+* NAD83(2011) horizontal with NAVD88 vertical datum
+* Projection is Local UTM Zone
+* EPSG:6339+5703 (example for UTM Zone 10N, https://epsg.io/6339)
+    * Note: this is not the same as EPSG:32610 (WGS84) or EPSG:26910 (NAD83), because we are using NAD83(2011) realization
 #### WA DNR
+* EPSG:2926+5703 (WA state plane N)
+* EPSG:2927+5703 (WA state plane S)
+* NAVD88 model should be geoid2012 (I think, need to confirm)
 
 ## Examples
 

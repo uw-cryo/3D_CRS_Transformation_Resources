@@ -1,16 +1,16 @@
 # 3D_CRS_Transformation_Resources
 
-A centralized repository for resources, documentation and code samples to help people navigate the infinitely confusing, complex, but very important topic of 3D coordinate reference system (CRS) transformations.  Specifically those involving ICESat-2 data.
+A centralized repository for resources, documentation and code samples to help people navigate the infinitely confusing, complex, but very important topic of 3D coordinate reference system (CRS) transformations when combining geospatial datasets.  
 
 ## Background
 * Awesome ICESat-2 Hackweek 2022 Tutorial from Tyler, Hannah and Scott: https://icesat-2-2022.hackweek.io/tutorials/geospatial/geospatial-advanced.html?highlight=datum
-* NSIDC iceflow correction notes: https://github.com/nsidc/NSIDC-Data-Tutorials/blob/main/notebooks/iceflow/corrections.ipynb
+* NSIDC notebook on `iceflow` tool (Kevin Beam) for combining (ICESat, Operation IceBridge and ICESat-2): https://github.com/nsidc/NSIDC-Data-Tutorials/blob/main/notebooks/iceflow/corrections.ipynb
 
 ### Why is this so complicated!?
 * The Earth's surface/shape is constantly changing
 * Our ability to measure the Earth's surface/shape and locations on the surface continues to improve (Thanks GNSS!)
 * The systems used to define coordinate systems and datums continues to evolve
-* The support for these systems in open-source tools continue to change, with a lot of confusing and/or outdated docuemntation out there on the web
+* The support for these systems in open-source tools continue to evolve, with a lot of confusing and/or outdated documentation out there on the web
 * There is a long (fascinating) history of surveying approaches, measurements, correction approaches, and definitions
 * Many legacy datasets use older CRS definitions
 * Many datasets have missing CRS information in metadata, sometimes incorrect information
@@ -27,6 +27,7 @@ A centralized repository for resources, documentation and code samples to help p
 ### Projections
 ### ITRF Realizations
 ### epochs, time and plate deformation models
+* Plate motion ~1-8 cm/yr
 ### Specific notes for North America
 * https://geodesy.noaa.gov/datums/index.shtml
 * https://geodesy.noaa.gov/datums/newdatums/background.shtml

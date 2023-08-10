@@ -132,6 +132,7 @@ PROJ string:
 
 ## Gotchas and other notes
 * There is no perfect transformation approach, and all transformations have some uncertainty
+   * https://vdatum.noaa.gov/docs/est_uncertainties.html
 * There are many possible ways to go from one CRS to another, the PROJ pipelines allow you to control this
 * Many CRS (esp compound or 3D CRS) don't have EPSG codes - you can define the CRS with machine-readable, well-known text (use WKT2)
 

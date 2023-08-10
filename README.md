@@ -5,7 +5,18 @@ A centralized repository for resources, documentation and code samples to help p
 ## Background
 * Awesome ICESat-2 Hackweek 2022 Tutorial from Tyler, Hannah and Scott: https://icesat-2-2022.hackweek.io/tutorials/geospatial/geospatial-advanced.html?highlight=datum
 * NSIDC notebook on `iceflow` tool (Kevin Beam) for combining (ICESat, Operation IceBridge and ICESat-2): https://github.com/nsidc/NSIDC-Data-Tutorials/blob/main/notebooks/iceflow/corrections.ipynb
-* https://uwgda-jupyterbook.readthedocs.io/en/latest/modules/04_Vector1_Geopandas_CRS_Proj/04_Vector1_Geopandas_CRS_Proj_prep.html
+* David's GDA module on CRS and projections: https://uwgda-jupyterbook.readthedocs.io/en/latest/modules/04_Vector1_Geopandas_CRS_Proj/04_Vector1_Geopandas_CRS_Proj_prep.html
+
+### More resources specific to North America
+* https://geodesy.noaa.gov/corbin/class_description/NGS_Video_Library.shtml 
+   * What are Geodetic Datums?
+   * How Were Geodetic Datums Established?
+   * What Is the Status of Today’s Geodetic Datums?
+   * What’s Next for Geodetic Datums?
+* https://www.meted.ucar.edu/oceans/navy_geodesy/
+* PSU Course GPS and GNSS for Geospatial Professionals (Lesson 5): https://www.e-education.psu.edu/geog862/node/1669 
+* https://www.dnr.wa.gov/publications/eng_plso_state_plane_coord_refresher.pdf 
+* https://www.uvm.edu/giv/resources/WGS84_NAD83.pdf 
 
 ### Why is this so complicated!?
 * The Earth's surface/shape is constantly changing

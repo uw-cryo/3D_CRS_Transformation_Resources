@@ -1,20 +1,22 @@
 # 3D_CRS_Transformation_Resources
 
-A centralized repository for resources, documentation and code samples to help people navigate the infinitely confusing (and complex) topic of 3D coordinate reference system (CRS) transformations.  Specifically those involving ICESat-2 data.
+A centralized repository for resources, documentation and code samples to help people navigate the infinitely confusing, complex, but very important topic of 3D coordinate reference system (CRS) transformations.  Specifically those involving ICESat-2 data.
 
 ## Background
 
 ### Why is this so complicated!?
 * The Earth's surface/shape is constantly changing
-* Our ability to measure the Earth's surface/shape continues to improve (Thanks GNSS!)
-* Our systems to define
-* The support and open-source tools available continue to change, with lots of outdated docuemntation on the webt
-* Long (fascinating) history around surveying approaches, measurements, correction approaches, and definitions
-* There are many legacy datasets using older CRS definitions
+* Our ability to measure the Earth's surface/shape and locations on the surface continues to improve (Thanks GNSS!)
+* The systems used to define coordinate systems and datums continues to evolve
+* The support for these systems in open-source tools continue to change, with a lot of confusing and/or outdated docuemntation out there on the web
+* There is a long (fascinating) history of surveying approaches, measurements, correction approaches, and definitions
+* Many legacy datasets use older CRS definitions
 * Many datasets have missing CRS information in metadata, sometimes incorrect information
+* The acronyms used for different CRS and datums can feel like alphabet soup: NAD83, WGS84, GRS80, NAVD88, EGM, ITRF
 
 ### What is a CRS?
 #### How are they defined?
+#### EPSG codes vs. proj strings vs WKT
 ### Horizontal CRS
 #### Ellipsoid models
 * https://proj.org/en/9.2/_images/general_ellipsoid.png
@@ -23,6 +25,10 @@ A centralized repository for resources, documentation and code samples to help p
 ### Projections
 ### ITRF Realizations
 ### epochs, time and plate deformation models
+### Specific notes for North America
+* https://geodesy.noaa.gov/datums/index.shtml
+* https://geodesy.noaa.gov/datums/newdatums/background.shtml
+* There is hope! https://geodesy.noaa.gov/datums/newdatums/index.shtml
 
 ### Transformations
 Going back and forth between different CRS
@@ -101,9 +107,10 @@ PROJ string:
   ```
 * Note the 0.105 m uncertainty
 
-## Gotchas and other things to watch for
+## Gotchas and other notes
 * There is no perfect transformation approach, and all transformations have some uncertainty
 * There are many possible ways to go from one CRS to another, the PROJ pipelines allow you to control this
+* Many CRS (esp compound or 3D CRS) don't have EPSG codes - you can define the CRS with machine-readable, well-known text (use WKT2)
 
 ## Other resources
 * Comparison of values with different versions of the NAVD88 geoid (geoid2018 vs geoid2012): https://gist.github.com/scottyhq/bf13033a9655f302e8f9dc9235daf9fc

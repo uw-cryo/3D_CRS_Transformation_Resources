@@ -181,7 +181,7 @@ There are 17 different possible operations, with subtle differences (and uncerta
 
 Sample gdalwarp command to transform sample WA DNR LiDAR product for Island County, WA to UTM 10N with height in meters above the WGS84 ellipsoid, and a standard posting of 1 m:
 
-`gdalwarp -s_srs EPSG:2927+6360 -t_srs EPSG:32610+4979 -tr 1.0 1.0 -r cubic -dstnodata -9999 $-co COMPRESS=LZW -co TILED=YES -co BIGTIFF=IF_SAFER island_2014_dsm_13.tif test.tif`
+`gdalwarp -s_srs EPSG:2927+6360 -t_srs EPSG:32610+4979 -tr 1.0 1.0 -r cubic -dstnodata -9999 -co COMPRESS=LZW -co TILED=YES -co BIGTIFF=IF_SAFER island_2014_dsm_13.tif test.tif`
 
 ## Gotchas and other notes
 * There is no perfect transformation approach, and all transformations have some uncertainty

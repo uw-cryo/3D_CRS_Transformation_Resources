@@ -16,7 +16,9 @@ laz_fn=$1
 laz_out_fn=${laz_fn%.*}_pdal.laz
 
 #Assuming input coordinate system is properly defined in the lidar point clouds or raster
-#May need to define if CRS is not 3D, or vertical datum not defined
+#May need to override if CRS is not 3D, or vertical datum not properly defined
+in_crs=""
+#in_crs="32148+5703"
 
 #Define output projected coordinate system 
 #out_crs=""
@@ -51,6 +53,9 @@ fi
 if [ ! -z "$out_crs" ] ; then
     laz_out_fn=${laz_out_fn%.*}_${out_crs}.laz
     pdal_filters+=" -f filters.reprojection --filters.reprojection.out_srs=EPSG:$out_crs"
+    if [ ! -z "$in_crs" ] ; then
+        pdal_filters+=" --filters.reprojection.in_srs=EPSG:$in_crs"
+    fi
 fi
 
 #If bounds are unspecified, transform entire point cloud

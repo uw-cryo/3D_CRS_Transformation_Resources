@@ -36,12 +36,15 @@ bounds=""
 #pdal translate sample --filters.sample.radius=0.2 --writers.las.forward=all
 sample_rad_m=0.2
 
-pdal_filters=""
+pdal_filters="--writers.las.forward=all"
+
+#Assuming point cloud coordiantes are in meters, preserve mm precision (improves compression)
+#pdal_filters="--writers.las.forward='header,vlr' --writers.las.scale_x=0.001 --writers.las.scale_y=0.001 --writers.las.scale_z=0.001 --writers.las.offset_x='auto' --writers.las.offset_y='auto' --writers.las.offset_z='auto'"
 
 #Thin point cloud
 if [ ! -z "$sample_rad_m" ] ; then
     laz_out_fn=${laz_out_fn%.*}_${sample_rad_m}m.laz
-    pdal_filters+=" -f filters.sample --filters.sample.radius=$sample_rad_m --writers.las.forward=all"
+    pdal_filters+=" -f filters.sample --filters.sample.radius=$sample_rad_m
 fi
 
 #Transform point cloud to out CRS

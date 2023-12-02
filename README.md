@@ -148,6 +148,10 @@ The Washington Department of Natural Resources maintains an excellent lidar port
 Your selected area of interest on the DNR portal may cross the boundaries of the original tiled lidar data.  So you will get multiple small DSM/DTM tiles. You can combine these in a virtual raster (vrt) using the `gdalbuildvrt` command (https://gdal.org/programs/gdalbuildvrt.html):
 `gdalbuildvrt out_raster.vrt tile1.tif tile2.tif tile3.tif`
 
+Check with gdalinfo: `gdalinfo out_raster.vrt`
+
+Output dimensions and geographic extent should be larger than any individual tile. 
+
 Note: To combine multiple point cloud tiles (las/laz), you can use PDAL merge command (https://pdal.io/en/2.6.0/apps/merge.html):
 `pdal merge tile1.laz tile2.laz tile3.laz out_merged.laz`
 
@@ -195,6 +199,10 @@ Sample gdalwarp command to transform sample WA DNR LiDAR product for Island Coun
 
 #### NAD83(2011) UTM 10N with height in meters above the NAD83(2011) ellipsoid, and output posting of 1 m
 `gdalwarp -s_srs EPSG:2927+6360 -t_srs EPSG:6339+6319 -tr 1.0 1.0 -r cubic -dstnodata -9999 -co COMPRESS=LZW -co TILED=YES -co BIGTIFF=IF_SAFER island_2014_dsm_13.tif island_2014_dsm_13_UTM10N_nad83_2011.tif`
+
+Check output CRS with gdalinfo: `gdalinfo island_2014_dsm_13_UTM10N_nad83_2011.tif` 
+
+Should have the horizontal CRS and a vertical CRS defined with units of meters.
 
 ## Gotchas and other notes
 * There is no perfect transformation approach, and all transformations have some uncertainty

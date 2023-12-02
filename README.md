@@ -74,20 +74,20 @@ A centralized repository for resources, documentation and code samples to help p
 #### 3DEP lidar
 * NAD83(2011) horizontal with NAVD88 vertical datum
 * Projection is Local UTM Zone
-* EPSG:6339+5703 (example for UTM Zone 10N, https://epsg.io/6339)
+* EPSG:6339+5703 (example for UTM Zone 10N with NAVD88 datum, https://epsg.io/6339)
     * Note: this is not the same as EPSG:32610 (WGS84) or EPSG:26910 (NAD83), because we are using NAD83(2011) realization
 #### WA DNR
 * EPSG:2926+5703 (WA state plane N)
 * EPSG:2927+5703 (WA state plane S)
 * NAVD88 model should be geoid2012 (I think, need to confirm)
 
-## Examples
-
-### Setup
-1. Updated to latest PROJ (>9.2 required for improved North American datum support)
+## :warning: Setup
+1. `conda install gdal pdal geopandas` or `conda update gdal pdal geopandas`
+    * Make sure you are using latest PROJ (>9.2 required for improved North American datum support)
 2. Retrieve the vertical datum offset grids for your area of interest with https://proj.org/en/9.2/apps/projsync.html
 `projsync --all`
 
+## Examples
 ### Check your dataset metadata
 * `gdalinfo`
 * Review documentation, lidar reports, etc.
@@ -141,9 +141,17 @@ PROJ string:
   ```
 * Note the 0.105 m uncertainty
 
-### WA DNR LiDAR products
+## WA DNR LiDAR products
 The Washington Department of Natural Resources maintains an excellent lidar portal with subsetting of standardized DSM and DTM products, as well as download of the lidar point clouds.  See here: https://lidarportal.dnr.wa.gov/  
 
+### Combining separate lidar tiles in a vrt
+Your selected area of interest on the DNR portal may cross the boundaries of the original tiled lidar data.  So you will get multiple small DSM/DTM tiles. You can combine these in a virtual raster (vrt) using the `gdalbuildvrt` command (https://gdal.org/programs/gdalbuildvrt.html):
+`gdalbuildvrt out_raster.vrt tile1.tif tile2.tif tile3.tif`
+
+Note: To combine multiple point cloud tiles (las/laz), you can use PDAL merge command (https://pdal.io/en/2.6.0/apps/merge.html):
+`pdal merge tile1.laz tile2.laz tile3.laz out_merged.laz`
+
+### Coordinate system transformation
 All products are distributed using one of two default CRS: either WA State Plane North or WA State Plane South, both using the NAD83(HARN) horizontal datum and the NAVD88 vertical datum (unsure if geoid2012 or geoid2018?), with all horizontal and vertical units in U.S. Survey Feet. There are historical reasons for these choices
 * EPSG:2926 - NAD83(HARN) / Washington North (ftUS), https://www.spatialreference.org/ref/epsg/2926/
 * EPSG:2927 - NAD83(HARN) / Washington South (ftUS), https://www.spatialreference.org/ref/epsg/2927/
@@ -179,9 +187,14 @@ PROJ string:
 
 There are 17 different possible operations, with subtle differences (and uncertainty) depending on the NAD83 and NAVD88 definitions and offset grids used. To be more precise, we should also unambiguously define the WGS84 realization (not just "WGS84"), but there are no convenient EPSG codes for UTM projections using "WGS 84 (G1762)", so we will need to create a custom WKT CRS (to be done later).
 
-Sample gdalwarp command to transform sample WA DNR LiDAR product for Island County, WA to UTM 10N with height in meters above the WGS84 ellipsoid, and a standard posting of 1 m:
+Sample gdalwarp command to transform sample WA DNR LiDAR product for Island County, WA, with output CRS of:
 
-`gdalwarp -s_srs EPSG:2927+6360 -t_srs EPSG:32610+4979 -tr 1.0 1.0 -r cubic -dstnodata -9999 -co COMPRESS=LZW -co TILED=YES -co BIGTIFF=IF_SAFER island_2014_dsm_13.tif test.tif`
+#### WGS84 UTM 10N with height in meters above the WGS84 ellipsoid, and output posting of 1 m:
+
+`gdalwarp -s_srs EPSG:2927+6360 -t_srs EPSG:32610+4979 -tr 1.0 1.0 -r cubic -dstnodata -9999 -co COMPRESS=LZW -co TILED=YES -co BIGTIFF=IF_SAFER island_2014_dsm_13.tif island_2014_dsm_13_UTM10N_wgs84.tif`
+
+#### NAD83(2011) UTM 10N with height in meters above the NAD83(2011) ellipsoid, and output posting of 1 m
+`gdalwarp -s_srs EPSG:2927+6360 -t_srs EPSG:6339+6319 -tr 1.0 1.0 -r cubic -dstnodata -9999 -co COMPRESS=LZW -co TILED=YES -co BIGTIFF=IF_SAFER island_2014_dsm_13.tif island_2014_dsm_13_UTM10N_nad83_2011.tif`
 
 ## Gotchas and other notes
 * There is no perfect transformation approach, and all transformations have some uncertainty

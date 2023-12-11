@@ -42,6 +42,16 @@ sample_rad_m=""
 #pdal translate sample --filters.sample.radius=0.2 --writers.las.forward=all
 #sample_rad_m=0.2
 
+#Filter by return number
+#return_num="last, only"
+#return_num="first, only"
+#pdal_filters+=" -f filters.returns --filters.returns.groups=$return_num"
+
+#Filter by classification
+class_num=""
+#"Classification[2:2]"
+#class_num=2
+
 pdal_filters="--writers.las.forward=all"
 
 #Assuming point cloud coordiantes are in meters, preserve mm precision (improves compression)
@@ -67,6 +77,12 @@ if [ ! -z "$bounds" ] ; then
     laz_out_fn=${laz_out_fn%.*}_crop.laz
     #pdal translate -i $laz_fn -o $laz_out_fn -f filters.reprojection --filters.reprojection.out_srs=EPSG:$out_crs -f filters.crop --filters.crop.bounds="$bounds"
     pdal_filters+=" -f filters.crop --filters.crop.bounds=\"${bounds}\""
+fi
+
+#Filter by classification 
+if [ ! -z "$class_num" ] ; then
+    laz_out_fn=${laz_out_fn%.*}_class${class_num}.laz
+    pdal_filters+=" -f filters.range --filters.range.limits=Classification[${class_num}:${class_num}]"
 fi
 
 #Run combined PDAL command

@@ -22,13 +22,18 @@ laz_out_fn=${laz_fn%.*}_pdal.laz
 #May need to override if CRS is not 3D, or vertical datum not properly defined
 in_crs=""
 #in_crs="32148+5703"
+#MD Anne Arrundel county
+#in_crs="4152+5703"
+#in_crs="26985+5703"
 
 #Define output projected coordinate system 
-#out_crs=""
+out_crs=""
 #NAD83(2011) UTM 10 N, NAVD88, meters
 #out_crs="6339+5703"
 #NAD83(2011) UTM 10 N, ellipsoid height, meters
-out_crs="6339+6319"
+#out_crs="6339+6319"
+#UTM 18N, MD
+#out_crs="6347+6319"
 
 #Define bounds
 bounds=""
@@ -43,19 +48,19 @@ sample_rad_m=""
 #sample_rad_m=0.2
 
 #Filter by return number
-#return_num="last, only"
-#return_num="first, only"
-#pdal_filters+=" -f filters.returns --filters.returns.groups=$return_num"
+return_num=''
+#return_num='last,only'
+#return_num='first,only'
 
 #Filter by classification
-class_num=""
+class_num=''
 #"Classification[2:2]"
 #class_num=2
 
-pdal_filters="--writers.las.forward=all"
-
+#Preserve all fields with original precision
+#pdal_filters="--writers.las.forward=all"
 #Assuming point cloud coordiantes are in meters, preserve mm precision (improves compression)
-#pdal_filters="--writers.las.forward='header,vlr' --writers.las.scale_x=0.001 --writers.las.scale_y=0.001 --writers.las.scale_z=0.001 --writers.las.offset_x='auto' --writers.las.offset_y='auto' --writers.las.offset_z='auto'"
+pdal_filters="--writers.las.forward='header,vlr' --writers.las.scale_x=0.001 --writers.las.scale_y=0.001 --writers.las.scale_z=0.001 --writers.las.offset_x='auto' --writers.las.offset_y='auto' --writers.las.offset_z='auto'"
 
 #Thin point cloud
 if [ ! -z "$sample_rad_m" ] ; then
@@ -79,6 +84,11 @@ if [ ! -z "$bounds" ] ; then
     pdal_filters+=" -f filters.crop --filters.crop.bounds=\"${bounds}\""
 fi
 
+if [ ! -z "$return_num" ] ; then
+    laz_out_fn=${laz_out_fn%.*}_return${return_num}.laz
+    pdal_filters+=" -f filters.returns --filters.returns.groups=$return_num"
+fi
+
 #Filter by classification 
 if [ ! -z "$class_num" ] ; then
     laz_out_fn=${laz_out_fn%.*}_class${class_num}.laz
@@ -93,7 +103,8 @@ eval pdal translate -i $laz_fn -o $laz_out_fn $pdal_filters
 #Define output grid resolution (meters)
 res=1
 tif_out_fn=${laz_out_fn%.*}_${res}m.tif
-pdal translate -i $laz_out_fn -o ${tif_out_fn%.*}.tif --writers.gdal.resolution=$res --writers.gdal.output_type="all" --writers.gdal.data_type="float32" --writers.gdal.gdalopts="COMPRESS=LZW,TILED=YES,BIGTIFF=IF_SAFER" --writers.gdal.override_srs=EPSG:$out_crs 
+pdal translate -i $laz_out_fn -o ${tif_out_fn%.*}.tif --writers.gdal.resolution=$res --writers.gdal.output_type="all" --writers.gdal.data_type="float32" --writers.gdal.gdalopts="COMPRESS=LZW,TILED=YES,BIGTIFF=IF_SAFER" 
+#--writers.gdal.override_srs=EPSG:$out_crs 
 
 pdal_bands="1 2 3 4 5 6"
 pdal_stats="min max mean idw count stddev"

@@ -281,3 +281,7 @@ https://gdal.org/programs/gdalwarp.html#cmdoption-gdalwarp-s_coord_epoch
 https://gdal.org/user/coordinate_epoch.html#support-in-utilities
 
 gdalwarp with `-s_coord_epoch 2010.0 -t_coord_epoch 2022.4` also failed (requires PROJ 9.4)
+
+### Notes from gdal-dev mailing list
+* `srs.SetCoordinateEpoch(2021.3)` https://github.com/OSGeo/gdal/blob/3a9541d19f2df52f1e66dacfa33878531a5f2c58/autotest/gcore/tiff_write.py#L9575
+* On the command line you might use: `gdal_translate in.tif out.tif -a_coord_epoch XXXX.YYY`

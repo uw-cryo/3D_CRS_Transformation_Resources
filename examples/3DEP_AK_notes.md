@@ -107,8 +107,8 @@ Had to create a custom WKT2 text file combining relevant portions of:
   * WGS84 (G2139) [EPSG:9754](https://spatialreference.org/ref/epsg/9754/)
 
 See files:
-  * UTM_4N_ITRF2014_3D.wkt
-  * UTM_4N_WGS84_G2139_3D.wkt
+  * [UTM_4N_ITRF2014_3D.wkt](./UTM_4N_ITRF2014_3D.wkt)
+  * [UTM_4N_WGS84_G2139_3D.wkt](./UTM_4N_WGS84_G2139_3D.wkt)
 
 ```
 PROJCRS["WGS 84 (G2139) / UTM 4N",

@@ -98,13 +98,16 @@ Want to transform to match WorldView stereo DEM output. ITRF realization used by
 Output from ASP point2dem is UTM Zone 4N projection using WGS84 ellipsoid (EPSG:4326 ensemble), height above WGS84 ellipsoid (like G2139) - see [ESRI:115885](https://spatialreference.org/ref/esri/115885/)
 To enable proper PROJ transformation (including Helmert for offset between NAD83(2011) and WGS84 ellipsoid), need well-defined WGS84 realization.  
 
-Using EPSG:32604+7912 does not work as mixing WGS84/GRS80.  Using EPSG:32604+ESRI:115885 is valid, but WGS84 Ensemble uncertainty (~2.0 m) is propagated to the Compound CRS from the UTM projection definition, and Helmert transform is not applied.
+Using EPSG:32604+7912 does not work as mixing WGS84/GRS80.  
+Using EPSG:32604+7665 also does not work as mixing WGS84 Ensemble with a specific realization WGS84 (G1762)
+Using EPSG:32604+ESRI:115885 is valid, but WGS84 Ensemble uncertainty (~2.0 m) is propagated to the Compound CRS from the UTM projection definition, and the Helmert transform required to transform to NAD83(2011) is not applied, as the translation is within stated uncertainty.
 
 Had to create a custom WKT2 text file combining relevant portions of:
 * [EPSG:32604](https://spatialreference.org/ref/epsg/32604/) projection and definitions, but using well-defined WGS84 CRS (not ensemble)
 * 3D ellipsoidal CRS (lat/lon, not cartesian) options:
   * ITRF2014 [EPSG:7912](https://spatialreference.org/ref/epsg/7912/)
   * WGS84 (G2139) [EPSG:9754](https://spatialreference.org/ref/epsg/9754/)
+  * WGS84 (G1762) [EPSG:7665](https://spatialreference.org/ref/epsg/7665/)
 
 See files:
   * [UTM_4N_ITRF2014_3D.wkt](./UTM_4N_ITRF2014_3D.wkt)

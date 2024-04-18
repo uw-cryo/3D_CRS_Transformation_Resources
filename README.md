@@ -45,6 +45,7 @@ A centralized repository for resources, documentation and code samples to help p
 * https://geodesy.noaa.gov/datums/index.shtml
 * https://geodesy.noaa.gov/datums/newdatums/background.shtml
 * There is hope! https://geodesy.noaa.gov/datums/newdatums/index.shtml
+  * https://xkcd.com/2920/ 
 
 ### Transformations
 * Allows you to go back and forth between different CRS

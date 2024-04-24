@@ -31,6 +31,7 @@ A centralized repository for resources, documentation and code samples to help p
 ### What is a CRS?
 #### How are they defined?
 * https://uwgda-jupyterbook.readthedocs.io/en/latest/modules/04_Vector1_Geopandas_CRS_Proj/04_Vector1_Geopandas_CRS_Proj_demo.html#crs-and-projections
+* Emerging json definitions (in parallel with WKT): https://github.com/opengeospatial/CRS-JSON-Encoding
 #### EPSG codes vs. proj strings vs WKT
 ### Horizontal CRS
 #### Ellipsoid models

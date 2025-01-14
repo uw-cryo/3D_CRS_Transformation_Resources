@@ -1,8 +1,8 @@
-# 3D_CRS_Transformation_Resources
+# 3D CRS Transformation Resources
 
-A centralized repository for resources, documentation and code samples to help the community navigate the confusing, complex, but very important topic of 3D coordinate reference system (CRS) transformations when combining datasets for precise geodetic analysis.  
+A centralized repository for resources, documentation and code samples to help the community navigate the confusing, complex, but very important topic of 3D coordinate reference system (CRS) transformations when combining datasets for precise geodetic analysis.
 
-This repository was initially created for an improptu community tutorial session led by David Shean and Scott Henderson at the 2023 UW/NASA [ICESat-2 Hackweek event](https://icesat-2-2023.hackweek.io/). We are continuing to review and update materials, including new recipes and examples for commonly used 3D datasets. 
+This repository was initially created for an improptu community tutorial session led by David Shean and Scott Henderson at the 2023 UW/NASA [ICESat-2 Hackweek event](https://icesat-2-2023.hackweek.io/). We are continuing to review and update materials, including new recipes and examples for commonly used 3D datasets.
 
 ## Background
 * Awesome ICESat-2 Hackweek 2022 Tutorial from Tyler, Hannah and Scott: https://icesat-2-2022.hackweek.io/tutorials/geospatial/geospatial-advanced.html?highlight=datum
@@ -10,15 +10,15 @@ This repository was initially created for an improptu community tutorial session
 * David's GDA module on CRS and projections: https://uwgda-jupyterbook.readthedocs.io/en/latest/modules/04_Vector1_Geopandas_CRS_Proj/04_Vector1_Geopandas_CRS_Proj_prep.html
 
 ### More resources specific to North America
-* https://geodesy.noaa.gov/corbin/class_description/NGS_Video_Library.shtml 
+* https://geodesy.noaa.gov/corbin/class_description/NGS_Video_Library.shtml
    * What are Geodetic Datums?
    * How Were Geodetic Datums Established?
    * What Is the Status of Today’s Geodetic Datums?
    * What’s Next for Geodetic Datums?
 * https://www.meted.ucar.edu/oceans/navy_geodesy/
-* PSU Course GPS and GNSS for Geospatial Professionals (Lesson 5): https://www.e-education.psu.edu/geog862/node/1669 
-* https://www.dnr.wa.gov/publications/eng_plso_state_plane_coord_refresher.pdf 
-* https://www.uvm.edu/giv/resources/WGS84_NAD83.pdf 
+* PSU Course GPS and GNSS for Geospatial Professionals (Lesson 5): https://www.e-education.psu.edu/geog862/node/1669
+* https://www.dnr.wa.gov/publications/eng_plso_state_plane_coord_refresher.pdf
+* https://www.uvm.edu/giv/resources/WGS84_NAD83.pdf
 
 ### Why is this so complicated!?
 * The Earth's surface/shape is constantly changing
@@ -48,7 +48,7 @@ This repository was initially created for an improptu community tutorial session
 * https://geodesy.noaa.gov/datums/index.shtml
 * https://geodesy.noaa.gov/datums/newdatums/background.shtml
 * There is hope! https://geodesy.noaa.gov/datums/newdatums/index.shtml
-  * https://xkcd.com/2920/ 
+  * https://xkcd.com/2920/
 
 ### Transformations
 * Allows you to go back and forth between different CRS
@@ -146,7 +146,7 @@ PROJ string:
 * Note the 0.105 m uncertainty
 
 ## WA DNR LiDAR products
-The Washington Department of Natural Resources maintains an excellent lidar portal with subsetting of standardized DSM and DTM products, as well as download of the lidar point clouds.  See here: https://lidarportal.dnr.wa.gov/  
+The Washington Department of Natural Resources maintains an excellent lidar portal with subsetting of standardized DSM and DTM products, as well as download of the lidar point clouds.  See here: https://lidarportal.dnr.wa.gov/
 
 ### Combining separate lidar tiles in a vrt
 Your selected area of interest on the DNR portal may cross the boundaries of the original tiled lidar data.  So you will get multiple small DSM/DTM tiles. You can combine these in a virtual raster (vrt) using the `gdalbuildvrt` command (https://gdal.org/programs/gdalbuildvrt.html):
@@ -154,7 +154,7 @@ Your selected area of interest on the DNR portal may cross the boundaries of the
 
 Check with gdalinfo: `gdalinfo out_raster.vrt`
 
-Output dimensions and geographic extent should be larger than any individual tile. 
+Output dimensions and geographic extent should be larger than any individual tile.
 
 Note: To combine multiple point cloud tiles (las/laz), you can use PDAL merge command (https://pdal.io/en/2.6.0/apps/merge.html):
 `pdal merge tile1.laz tile2.laz tile3.laz out_merged.laz`
@@ -165,7 +165,7 @@ All products are distributed using one of two default CRS: either WA State Plane
 * EPSG:2927 - NAD83(HARN) / Washington South (ftUS), https://www.spatialreference.org/ref/epsg/2927/
 * EPSG:6360 - NAVD88 height (ftUS)
 
-PROJ information about conversion from these coordinate systems to UTM Zone 10N WGS84 with height in meters above the ellipsoid: 
+PROJ information about conversion from these coordinate systems to UTM Zone 10N WGS84 with height in meters above the ellipsoid:
 
 `projinfo -s EPSG:2927+6360 -t EPSG:32610+4979 -o PROJ --hide-ballpark --spatial-test intersects | less`
 ```
@@ -204,7 +204,7 @@ Sample gdalwarp command to transform sample WA DNR LiDAR product for Island Coun
 #### NAD83(2011) UTM 10N with height in meters above the NAD83(2011) ellipsoid, and output posting of 1 m
 `gdalwarp -s_srs EPSG:2927+6360 -t_srs EPSG:6339+6319 -tr 1.0 1.0 -r cubic -dstnodata -9999 -co COMPRESS=LZW -co TILED=YES -co BIGTIFF=IF_SAFER island_2014_dsm_13.tif island_2014_dsm_13_UTM10N_nad83_2011.tif`
 
-Check output CRS with gdalinfo: `gdalinfo island_2014_dsm_13_UTM10N_nad83_2011.tif` 
+Check output CRS with gdalinfo: `gdalinfo island_2014_dsm_13_UTM10N_nad83_2011.tif`
 
 Should have the horizontal CRS and a vertical CRS defined with units of meters.
 

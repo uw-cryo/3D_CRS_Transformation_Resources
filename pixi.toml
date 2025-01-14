@@ -7,14 +7,7 @@ platforms = ["osx-arm64"]
 version = "0.1.0"
 
 [tasks]
-# https://github.com/prefix-dev/pixi/issues/1417
-# https://github.com/jupyter-book/jupyter-book/issues/2294
-addjbook2='pip install jupyter-book==2.0.0a0 --no-deps'
 website='jupyter book start'
-#Requires-Dist: jupyter-core -> jupyter_core
-#Requires-Dist: jupyter-server -> jupyter_server
-#Requires-Dist: platformdirs~=4.2.2 -> platformdirs
-#Requires-Dist: nodeenv~=1.9.1 -> nodeenv
 
 [dependencies]
 gdal = ">=3.10.1,<4"
@@ -24,11 +17,6 @@ xarray = ">=2025.1.1,<2026"
 rioxarray = ">=0.17.0,<0.18"
 matplotlib = ">=3.10.0,<4"
 ipykernel = ">=6.29.5,<7"
-# To remove w/ jupyter-book 2.0.0a1 release:
-pip = ">=24.3.1,<25"
-jupyter_server = ">=2.15.0,<3"
-nodeenv = ">=1.9.1,<2"
-platformdirs = "<=4.3"
 
-#[pypi-dependencies]
-#jupyter-book = "==2.0.0a0"
+[pypi-dependencies]
+jupyter-book = "==2.0.0a1"

@@ -29,6 +29,7 @@ pip = ">=24.3.1,<25"
 jupyter_server = ">=2.15.0,<3"
 nodeenv = ">=1.9.1,<2"
 platformdirs = "<=4.3"
+libgdal-arrow-parquet = ">=3.10.1,<4"
 
 #[pypi-dependencies]
 #jupyter-book = "==2.0.0a0"

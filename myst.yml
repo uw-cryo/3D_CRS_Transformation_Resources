@@ -1,0 +1,43 @@
+# See docs at: https://mystmd.org/guide/frontmatter
+version: 1
+project:
+  id: 3ebf064b-3b32-4a23-92f0-b9a724114c59
+  title: 3D Coordinate Reference System Transformation Resources
+  short_title: 3D CRS Guide
+  description: Notes and code to understand and successfully perform accurate 3D coordinate reference system (CRS) transformations
+  keywords: [CRS, PROJ, GDAL, Python, Geopandas, Xarray, Geodesy, Datums]
+  authors: [David Shean, Scott Henderson, Shashank Bhushan]
+  github: uw-cryo/3D_CRS_Transformation_Resources
+  abbreviations:
+    CRS: Coordinate Reference System
+    WGS84: World Geodetic System 1984
+    EPSG: European Petroleum Survey Group
+    ITRF: International Terrestrial Reference Frame
+    UTM: Universal Transverse Mercator
+    GNSS: Global Navigation Satellite System
+    DEM: Digital Elevation Model
+  settings:
+    output_matplotlib_strings: remove
+
+  toc:
+    - file: README.md
+    - title: Examples
+      children:
+        - file: examples/3DEP_AK_notes.md
+        - file: examples/Raster_DEM_3D_Transformation_GDAL.ipynb
+        - file: examples/Vector_3D_Transformation_GeoPandas.ipynb
+    - title: Globaldems
+      children:
+        - file: globaldems/readme.md
+        - file: globaldems/cop30.ipynb
+        - file: globaldems/srtm.ipynb
+
+site:
+  template: book-theme
+  options:
+    # Best to set authors per-page rather than on *all* pages
+    # https://github.com/jupyter-book/mystmd/issues/1664
+    hide_authors: true
+    logo_text: Home
+    favicon: https://github.com/uw-cryo.png?size=46
+    logo: https://github.com/uw-cryo.png

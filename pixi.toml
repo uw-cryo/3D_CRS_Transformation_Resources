@@ -17,6 +17,7 @@ xarray = ">=2025.1.1,<2026"
 rioxarray = ">=0.17.0,<0.18"
 matplotlib = ">=3.10.0,<4"
 ipykernel = ">=6.29.5,<7"
+libgdal-arrow-parquet = ">=3.10.1,<4"
 
 [pypi-dependencies]
 jupyter-book = "==2.0.0a1"

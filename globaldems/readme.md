@@ -37,7 +37,7 @@ A table of EPSG codes for various WGS84 realizations
 
 Source: https://epsg.org
 
-| Valid From | Realization | Std. Epoch | 2D Geographic | 3D Geodetic | 3D Geocentric |
+| Valid From | Realization | Epoch | 2D Geographic | 3D Geodetic | 3D Geocentric |
 | - | - | - | - | - | - |
 | 1997-01-29 | WGS84 (G873)  | 1997.0 | 9054 | 7659 | 7658 |
 | 2002-01-20 | WGS84 (G1150) | 2001.0 | 9055 | 7661 | 7660 |
@@ -48,11 +48,11 @@ Source: https://epsg.org
 
 ### ITRF EPSG
 
-A table of selec EPSG codes for various ITRF realizations
+A table of selected EPSG codes for various ITRF realizations
 
 Source: https://epsg.org
 
-| Valid From | Realization | Std. Epoch | 2D Geographic | 3D Geodetic | 3D Geocentric |
+| Valid From | Realization | Epoch | 2D Geographic | 3D Geodetic | 3D Geocentric |
 | - | - | - | - | - | - |
 | 1999-05-01 | ITRF1997 | 1997.0 | 8996 | 7908 | 4918 |
 | 2001-03-19 | ITRF2000 | 1997.0 | 8997 | 7909 | 4919 |
@@ -76,22 +76,26 @@ A "CompoundCRS" can combine a 2D Geographic CRS with a 1D Vertical CRS to form a
 
 ## Static CRS
 
-USGS 3DEP uses NAD83 + NAVD88 Heights. This is not a global system and rather focuses on CONUS. The coordinate system moves with the North American plate. *It's refered to as 'static' because to an observer measuring positions on the plate, the plate is not moving :)*
+### NAD83
+USGS 3DEP uses NAD83 + NAVD88 Heights. **This is not a global system and rather focuses on CONUS.** The coordinate system moves with the North American plate. *It's refered to as 'static' because to an observer measuring positions on the plate, the plate is not moving :)*
 
 Just like WGS and ITRF, there are different, increasingly accurate 'realizations' of the NAD83 datum over time:
 
-| Valid From | Realization | Std. Epoch | 2D Geographic | 3D Geodetic | 3D Geocentric |
+| Valid From | Realization | Epoch | 2D Geographic | 3D Geodetic | 3D Geocentric |
 | - | - | - | - | - | - |
-| 1986 | NAD83(1986) | 1984.0 | 4269 | ? | ? |
-| ? | NAD83(HARN) | ? | 4152 | 4957 | 4956 |
+| 1986 | NAD83(1986)       | 1984.0 | 4269 |  -   |  -   |
+| 1993 | NAD83(HARN)       | 1991.0 | 4152 | 4957 | 4956 |
+| 1998 | NAD83(CORS96)     | 2002.0 | 6783 | 6782 | 6781 |
+| 2007 | NAD83(NSRS2007)   | 2002.0 | 4759 | 4893 | 4892 |
 | 2012-06-12 | NAD83(2011) | 2010.0 | 6318 | 6319 | 6317 |
+| unreleased | NATRF2022   | 2020.0 |  -   |   -  |   -  |
 
 Geoid Model:
 * **Vertical Coordinates: NAVD88 [EPSG: 5703]**
 
-To be updated soon!
-https://www.ngs.noaa.gov/datums/newdatums/release.shtml
+To be updated ~2025: with  geopotential datum will be called North American-Pacific Geopotential Datum of 2022 (NAPGD2022). The most prominent of these products will be a time-dependent model of the geoid, provided in three regions (the first covering the entirety of North and Central America, Hawaii, Alaska, Greenland, and the Caribbean; the second covering American Samoa; and the third covering Guam and the Commonwealth of the Mariana Islands). The name of this model will be GEOID2022. Read more: https://www.ngs.noaa.gov/datums/newdatums
 
+A great reference: https://vdatum.noaa.gov/docs/datums.html#geodetic
 
 ## Projected CRS
 

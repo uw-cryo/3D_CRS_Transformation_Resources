@@ -21,16 +21,21 @@ project:
 
   toc:
     - file: README.md
+    - file: notes.md
     - title: Examples
       children:
         - file: examples/3DEP_AK_notes.md
         - file: examples/Raster_DEM_3D_Transformation_GDAL.ipynb
         - file: examples/Vector_3D_Transformation_GeoPandas.ipynb
-    - title: Globaldems
+    - title: Global DEMs
       children:
         - file: globaldems/readme.md
         - file: globaldems/cop30.ipynb
         - file: globaldems/srtm.ipynb
+        - file: globaldems/nasadem.ipynb
+    - title: Regional DEMs
+      children:
+        - file: 3dep/10m-seamless.ipynb
 
 site:
   template: book-theme

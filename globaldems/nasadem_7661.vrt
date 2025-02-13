@@ -1,0 +1,47 @@
+<VRTDataset rasterXSize="1288801" rasterYSize="421201" subClass="VRTWarpedDataset">
+  <SRS dataAxisToSRSAxisMapping="2,1,3">GEOGCRS["WGS 84 (G1150)",DYNAMIC[FRAMEEPOCH[2001]],DATUM["World Geodetic System 1984 (G1150)",ELLIPSOID["WGS 84",6378137,298.257223563,LENGTHUNIT["metre",1]]],PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433]],CS[ellipsoidal,3],AXIS["geodetic latitude (Lat)",north,ORDER[1],ANGLEUNIT["degree",0.0174532925199433]],AXIS["geodetic longitude (Lon)",east,ORDER[2],ANGLEUNIT["degree",0.0174532925199433]],AXIS["ellipsoidal height (h)",up,ORDER[3],LENGTHUNIT["metre",1]],USAGE[SCOPE["Geodesy. Navigation and positioning using GPS satellite system."],AREA["World."],BBOX[-90,-180,90,180]],ID["EPSG",7661]]</SRS>
+  <GeoTransform> -1.7900013890000000e+02,  2.7777777779502033e-04,  0.0000000000000000e+00,  6.1000138900000003e+01,  0.0000000000000000e+00, -2.7777777783053695e-04</GeoTransform>
+  <VRTRasterBand dataType="Float32" band="1" subClass="VRTWarpedRasterBand">
+    <NoDataValue>-32768</NoDataValue>
+    <ColorInterp>Gray</ColorInterp>
+  </VRTRasterBand>
+  <BlockXSize>512</BlockXSize>
+  <BlockYSize>128</BlockYSize>
+  <GDALWarpOptions>
+    <WarpMemoryLimit>5.24288e+08</WarpMemoryLimit>
+    <ResampleAlg>Bilinear</ResampleAlg>
+    <WorkingDataType>Float32</WorkingDataType>
+    <Option name="INIT_DEST">NO_DATA</Option>
+    <Option name="APPLY_VERTICAL_SHIFT">YES</Option>
+    <Option name="MULT_FACTOR_VERTICAL_SHIFT">1</Option>
+    <Option name="MULT_FACTOR_VERTICAL_SHIFT_PIPELINE">1</Option>
+    <Option name="ERROR_OUT_IF_EMPTY_SOURCE_WINDOW">FALSE</Option>
+    <SourceDataset relativeToVRT="0">/vsicurl/https://opentopography.s3.sdsc.edu/raster/NASADEM/NASADEM_be.vrt</SourceDataset>
+    <Transformer>
+      <GenImgProjTransformer>
+        <SrcGeoTransform>-179.0001388888889,0.00027777777777781469,0,61.000138888888891,0,-0.00027777777777781469</SrcGeoTransform>
+        <SrcInvGeoTransform>644400.49999991443,3599.9999999995216,0,219600.49999997081,0,-3599.9999999995216</SrcInvGeoTransform>
+        <DstGeoTransform>-179.0001389,0.00027777777779502033,0,61.000138900000003,0,-0.00027777777783053695</DstGeoTransform>
+        <DstInvGeoTransform>644400.5,3599.9999997765367,0,219600.49999829062,0,-3599.999999316241</DstInvGeoTransform>
+        <ReprojectTransformer>
+          <ReprojectionTransformer>
+            <SourceSRS>COMPD_CS["WGS 84 (G1150) + EGM96 height",GEOGCS["WGS 84 (G1150)",DATUM["World_Geodetic_System_1984_G1150",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","1154"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AXIS["Latitude",NORTH],AXIS["Longitude",EAST],AUTHORITY["EPSG","9055"]],VERT_CS["EGM96 height",VERT_DATUM["EGM96 geoid",2005,AUTHORITY["EPSG","5171"]],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AXIS["Gravity-related height",UP],AUTHORITY["EPSG","5773"]]]</SourceSRS>
+            <TargetSRS>GEOGCRS["WGS 84 (G1150)",DYNAMIC[FRAMEEPOCH[2001]],DATUM["World Geodetic System 1984 (G1150)",ELLIPSOID["WGS 84",6378137,298.257223563,LENGTHUNIT["metre",1]]],PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433]],CS[ellipsoidal,3],AXIS["geodetic latitude (Lat)",north,ORDER[1],ANGLEUNIT["degree",0.0174532925199433]],AXIS["geodetic longitude (Lon)",east,ORDER[2],ANGLEUNIT["degree",0.0174532925199433]],AXIS["ellipsoidal height (h)",up,ORDER[3],LENGTHUNIT["metre",1]],USAGE[SCOPE["Geodesy. Navigation and positioning using GPS satellite system."],AREA["World."],BBOX[-90,-180,90,180]],ID["EPSG",7661]]</TargetSRS>
+            <Options>
+              <Option key="CENTER_LONG">2.37748e-11</Option>
+              <Option key="COORDINATE_OPERATION">+proj=pipeline +step +proj=axisswap +order=2,1 +step +proj=unitconvert +xy_in=deg +xy_out=rad +step +proj=vgridshift +grids=us_nga_egm96_15.tif +multiplier=1 +step +proj=unitconvert +xy_in=rad +xy_out=deg +step +proj=axisswap +order=2,1</Option>
+            </Options>
+          </ReprojectionTransformer>
+        </ReprojectTransformer>
+      </GenImgProjTransformer>
+    </Transformer>
+    <BandList>
+      <BandMapping src="1" dst="1">
+        <SrcNoDataReal>-32768</SrcNoDataReal>
+        <SrcNoDataImag>0</SrcNoDataImag>
+        <DstNoDataReal>-32768</DstNoDataReal>
+        <DstNoDataImag>0</DstNoDataImag>
+      </BandMapping>
+    </BandList>
+  </GDALWarpOptions>
+</VRTDataset>

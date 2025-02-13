@@ -27,7 +27,7 @@ git checkout -b newcontent
 Jupyter Book will execute notebooks and render HTML pages for the website. Be sure to fix any execution errors and preview the website in your web browser to make sure everything looks good!
 
 ```
-pixi website
+pixi run website
 ```
 
 Happy with how things look? Finally, open a pull request to merge you changes:

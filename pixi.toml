@@ -18,6 +18,7 @@ rioxarray = ">=0.17.0,<0.18"
 matplotlib = ">=3.10.0,<4"
 ipykernel = ">=6.29.5,<7"
 libgdal-arrow-parquet = ">=3.10.1,<4"
+cartopy = ">=0.24.0,<0.25"
 
 [pypi-dependencies]
 jupyter-book = "==2.0.0a1"

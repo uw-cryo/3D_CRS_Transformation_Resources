@@ -7,7 +7,8 @@ platforms = ["osx-arm64"]
 version = "0.1.0"
 
 [tasks]
-build='myst start --execute'
+serve='myst start --execute'
+build='myst build --execute'
 
 [dependencies]
 gdal = ">=3.10.3,<4"

@@ -3,7 +3,7 @@
 This section focuses on working with digital elevation models with global extent.
 
 :::{tip} Learning Goals
-* Understand what is meant by different 'realizations' of WGS
+* Understand what is meant by different "realizations" of WGS
 * Understand the relation between WGS and ITRF
 * Know common EPSG database codes for CRS definitions commonly used with global elevation data
 :::
@@ -31,11 +31,14 @@ However, because the original positions can be transformed into more recent refe
 
 Source: https://www.e-education.psu.edu/geog862/node/1804
 
-Modern realizations are time-dependent to account for changes to mass/gravity distribution from moving plates and large earthquakes. So 'standard' epochs are used to indicate the point in time for a given realization.
+Modern realizations are time-dependent to account for changes to mass/gravity distribution from moving plates and large earthquakes. So "standard" epochs are used to indicate the point in time for a given realization.
 
-** NAD83 (2011) and WGS84 (G1764) positions can differ up to one or two meters within the continental United States b/c NAD83 is not geocentric! Furthermore, NAD83 is 'static' in that it is fixed to the North American plate, which moves ('static' = moving is admittedly a bit confusing)! Consequently, positions in NAD83 move approximately 10 millimeters per year in relation to the positions in the ITRF and WGS84 reference frames. Here is a nice video explaining this concept:
+** NAD83 (2011) and WGS84 (G1764) positions can differ up to one or two meters within the continental United States b/c NAD83 is not geocentric! Furthermore, NAD83 is 'static' in that it is fixed to the North American plate, which moves ("static" = moving is admittedly a bit confusing)! Consequently, positions in NAD83 move approximately 10 millimeters per year in relation to the positions in the ITRF and WGS84 reference frames. Here is a nice video explaining this concept:
 
-* https://www.youtube.com/watch?v=IKM-bR6SwVs
+:::{iframe} https://www.youtube.com/embed/IKM-bR6SwVs?si=BOQ8-4dNXvVTvYY6
+:width: 100%
+Static versus dynamic CRS
+:::
 
 *** WGS (G1762) Compares to ITRF08 and ITRF2014 within 1cm Root Mean Square (RMS) overall if the epochs are the same
 

@@ -4,64 +4,51 @@
 This page contains a somewhat disorganized dump of notes from an improptu community tutorial session led by David Shean and Scott Henderson at the 2023 UW/NASA [ICESat-2 Hackweek event](https://icesat-2-2023.hackweek.io/).
 :::
 
+
+## Curated list of additional resources
+
 * Awesome ICESat-2 Hackweek 2022 Tutorial from Tyler, Hannah and Scott: https://icesat-2-2022.hackweek.io/tutorials/geospatial/geospatial-advanced.html?highlight=datum
 * NSIDC notebook on `iceflow` tool (Kevin Beam) for combining (ICESat, Operation IceBridge and ICESat-2): https://github.com/nsidc/NSIDC-Data-Tutorials/blob/main/notebooks/iceflow/corrections.ipynb
 * David's GDA module on CRS and projections: https://uwgda-jupyterbook.readthedocs.io/en/latest/modules/04_Vector1_Geopandas_CRS_Proj/04_Vector1_Geopandas_CRS_Proj_prep.html
 
-## Helpful resources specific to North America
+### Specific to North America
 * https://geodesy.noaa.gov/corbin/class_description/NGS_Video_Library.shtml
-   * What are Geodetic Datums?
+   * What are Geodetic Datums (https://geodesy.noaa.gov/datums/index.shtml)?
    * How Were Geodetic Datums Established?
    * What Is the Status of Today’s Geodetic Datums?
-   * What’s Next for Geodetic Datums?
+   * What’s Next for Geodetic Datums (https://geodesy.noaa.gov/datums/newdatums/index.shtml)?
+
 * https://www.meted.ucar.edu/oceans/navy_geodesy/
 * PSU Course GPS and GNSS for Geospatial Professionals (Lesson 5): https://www.e-education.psu.edu/geog862/node/1669
 * https://www.dnr.wa.gov/publications/eng_plso_state_plane_coord_refresher.pdf
 * https://www.uvm.edu/giv/resources/WGS84_NAD83.pdf
 
-## Why is this so complicated!?
-* The Earth's surface/shape is constantly changing
-* Our ability to measure the Earth's surface/shape and locations on the surface continues to improve (Thanks GNSS!)
-* The systems used to define coordinate systems and datums continues to evolve
-* The support for these systems in open-source tools continue to evolve, with a lot of confusing and/or outdated documentation out there on the web
-* There is a long (fascinating) history of surveying approaches, measurements, correction approaches, and definitions
-* Many legacy datasets use older CRS definitions
-* Many datasets have missing CRS information in metadata, sometimes incorrect information
-* The acronyms used for different CRS and datums can feel like alphabet soup: NAD83, WGS84, GRS80, NAVD88, EGM, ITRF
 
-### What is a CRS?
-#### How are they defined?
+## What is a CRS?
+
 * https://uwgda-jupyterbook.readthedocs.io/en/latest/modules/04_Vector1_Geopandas_CRS_Proj/04_Vector1_Geopandas_CRS_Proj_demo.html#crs-and-projections
-* Emerging json definitions (in parallel with WKT): https://github.com/opengeospatial/CRS-JSON-Encoding
-#### EPSG codes vs. proj strings vs WKT
-### Horizontal CRS
-#### Ellipsoid models
-* https://proj.org/en/9.2/_images/general_ellipsoid.png
-### Vertical CRS
-#### Geoid models
-### Projections
-### ITRF Realizations
-### epochs, time and plate deformation models
-* Plate motion ~1-8 cm/yr
-### Specific notes for North America
-* https://geodesy.noaa.gov/datums/index.shtml
-* https://geodesy.noaa.gov/datums/newdatums/background.shtml
-* There is hope! https://geodesy.noaa.gov/datums/newdatums/index.shtml
-  * https://xkcd.com/2920/
+* Common geospatial CRS definitions are recorded in the EPSG database, stored as WKT format, or as JSON (https://github.com/opengeospatial/CRS-JSON-Encoding)
 
-### Transformations
+### Ellipsoid models
+![](https://proj.org/en/9.2/_images/general_ellipsoid.png)
+
+
+## Transformations
 * Allows you to go back and forth between different CRS
 * You've all done this - convert from cartesian to polar coordiantes (high school math)
 * Can be 2D or 3D
 * Most open-source packages depend on PROJ library (https://proj.org/) for CRS support and transformations
+
 ### Vector
 * `pyproj`: Python interface for PROJ
 * `GeoPandas` uses pyproj under the hood for CRS transformations, with support for compound 3D CRS
+
 ### Raster
 * `gdalwarp` with proper CRS definitions (and available vertical offset grids) should work
 
+
 ## Common datasets and CRS definitions
-### ICESat-2
+
 ### Raster DEMs
 #### ArcticDEM/REMA/EarthDEM products from PGC
 * These are distributed as 2D projected CRS (EPSG:3031 or EPSG:3413), without a vertical datum definition
@@ -71,8 +58,10 @@ This page contains a somewhat disorganized dump of notes from an improptu commun
 * Can use custom WKT2 definintions for these 3D CRS:
     * Antarctica: https://github.com/ICESat2-SlideRule/sliderule/blob/cb8ead40d761c8d637397a28e7b6d53fcf1de3c4/plugins/pgc/plugin/ITRF2014_3031.wkt
     * Arctic: https://github.com/ICESat2-SlideRule/sliderule/blob/cb8ead40d761c8d637397a28e7b6d53fcf1de3c4/plugins/pgc/plugin/ITRF2014_3413.wkt
+
 #### Copernicus 30 m DEM
 * EPSG:9518 (WGS84 + EGM2008)
+
 ### Point clouds and altimetry
 #### 3DEP lidar
 * NAD83(2011) horizontal with NAVD88 vertical datum
@@ -84,14 +73,9 @@ This page contains a somewhat disorganized dump of notes from an improptu commun
 * EPSG:2927+5703 (WA state plane S)
 * NAVD88 model should be geoid2012 (I think, need to confirm)
 
-## :warning: Setup
-1. `conda install gdal pdal geopandas` or `conda update gdal pdal geopandas`
-    * Make sure you are using latest PROJ (>9.2 required for improved North American datum support)
-2. Retrieve the vertical datum offset grids for your area of interest with https://proj.org/en/9.2/apps/projsync.html
-`projsync --all`
 
-## Examples
-### Check your dataset metadata
+
+## Always check your dataset metadata!
 * `gdalinfo`
 * Review documentation, lidar reports, etc.
 
@@ -212,6 +196,3 @@ Should have the horizontal CRS and a vertical CRS defined with units of meters.
    * https://vdatum.noaa.gov/docs/est_uncertainties.html
 * There are many possible ways to go from one CRS to another, the PROJ pipelines allow you to control this
 * Many CRS (esp compound or 3D CRS) don't have EPSG codes - you can define the CRS with machine-readable, well-known text (use WKT2)
-
-## Other resources
-* Comparison of values with different versions of the NAVD88 geoid (geoid2018 vs geoid2012): https://gist.github.com/scottyhq/bf13033a9655f302e8f9dc9235daf9fc

@@ -57,7 +57,12 @@ project:
           - file: 3dep/3DEP_AK_notes.md
     - title: Vector Data
       children:
+        - file: vector_data/readme.md
         - file: vector_data/icesat2_geopandas.ipynb
+    - title: LiDAR
+      children:
+        - file: lidar/readme.md
+    - file: software.md
     - file: appendix.md
     - file: glossary.md
 

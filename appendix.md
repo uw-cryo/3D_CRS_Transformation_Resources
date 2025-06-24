@@ -1,4 +1,8 @@
-# Background
+# Appendix
+
+:::{warning}
+This page contains a somewhat disorganized dump of notes from an improptu community tutorial session led by David Shean and Scott Henderson at the 2023 UW/NASA [ICESat-2 Hackweek event](https://icesat-2-2023.hackweek.io/).
+:::
 
 * Awesome ICESat-2 Hackweek 2022 Tutorial from Tyler, Hannah and Scott: https://icesat-2-2022.hackweek.io/tutorials/geospatial/geospatial-advanced.html?highlight=datum
 * NSIDC notebook on `iceflow` tool (Kevin Beam) for combining (ICESat, Operation IceBridge and ICESat-2): https://github.com/nsidc/NSIDC-Data-Tutorials/blob/main/notebooks/iceflow/corrections.ipynb

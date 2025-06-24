@@ -10,6 +10,7 @@ project:
   github: https://github.com/uw-cryo/3D_CRS_Transformation_Resources
   abbreviations:
     3DEP: 3D Elevation Program
+    COG: Cloud Optimized GeoTIFF
     CONUS: Contiguous United States
     CRS: Coordinate Reference System
     DEM: Digital Elevation Model
@@ -19,11 +20,21 @@ project:
     EPSG: European Petroleum Survey Group
     GDAL: Geospatial Data Abstraction Library
     GNSS: Global Navigation Satellite System
+    GTI: GDAL Tile Index
+    ICESat-2: Ice Cloud and land Elevation Satellite-2
     ITRF: International Terrestrial Reference Frame
-    NAD83: North American Datum 1983
-    NAVD88: North American Vertical Datum 1988
+    LPC: LiDAR Point Cloud
+    NAD: North American Datum
+    NAVD: North American Vertical Datum
+    NAPGD: North American Pacific Geopotential Datum
+    NATRF: North American Terrestrial Reference Frame
+    NSRS: National Spatial Reference System
+    PROJ: Cartographic Projections and Coordinate Transformations Library
+    SRTM: Shuttle Radar Topography Mission
     UTM: Universal Transverse Mercator
-    WGS84: World Geodetic System 1984
+    WGS: World Geodetic System
+    WKT: Well-Known Text
+    VRT: Virtual Raster Table
   # References are per-page, not consolidated (https://github.com/jupyter-book/mystmd/issues/946)
   bibliography:
     - references.bib

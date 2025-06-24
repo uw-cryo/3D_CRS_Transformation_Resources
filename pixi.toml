@@ -3,7 +3,7 @@ authors = ["Scott Henderson <scottyhq@gmail.com>"]
 channels = ["conda-forge"]
 description = "Notes and code to understand and successfully perform accurate 3D coordinate reference system (CRS) transformations"
 name = "3D_CRS_Transformation_Resources"
-platforms = ["osx-arm64"]
+platforms = ["osx-arm64","linux-64"]
 version = "0.1.0"
 
 [tasks]

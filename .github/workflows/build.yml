@@ -18,6 +18,6 @@ jobs:
           cache: true
           frozen: true
 
-      - name: Run Pytest
+      - name: Build website
         run: |
           pixi run build

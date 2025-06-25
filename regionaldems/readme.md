@@ -1,9 +1,9 @@
-# Regional CRS
+# Regional CRS Essentials
 
 ## NAD83
 USGS 3DEP uses NAD83 + NAVD88 Heights. **This is not a global system and rather focuses on CONUS and US Territories**. Here we focus on the continental US (CONUS) where NAD83 defines a coordinate system that moves with the North American plate. *It's refered to as 'static' because to an observer measuring positions on the plate, the plate is not moving :)*
 
-Just like WGS and ITRF, there are different, increasingly accurate 'realizations' of the NAD83 datum over time:
+Just like WGS and ITRF, there are different, increasingly accurate "realizations" of the NAD83 datum over time:
 
 | Valid From | Realization | Epoch | 2D Geographic | 3D Geodetic | 3D Geocentric |
 | - | - | - | - | - | - |

@@ -1,4 +1,4 @@
-# Global CRS
+# Global CRS Essentials
 
 This section focuses on working with digital elevation models with global extent.
 
@@ -14,9 +14,11 @@ For example, the Copernicus DEM is a mosaic of TanDEM-X measurements acquired be
 
 However, because the original positions can be transformed into more recent reference frames, it is also important to pay attention to dataset processing dates! Ultimately, it may be necessary to compare measurements against independent well-defined measurements (like GNSS station positions) to ascertain the correct CRS to use.
 
-## Dynamic CRS
 
 ## WGS84 and ITRF Realizations
+
+:::{table} WGS and ITRF equivalence
+:label: wgs_vs_itrf
 
 | Realization | Approximately equivalent to |
 | - | - |
@@ -29,24 +31,20 @@ However, because the original positions can be transformed into more recent refe
 | WGS (G2139) | ITRF2014 |
 | WGS (G2296) | ITRF2020 |
 
+:::
+
 Source: https://www.e-education.psu.edu/geog862/node/1804
 
 Modern realizations are time-dependent to account for changes to mass/gravity distribution from moving plates and large earthquakes. So "standard" epochs are used to indicate the point in time for a given realization.
 
-** NAD83 (2011) and WGS84 (G1764) positions can differ up to one or two meters within the continental United States b/c NAD83 is not geocentric! Furthermore, NAD83 is 'static' in that it is fixed to the North American plate, which moves ("static" = moving is admittedly a bit confusing)! Consequently, positions in NAD83 move approximately 10 millimeters per year in relation to the positions in the ITRF and WGS84 reference frames. Here is a nice video explaining this concept:
-
-:::{iframe} https://www.youtube.com/embed/IKM-bR6SwVs?si=BOQ8-4dNXvVTvYY6
-:width: 100%
-Static versus dynamic CRS
+:::{tip}
+WGS (G1762) Compares to ITRF08 and ITRF2014 within 1cm Root Mean Square (RMS) overall if the epochs are the same
 :::
-
-*** WGS (G1762) Compares to ITRF08 and ITRF2014 within 1cm Root Mean Square (RMS) overall if the epochs are the same
 
 ### WGS84 EPSG
 
-A table of EPSG codes for various WGS84 realizations
-
-Source: https://epsg.org
+:::{table} EPSG codes for various WGS84 realizations
+:label: wgs_epsg
 
 | Valid From | Realization | Epoch | 2D Geographic | 3D Geodetic | 3D Geocentric |
 | - | - | - | - | - | - |
@@ -57,11 +55,12 @@ Source: https://epsg.org
 | 2021-01-03 | WGS84 (G2139) | 2016.0 | 9755 | 9754 | 9753 |
 | 2024-01-07 | WGS84 (G2296) | 2024.0 | 10606 | 10605 | 10604 |
 
+:::
+
 ### ITRF EPSG
 
-A table of selected EPSG codes for various ITRF realizations
-
-Source: https://epsg.org
+:::{table} EPSG codes for various ITRF realizations
+:label: itrf_epsg
 
 | Valid From | Realization | Epoch | 2D Geographic | 3D Geodetic | 3D Geocentric |
 | - | - | - | - | - | - |
@@ -71,6 +70,8 @@ Source: https://epsg.org
 | 2010-05-31 | ITRF2008 | 2005.0 | 8999 | 7911 | 5332 |
 | 2016-01-22 | ITRF2014 | 2010.0 | 9000 | 7912 | 7789 |
 | 2022-04-19 | ITRF2020 | 2015.0 | 9990 | 9989 | 9988 |
+
+:::
 
 :::{tip}
 ITRF uses a slightly different ellipsoid "GRS90" compared to WGS84.
@@ -86,3 +87,19 @@ Orthometric Heights are relative to the *geoid* rather than idealized {term}`ell
 ## Compound CRS
 A "CompoundCRS" can combine a 2D Geographic CRS with a 1D Vertical CRS to form a 3D Geodetic CRS, For example: EPSG:7661+3855. This is handy as way to indicate that 2D Rasters storing elevation values can instead be treated as 3D Coordinate values relative to a specific reference surface (like the geoid defined by EGM2008).
 
+## Dynamic versus Static CRS
+
+A CRS is "dynamic" if coordinates change over time with respect to the origin. This is typical for modern global reference frames that have an origin of the Earth's center of mass rather than tied to a moving point on the surface (due to plate tectonics)
+
+Conversely coordinates in a "static" CRS like NAD83 which is tied to the North American plate no not change significantly over time.
+
+This is an extremely important when comparing data recorded using different CRS. For example, positions in NAD83 move approximately 10 millimeters per year in relation to the positions in the ITRF and WGS84 reference frames. Here is a nice video explaining this concept:
+
+:::{iframe} https://www.youtube.com/embed/IKM-bR6SwVs?si=BOQ8-4dNXvVTvYY6
+:width: 100%
+Static versus dynamic CRS
+:::
+
+:::{important}
+NAD83 (2011) and WGS84 (G1764) positions can differ up to one or two meters within the continental United States b/c NAD83 is not geocentric! Read more about NAD [here](../regionaldems/readme.md)
+:::

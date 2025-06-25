@@ -11,11 +11,17 @@ Example code in this repository relies heavily on the following open source libr
 
 In general it's easiest to install these libraries using [conda-forge](https://conda-forge.org) package distributions:
 
+You can recreate the software environment that we use to run all the examples in this online book with [Pixi](https://pixi.sh/latest/installation/):
 ```
-conda create -c conda-forge -n geo rioxarray geopandas
+git clone https://github.com/uw-cryo/3D_CRS_Transformation_Resources
+cd 3D_CRS_Transformation_Resources
+pixi shell
+gdalinfo --version
+```
+```
+GDAL 3.10.3, released 2025/04/01
 ```
 
 ## PROJ
 
 If you're working with vertical datum offset grids regularly or offline the [projsync](https://proj.org/en/stable/apps/projsync.html) command is your friend (`projsync --all`).
-

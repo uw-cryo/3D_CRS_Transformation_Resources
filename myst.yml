@@ -41,7 +41,12 @@ project:
   settings:
     output_matplotlib_strings: remove
   toc:
-    - file: getting_started.md
+    - file: home.md
+    - title: Essentials
+      children:
+        - file: essentials/navigation.md
+        - file: essentials/software.md
+        - file: essentials/wkts.md
     - title: Global DEMs
       children:
         - file: globaldems/readme.md

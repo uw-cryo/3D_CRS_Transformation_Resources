@@ -2,8 +2,7 @@
 
 Contributions are welcome here!
 
-- Report bugs, request features or submit feedback as a [GitHub Issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues).
-
+- Report problems, suggest clarifications or submit ideas for new content as a [GitHub Issue](https://github.com/uw-cryo/3D_CRS_Transformation_Resources/issues). The rest of this document details suggestions for making changes to the existing code.
 
 ## Fork this repository
 
@@ -11,8 +10,19 @@ We recommend first forking this repository and creating a local copy:
 
 ```
 git clone https://github.com/YOURACCOUNT/3D_CRS_Transformation_Resources.git
-cd xarray-tutorial
+cd 3D_CRS_Transformation_Resources
 ```
+
+## Setup a software environment
+
+```
+You can recreate the software environment that we use to run all the examples in this online book with [Pixi](https://pixi.sh/latest/installation/)
+
+```
+pixi shell
+gdalinfo --version
+```
+
 
 ## Add content
 
@@ -24,11 +34,13 @@ git checkout -b newcontent
 
 ## Preview your changes
 
-Jupyter Book will execute notebooks and render HTML pages for the website. Be sure to fix any execution errors and preview the website in your web browser to make sure everything looks good!
+Myst will execute notebooks and render HTML pages for the website. Be sure to fix any execution errors and preview the website in your web browser to make sure everything looks good!
 
 ```
-pixi run website
+pixi run serve
 ```
+
+NOTE: you can also run `pixi run build` to build without opening a server and browser window.
 
 Happy with how things look? Finally, open a pull request to merge you changes:
 

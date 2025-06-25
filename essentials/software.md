@@ -24,4 +24,4 @@ GDAL 3.10.3, released 2025/04/01
 
 ## PROJ
 
-If you're working with vertical datum offset grids regularly or offline the [projsync](https://proj.org/en/stable/apps/projsync.html) command is your friend (`projsync --all`).
+If you're working with vertical datum offset grids regularly or offline the [](xref:proj#apps/projsync) command is your friend (`projsync --all`).

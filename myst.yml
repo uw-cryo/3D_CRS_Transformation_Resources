@@ -8,6 +8,10 @@ project:
   keywords: [CRS, PROJ, GDAL, Python, Geopandas, Xarray, Geodesy, Datums]
   authors: [David Shean, Scott Henderson, Shashank Bhushan]
   github: https://github.com/uw-cryo/3D_CRS_Transformation_Resources
+  # Intersphinx or other mystmd mappings!
+  references:
+    proj: https://proj.org/
+    gdal: https://gdal.org/
   abbreviations:
     3DEP: 3D Elevation Program
     COG: Cloud Optimized GeoTIFF

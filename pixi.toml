@@ -8,7 +8,7 @@ version = "0.1.0"
 
 [tasks]
 serve='myst start --execute'
-build='myst build --execute'
+build='myst build --execute --html'
 
 [dependencies]
 gdal = ">=3.10.3,<4"

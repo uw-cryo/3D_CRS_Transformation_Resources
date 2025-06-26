@@ -8,6 +8,8 @@ project:
   keywords: [CRS, PROJ, GDAL, Python, Geopandas, Xarray, Geodesy, Datums]
   authors: [David Shean, Scott Henderson, Shashank Bhushan]
   github: https://github.com/uw-cryo/3D_CRS_Transformation_Resources
+  exports:
+    format: pdf
   # Intersphinx or other mystmd mappings!
   references:
     proj: https://proj.org/
@@ -71,7 +73,6 @@ project:
     - title: LiDAR
       children:
         - file: lidar/readme.md
-    - file: software.md
     - file: appendix.md
     - file: glossary.md
 

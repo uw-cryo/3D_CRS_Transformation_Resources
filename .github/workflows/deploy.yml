@@ -27,6 +27,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
       - uses: prefix-dev/setup-pixi@v0.8.10
         with:
           cache: true
@@ -35,9 +38,6 @@ jobs:
       - name: Build website
         run: |
           pixi run build
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

@@ -3,21 +3,26 @@ authors = ["Scott Henderson <scottyhq@gmail.com>"]
 channels = ["conda-forge"]
 description = "Notes and code to understand and successfully perform accurate 3D coordinate reference system (CRS) transformations"
 name = "3D_CRS_Transformation_Resources"
-platforms = ["osx-arm64"]
+platforms = ["osx-arm64","linux-64"]
 version = "0.1.0"
 
 [tasks]
-website='jupyter book start'
+serve='myst start --execute'
+build='myst build --execute'
 
 [dependencies]
-gdal = ">=3.10.1,<4"
-ipython = ">=8.31.0,<9"
-geopandas = ">=1.0.1,<2"
-xarray = ">=2025.1.1,<2026"
-rioxarray = ">=0.17.0,<0.18"
-matplotlib = ">=3.10.0,<4"
+gdal = ">=3.10.3,<4"
+ipython = ">=9.3.0,<10"
+geopandas = ">=1.1.0,<2"
+xarray = ">=2025.6.1,<2026"
+rioxarray = ">=0.19.0,<0.20"
+matplotlib = ">=3.10.3,<4"
 ipykernel = ">=6.29.5,<7"
-libgdal-arrow-parquet = ">=3.10.1,<4"
+libgdal-arrow-parquet = ">=3.10.3,<4"
+jupytext = ">=1.17.2,<2"
+jupyterlab-myst = ">=2.4.2,<3"
+# https://github.com/prefix-dev/pixi/issues/3479
+libgfortran5 = ">=14.2.0"
+fiona = ">=1.10.1,<2"
+mystmd = ">=1.4.0,<2"
 
-[pypi-dependencies]
-jupyter-book = "==2.0.0a1"

@@ -7,26 +7,50 @@ project:
   description: Notes and code to understand and successfully perform accurate 3D coordinate reference system (CRS) transformations
   keywords: [CRS, PROJ, GDAL, Python, Geopandas, Xarray, Geodesy, Datums]
   authors: [David Shean, Scott Henderson, Shashank Bhushan]
-  github: uw-cryo/3D_CRS_Transformation_Resources
+  github: https://github.com/uw-cryo/3D_CRS_Transformation_Resources
+  # Intersphinx or other mystmd mappings!
+  references:
+    proj: https://proj.org/
+    gdal: https://gdal.org/
   abbreviations:
+    3DEP: 3D Elevation Program
+    COG: Cloud Optimized GeoTIFF
+    CONUS: Contiguous United States
     CRS: Coordinate Reference System
-    WGS84: World Geodetic System 1984
-    EPSG: European Petroleum Survey Group
-    ITRF: International Terrestrial Reference Frame
-    UTM: Universal Transverse Mercator
-    GNSS: Global Navigation Satellite System
     DEM: Digital Elevation Model
+    DSM: Digital Surface Model
+    DTM: Digital Terrain Model
+    EGM: Earth Gravitational Model
+    EPSG: European Petroleum Survey Group
+    GDAL: Geospatial Data Abstraction Library
+    GNSS: Global Navigation Satellite System
+    GTI: GDAL Tile Index
+    ICESat-2: Ice Cloud and land Elevation Satellite-2
+    ITRF: International Terrestrial Reference Frame
+    LPC: LiDAR Point Cloud
+    NAD: North American Datum
+    NAVD: North American Vertical Datum
+    NAPGD: North American Pacific Geopotential Datum
+    NATRF: North American Terrestrial Reference Frame
+    NSRS: National Spatial Reference System
+    PROJ: Cartographic Projections and Coordinate Transformations Library
+    SRTM: Shuttle Radar Topography Mission
+    UTM: Universal Transverse Mercator
+    WGS: World Geodetic System
+    WKT: Well-Known Text
+    VRT: Virtual Raster Table
+  # References are per-page, not consolidated (https://github.com/jupyter-book/mystmd/issues/946)
+  bibliography:
+    - references.bib
   settings:
     output_matplotlib_strings: remove
-
   toc:
-    - file: README.md
-    - file: notes.md
-    - title: Examples
+    - file: home.md
+    - title: Essentials
       children:
-        - file: examples/3DEP_AK_notes.md
-        - file: examples/Raster_DEM_3D_Transformation_GDAL.ipynb
-        - file: examples/Vector_3D_Transformation_GeoPandas.ipynb
+        - file: essentials/navigation.md
+        - file: essentials/software.md
+        - file: essentials/wkts.md
     - title: Global DEMs
       children:
         - file: globaldems/readme.md
@@ -35,7 +59,21 @@ project:
         - file: globaldems/nasadem.ipynb
     - title: Regional DEMs
       children:
-        - file: 3dep/10m-seamless.ipynb
+      - file: regionaldems/readme.md
+      - title: 3DEP
+        children:
+          - file: 3dep/10m-seamless.ipynb
+          - file: 3dep/3DEP_AK_notes.md
+    - title: Vector Data
+      children:
+        - file: vector_data/readme.md
+        - file: vector_data/icesat2_geopandas.ipynb
+    - title: LiDAR
+      children:
+        - file: lidar/readme.md
+    - file: software.md
+    - file: appendix.md
+    - file: glossary.md
 
 site:
   template: book-theme
@@ -43,6 +81,6 @@ site:
     # Best to set authors per-page rather than on *all* pages
     # https://github.com/jupyter-book/mystmd/issues/1664
     hide_authors: true
-    logo_text: Home
+    logo_text: UW-Cryo
     favicon: https://github.com/uw-cryo.png?size=46
     logo: https://github.com/uw-cryo.png

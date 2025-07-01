@@ -1,0 +1,16 @@
+// https://pixi.sh/latest/integration/editor/vscode/#devcontainer-extension
+{
+    "name": "3DCRS-workspace",
+    "build": {
+      "dockerfile": "Dockerfile",
+      "context": ".."
+    },
+    "customizations": {
+      "vscode": {
+        "settings": {},
+        "extensions": ["ms-python.python"]
+      }
+    },
+    "mounts": ["source=${localWorkspaceFolderBasename}-pixi,target=${containerWorkspaceFolder}/.pixi,type=volume"],
+    "postCreateCommand": "sudo chown vscode .pixi && pixi install"
+}

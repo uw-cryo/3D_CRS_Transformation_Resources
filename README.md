@@ -15,8 +15,23 @@ You can launch a [GitHub Codespace](https://github.com/features/codespaces) with
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/uw-cryo/3D_CRS_Transformation_Resources)
 
+```bash
+# min specs ok = 2 cores, 8 GB RAM, 32 GB storage
+gh codespace create --idle-timeout 30m --repo uw-cryo/3D_CRS_Transformation_Resources --status
+```
 
-Or if you want to execute code examples on your own machine, we recommend using [pixi.sh](https://pixi.sh/latest/) for managing the Python evironment:
+```bash
+gh codespace jupyter
+```
+
+```bash
+gh codespace stop
+```
+
+### Local install
+
+
+Or if you want to execute code examples on your own machine, we recommend using [pixi.sh](https://pixi.sh/latest/) for managing the Python environment:
 
 ```bash
 gh clone uw-cryo/3D_CRS_Transformation_Resources

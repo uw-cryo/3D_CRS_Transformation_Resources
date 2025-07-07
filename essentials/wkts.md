@@ -46,7 +46,7 @@ GEOGCRS["WGS 84",
     ID["EPSG",4326]]
 ```
 
-Line 2 identifies that this CRS uses the WGS84 {term}`ensemble`, line 16 indentifies this is a 2D ellipsoidal CRS, and the final line always reports an EPSG code if present.
+Line 2 identifies that this CRS uses the WGS84 {term}`ensemble`, line 16 identifies this is a 2D ellipsoidal CRS, and the final line always reports an EPSG code if present.
 
 ## Specific WGS84 realization
 
@@ -80,7 +80,7 @@ GEOGCRS["WGS 84 (G1150)",
     ID["EPSG",9055]]
 ```
 
-Lines 2-4 identifies that this CRS uses a specific WGS84 {term}`realization`, line 9 again indentifies this is still a 2D ellipsoidal CRS, and the final line always reports the EPSG code.
+Lines 2-4 identifies that this CRS uses a specific WGS84 {term}`realization`, line 9 again identifies this is still a 2D ellipsoidal CRS, and the final line always reports the EPSG code.
 
 ## Compound 3D CRS
 
@@ -131,7 +131,7 @@ Line 1 identifies this as a `COMPOUNDCRS` consisting of a 2D horizontal and 1D v
 
 ## 3D Geodetic CRS
 
-The EPSG database also constains 3D definitions, eliminating the need for compound specifications:
+The EPSG database also contains 3D definitions, eliminating the need for compound specifications:
 
 ```bash
 projinfo EPSG:9754 -o WKT2:2019
@@ -171,7 +171,7 @@ Lines 2-4 identifies that this CRS uses a specific WGS84 {term}`realization`. No
 
 ## Projected CRS (UTM)
 
-The EPSG database also constains 3D definitions, eliminating the need for compound specifications:
+The EPSG database also contains 3D definitions, eliminating the need for compound specifications:
 
 ```bash
 projinfo EPSG:32610 -o WKT2:2019

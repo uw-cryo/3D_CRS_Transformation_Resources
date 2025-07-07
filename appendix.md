@@ -35,7 +35,7 @@ This page contains a somewhat disorganized dump of notes from an improptu commun
 
 ## Transformations
 * Allows you to go back and forth between different CRS
-* You've all done this - convert from cartesian to polar coordiantes (high school math)
+* You've all done this - convert from cartesian to polar coordinates (high school math)
 * Can be 2D or 3D
 * Most open-source packages depend on PROJ library (https://proj.org/) for CRS support and transformations
 
@@ -56,7 +56,7 @@ This page contains a somewhat disorganized dump of notes from an improptu commun
 * Elevation values are "height above the WGS84 ellipsoid" - but no details about specific realization used by vendor (Maxar) providing source stereo imagery
 * Most of the Maxar data were acquired and delivered after 2008, so should be using more modern realizations of ITRF (2008, 2014, 2020), which are similar
 * Can likely assume ITRF2014 for most of the available DEM products
-* Can use custom WKT2 definintions for these 3D CRS:
+* Can use custom WKT2 definitions for these 3D CRS:
     * Antarctica: https://github.com/ICESat2-SlideRule/sliderule/blob/cb8ead40d761c8d637397a28e7b6d53fcf1de3c4/plugins/pgc/plugin/ITRF2014_3031.wkt
     * Arctic: https://github.com/ICESat2-SlideRule/sliderule/blob/cb8ead40d761c8d637397a28e7b6d53fcf1de3c4/plugins/pgc/plugin/ITRF2014_3413.wkt
 

@@ -11,7 +11,8 @@ serve='myst start --execute'
 build='myst build --execute --html'
 check-links='myst build --check-links'
 pdf='myst build --pdf'
-spellcheck='codespell --skip  _build,references.bib'
+# picky about some command line arguments like -ot
+spellcheck='codespell --skip pixi.lock,_build,references.bib --ignore-words-list ot'
 
 [dependencies]
 gdal = ">=3.10.3,<4"

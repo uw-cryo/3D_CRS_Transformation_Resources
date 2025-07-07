@@ -7,7 +7,7 @@
 #David Shean
 #November 2023
 
-#Edit script for appropraite out_crs, sample_rad_m and run as:
+#Edit script for appropriate out_crs, sample_rad_m and run as:
 #pdal_transform_gridstats.sh input.laz | tell > input_pdal.log
 
 #Print commands and exit on error
@@ -28,7 +28,7 @@ in_crs=""
 
 #in_coord_epoch=""
 
-#Define output projected coordinate system 
+#Define output projected coordinate system
 out_crs=""
 #NAD83(2011) UTM 10 N, NAVD88, meters
 #out_crs="6339+5703"
@@ -66,7 +66,7 @@ class_num=''
 
 #Preserve all fields with original precision
 #pdal_filters="--writers.las.forward=all"
-#Assuming point cloud coordiantes are in meters, preserve mm precision (improves compression)
+#Assuming point cloud coordinates are in meters, preserve mm precision (improves compression)
 pdal_filters="--writers.las.forward='header,vlr' --writers.las.scale_x=0.001 --writers.las.scale_y=0.001 --writers.las.scale_z=0.001 --writers.las.offset_x='auto' --writers.las.offset_y='auto' --writers.las.offset_z='auto'"
 
 #Thin point cloud
@@ -96,7 +96,7 @@ if [ ! -z "$return_num" ] ; then
     pdal_filters+=" -f filters.returns --filters.returns.groups=$return_num"
 fi
 
-#Filter by classification 
+#Filter by classification
 if [ ! -z "$class_num" ] ; then
     laz_out_fn=${laz_out_fn%.*}_class${class_num}.laz
     pdal_filters+=" -f filters.range --filters.range.limits=Classification[${class_num}:${class_num}]"
@@ -110,15 +110,15 @@ eval pdal translate -i $laz_fn -o $laz_out_fn $pdal_filters
 #Define output grid resolution (meters)
 res=0.5
 tif_out_fn=${laz_out_fn%.*}_${res}m.tif
-pdal translate -i $laz_out_fn -o ${tif_out_fn%.*}.tif --writers.gdal.resolution=$res --writers.gdal.output_type="all" --writers.gdal.data_type="float32" --writers.gdal.gdalopts="COMPRESS=LZW,TILED=YES,BIGTIFF=IF_SAFER" 
-#--writers.gdal.override_srs=EPSG:$out_crs 
+pdal translate -i $laz_out_fn -o ${tif_out_fn%.*}.tif --writers.gdal.resolution=$res --writers.gdal.output_type="all" --writers.gdal.data_type="float32" --writers.gdal.gdalopts="COMPRESS=LZW,TILED=YES,BIGTIFF=IF_SAFER"
+#--writers.gdal.override_srs=EPSG:$out_crs
 
 pdal_bands="1 2 3 4 5 6"
 pdal_stats="min max mean idw count stddev"
-#Extract individual statistics 
+#Extract individual statistics
 parallel --delay 1 --link -v "gdal_translate $gdal_opt -b {1} ${tif_out_fn%.*}.tif ${tif_out_fn%.*}_{2}.tif" ::: $pdal_bands ::: $pdal_stats
 #If SRS is not set properly by PDAL on output
 #parallel --delay 1 --link -v "gdal_translate $gdal_opt -b {1} ${tif_out_fn%.*}.tif ${tif_out_fn%.*}_{2}.tif; gdal_edit.py -a_srs EPSG:$out_crs ${tif_out_fn%.*}_{2}.tif" ::: $pdal_bands ::: $pdal_stats
 
 #Shaded relief
-hs.sh ${tif_out_fn%.*}_{max,min,mean,idw}.tif 
+hs.sh ${tif_out_fn%.*}_{max,min,mean,idw}.tif

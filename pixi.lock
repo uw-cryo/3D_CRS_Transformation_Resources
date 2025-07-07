@@ -211,7 +211,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/minizip-4.0.10-h05a5f5f_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mistune-3.1.3-pyh29332c3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/munkres-1.1.4-pyhd8ed1ab_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/mystmd-1.5.0-pyhe01879c_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/mystmd-1.5.1-pyhe01879c_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/nbclient-0.10.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/nbconvert-core-7.16.6-pyh29332c3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/nbformat-5.10.4-pyhd8ed1ab_1.conda
@@ -506,7 +506,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/minizip-4.0.10-hff1a8ea_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mistune-3.1.3-pyh29332c3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/munkres-1.1.4-pyhd8ed1ab_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/mystmd-1.5.0-pyhe01879c_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/mystmd-1.5.1-pyhe01879c_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/nbclient-0.10.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/nbconvert-core-7.16.6-pyh29332c3_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/nbformat-5.10.4-pyhd8ed1ab_1.conda
@@ -4798,16 +4798,16 @@ packages:
   - pkg:pypi/munkres?source=compressed-mapping
   size: 15851
   timestamp: 1749895533014
-- conda: https://conda.anaconda.org/conda-forge/noarch/mystmd-1.5.0-pyhe01879c_0.conda
-  sha256: d0c2e8413c4be9a38edd1b18b5adcd404442f9236e54e4a685c8aaa903f5f50c
-  md5: 8e18d9c5ef422b9be70cf59ad9346fc3
+- conda: https://conda.anaconda.org/conda-forge/noarch/mystmd-1.5.1-pyhe01879c_0.conda
+  sha256: e41f786e21574dd21d98564fed210fb8b351de95254cd005d9d1fa1c88702fff
+  md5: f513ee75eee8143e300f42642292e447
   depends:
   - python >=3.9
   - nodejs >=18
   - python
   license: MIT
-  size: 2163869
-  timestamp: 1750800268155
+  size: 2163865
+  timestamp: 1751692750216
 - conda: https://conda.anaconda.org/conda-forge/noarch/nbclient-0.10.2-pyhd8ed1ab_0.conda
   sha256: a20cff739d66c2f89f413e4ba4c6f6b59c50d5c30b5f0d840c13e8c9c2df9135
   md5: 6bb0d77277061742744176ab555b723c

@@ -10,6 +10,7 @@ version = "0.1.0"
 serve='myst start --execute'
 build='myst build --execute --html'
 check-links='myst build --check-links'
+clear-cache='myst clean --all'
 pdf='myst build --pdf'
 # picky about some command line arguments like -ot
 spellcheck='codespell --skip pixi.lock,_build,references.bib --ignore-words-list ot'
@@ -28,6 +29,6 @@ jupyterlab-myst = ">=2.4.2,<3"
 # https://github.com/prefix-dev/pixi/issues/3479
 libgfortran5 = ">=14.2.0"
 fiona = ">=1.10.1,<2"
-mystmd = ">=1.5.0,<2"
+mystmd = ">=1.5.1,<2"
 codespell = ">=2.4.1,<3"
 

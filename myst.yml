@@ -4,12 +4,38 @@ project:
   id: 3ebf064b-3b32-4a23-92f0-b9a724114c59
   title: 3D Coordinate Reference System Transformation Resources
   short_title: 3D CRS Guide
+  abstract: |
+    This guide provides resources for understanding and performing 3D coordinate reference system (CRS) transformations, with a focus on geospatial data processing using Python libraries such as Geopandas, Xarray, and GDAL. It includes practical examples, code snippets, and explanations of key concepts related to CRS transformations.
   description: Notes and code to understand and successfully perform accurate 3D coordinate reference system (CRS) transformations
   keywords: [CRS, PROJ, GDAL, Python, Geopandas, Xarray, Geodesy, Datums]
-  authors: [David Shean, Scott Henderson, Shashank Bhushan]
-  github: https://github.com/uw-cryo/3D_CRS_Transformation_Resources
+  authors:
+    - name: David Shean
+      affiliation: uw-cee
+      github: dshean
+      orcid: 0000-0003-3840-3860
+    - name: Scott Henderson
+      affiliation: uw-ess
+      github: scottyhq
+      orcid: 0000-0003-0624-4965
+    - name: Shashank Bhushan
+      affiliation: nasa-goddard
+      github: ShashankBice
+      orcid: 0000-0003-3712-996X
+  affiliations:
+    - id: uw-ess
+      institution: University of Washington Earth and Space Sciences
+    - id: uw-cee
+      institution: University of Washington Civil and Environmental Engineering
+    - id: nasa-goddard
+      institution: NASA Goddard Space Flight Center
+  #
   exports:
-    format: pdf
+    - format: pdf
+      template: plain_latex_book
+      output: _build/exports/3d-crs-guide.pdf
+  # https://github.com/jupyter-book/mystmd/issues/944
+  #   - format: typst
+  #     output: _build/exports/3d-crs-guide.pdf
   # Intersphinx or other mystmd mappings!
   references:
     proj: https://proj.org/

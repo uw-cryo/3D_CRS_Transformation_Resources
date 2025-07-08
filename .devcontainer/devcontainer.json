@@ -1,0 +1,25 @@
+// https://pixi.sh/latest/integration/editor/vscode/#devcontainer-extension
+{
+    "name": "3DCRS-workspace",
+    "build": {
+      "dockerfile": "Dockerfile",
+      "context": ".."
+    },
+    "customizations": {
+      "vscode": {
+        "settings": {},
+        "extensions": ["ms-toolsai.jupyter", "ms-python.python"]
+      }
+    },
+    // pixi global install puts binaries in ~/.pixi/bin
+    "remoteEnv": {
+        "PATH": "${containerEnv:PATH}:/home/vscode/.pixi/bin"
+    },
+    "mounts": ["source=${localWorkspaceFolderBasename}-pixi,target=${containerWorkspaceFolder}/.pixi,type=volume"],
+    // https://containers.dev/implementors/json_reference/#formatting-string-vs-array-properties
+    "postCreateCommand": {
+        "set_permissions": "sudo chown vscode .pixi",
+        "install_global_tools": "pixi global install -e jupyterlab jupyterlab jupyterlab-myst pixi-kernel",
+        "install_repo_env": "pixi install"
+    }
+}

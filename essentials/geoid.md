@@ -51,9 +51,13 @@ The result is a gridded geoid height model giving, at each location, the amount 
 * Converting a GNSS ellipsoidal height ($h$) to a more meaningful elevation ($H$) uses: $H = h - N$, where $N$ is the geoid height from a model aligned to the same ellipsoid.
 * Regional geoid models often align the ellipsoid origin in a plate-fixed frame to avoid offsets (e.g., North American plate ellipsoid origin differs by ~2 m from Earth’s center of mass), ensuring consistency in GNSS-derived heights.
 
-![egm goid heights map](https://bok-figures.s3.amazonaws.com/files/DM44_Fig5.png)
+```{figure} https://bok-figures.s3.amazonaws.com/files/DM44_Fig5.png
+:label: egm_geoid_global_map
+:alt: egm goid heights map
+:align: center
 
-*Geoid undulations from the EGM2008 gravity model. Source: NGA. Note that the separation between the lumpy surface of the geoid and the symmetrical reference GRS80 ellipsoid worldwide varies from roughlt +85 meters west of Ireland to about -106 meters south of India near Ceylon*
+Geoid undulations from the EGM2008 gravity model. Source: NGA. Note that the separation between the lumpy surface of the geoid and the symmetrical reference GRS80 ellipsoid worldwide varies from roughlt +85 meters west of Ireland to about -106 meters south of India near Ceylon
+```
 
 ## Geoid vs. vertical datums
 
@@ -72,15 +76,26 @@ The software on their data collector contains a geoid model (like GEOID18).
 It looks up the **geoid height ($N$)** at that specific latitude and longitude and instantly calculates the **orthometric height ($H = h - N$)**. 
 This gives an excellent, immediate estimate of the tower's elevation above mean sea level.
 
-![geoid undulation](https://s3.amazonaws.com/cdn.freshdesk.com/data/helpdesk/attachments/production/1124963612/original/v6kBXZF-BXXGSgjneZzY0eoxf1cOeeyUwg.jpg?1668012199)
+```{figure} https://s3.amazonaws.com/cdn.freshdesk.com/data/helpdesk/attachments/production/1124963612/original/v6kBXZF-BXXGSgjneZzY0eoxf1cOeeyUwg.jpg?1668012199
+:label: geoid_undulation
+:alt: geoid undulation
+:align: center
 
+The Difference Between Ellipsoidal, Geoid, and Orthometric Elevations from Virtual Surveyor (software company in Aarschot, Belgium)
+```
 
 2. **Using the Vertical Datum:** Now, imagine the surveyor needs to ensure a new stormwater drain at the base of the tower will correctly flow into the county's existing drainage system. 
 For this, the geoid-derived height is not sufficient. 
 The surveyor must find a nearby physical **benchmark**—a metal disk set in concrete with a legally recognized elevation in the official vertical datum (e.g., NAVD88). 
 By performing measurements relative to that benchmark, they ensure their project is perfectly consistent with all other official elevations in the county, guaranteeing the water flows correctly.
 
-![benchmark reference](https://images.squarespace-cdn.com/content/v1/63e81e2eebf9cc0dea4918a5/4cd2e710-57c7-4dbe-b3b5-b9361ae9805d/Add+a+heading.png)
+```{figure} https://images.squarespace-cdn.com/content/v1/63e81e2eebf9cc0dea4918a5/4cd2e710-57c7-4dbe-b3b5-b9361ae9805d/Add+a+heading.png
+:label: geoid_undulation
+:alt: geoid undulation
+:align: center
+
+This figure illustrates how a vertical datum (NAVD88) provides a physical benchmark with a defined elevation of 0.00', serving as the origin for measuring true orthometric heights. Unlike the geoid model used to estimate elevations from GPS, this real-world reference ensures precise, legally recognized elevations, such as the lakebed at -14.60' and the chimney at +42.50' relative to the benchmark. Image from Washington Surveyor's "What are Vertical Datums? Understanding Elevation References in Surveying".
+```
 
 In this case, the **geoid** provides a quick, universal height estimate, while the **vertical datum** provides the authoritative, locally consistent reference required for engineering.
 

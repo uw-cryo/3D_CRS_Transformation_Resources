@@ -77,7 +77,7 @@ project:
     - title: Regional Geoids
       children:
         - file: regionalgeoids/na_geoids.ipynb
-    - file: software.md
+    - file: essentials/software.md
     - file: appendix.md
     - file: glossary.md
 

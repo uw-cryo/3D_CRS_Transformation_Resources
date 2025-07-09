@@ -53,6 +53,7 @@ project:
         - file: essentials/navigation.md
         - file: essentials/software.md
         - file: essentials/wkts.md
+        - file: essentials/geoid.md
     - title: Global DEMs
       children:
         - file: globaldems/readme.md
@@ -73,6 +74,10 @@ project:
     - title: LiDAR
       children:
         - file: lidar/readme.md
+    - title: Regional Geoids
+      children:
+        - file: regionalgeoids/na_geoids.ipynb
+    - file: essentials/software.md
     - file: appendix.md
     - file: glossary.md
 

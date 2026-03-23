@@ -67,6 +67,7 @@ project:
         children:
           - file: 3dep/10m-seamless.ipynb
           - file: 3dep/3DEP_AK_notes.md
+          - file: 3dep/hawaii-mauna-loa.ipynb
     - title: Vector Data
       children:
         - file: vector_data/readme.md

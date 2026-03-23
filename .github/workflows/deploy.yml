@@ -1,5 +1,3 @@
-# This file was created automatically with `myst init --gh-pages` 🪄 💚
-
 name: MyST GitHub Pages Deploy
 on:
   push:
@@ -27,20 +25,25 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+
       - name: Setup Pages
-        uses: actions/configure-pages@v3
-      - uses: actions/setup-node@v4
+        uses: actions/configure-pages@v5
+
+      - uses: prefix-dev/setup-pixi@v0.9.4
         with:
-          node-version: 18.x
-      - name: Install MyST Markdown
-        run: npm install -g mystmd
-      - name: Build HTML Assets
-        run: myst build --html
+          cache: true
+          frozen: true
+
+      - name: Build website
+        run: |
+          pixi run build
+
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: './_build/html'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

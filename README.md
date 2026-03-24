@@ -1,6 +1,8 @@
 # 3D CRS Transformation Resources
 
 [![Jupyter Book Badge](https://raw.githubusercontent.com/jupyter-book/jupyter-book/next/docs/media/images/badge.svg)](https://uw-cryo.github.io/3D_CRS_Transformation_Resources/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19210743.svg)](https://doi.org/10.5281/zenodo.19210743)
+
 
 
 A centralized repository for resources, documentation and code samples to help the community navigate the confusing, complex, but very important topic of 3D coordinate reference system (CRS) transformations when combining datasets for precise geodetic analysis.

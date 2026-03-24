@@ -27,7 +27,7 @@ keywords:
   - elevation
   - geodesy
   - geospatial
-# identifiers:
-#   - description: "Zenodo DOI for latest release"
-#     type: doi
-#     value: 10.5281/zenodo.123456
+identifiers:
+  - description: "Zenodo DOI for latest release"
+    type: doi
+    value: 10.5281/zenodo.19210743

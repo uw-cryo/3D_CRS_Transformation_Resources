@@ -1,4 +1,6 @@
-# Getting Started
+# 3D Transformations of Elevation Data
+
+Notes and code to understand and successfully perform accurate 3D coordinate reference system (CRS) transformations of elevation measurements.
 
 ## Who is this for?
 
@@ -14,10 +16,10 @@
 
 This guide focuses on *practical examples* of using open source software to perform coordinate transforms necessary to compare elevation measurements collected over time by different sensors. It does not delve into much theory, but does provide links to more thorough references. If you're interested in more history and theory, we recommend reviewing the excellent free material from [Penn State's *GPS and GNSS for Geospatial Professionals (Lesson 5: Geodetic Datums)*](https://www.e-education.psu.edu/geog862/node/1669)
 
-
 ## Learning goals
 
 1. Understand this fantastic cartoon :)
+
 ![](https://imgs.xkcd.com/comics/survey_marker.png)
 
 1. Efficiently intercompare various common global elevation datasets like SRTM, COPDEM, ICESat-2

@@ -1,5 +1,5 @@
 [workspace]
-authors = ["Scott Henderson <scottyhq@gmail.com>"]
+authors = ["Scott Henderson"]
 channels = ["conda-forge"]
 description = "Notes and code to understand and successfully perform accurate 3D coordinate reference system (CRS) transformations"
 name = "3D_CRS_Transformation_Resources"
@@ -24,6 +24,7 @@ jupytext = ">=1.18.1,<2"
 jupyterlab-myst = ">=2.6.0,<3"
 libgdal-arrow-parquet = ">=3.12.0,<4"
 matplotlib = ">=3.10.8,<4"
-mystmd = ">=1.7.1,<2"
+mystmd = ">=1.8.2,<2"
 xarray = ">=2025.12.0,<2026"
 rioxarray = ">=0.20.0,<0.21"
+cartopy = ">=0.25.0,<0.26"

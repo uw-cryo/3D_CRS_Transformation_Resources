@@ -1,5 +1,5 @@
 [workspace]
-authors = ["Scott Henderson <scottyhq@gmail.com>"]
+authors = ["Scott Henderson"]
 channels = ["conda-forge"]
 description = "Notes and code to understand and successfully perform accurate 3D coordinate reference system (CRS) transformations"
 name = "3D_CRS_Transformation_Resources"

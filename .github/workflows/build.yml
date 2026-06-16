@@ -18,6 +18,9 @@ jobs:
           cache: true
           frozen: true
 
+      - name: Check node
+        run: pixi run node --version
+
       - name: Build website
         run: |
           pixi run build

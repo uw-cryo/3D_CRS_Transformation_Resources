@@ -171,7 +171,7 @@ Lines 2-4 identifies that this CRS uses a specific WGS84 {term}`realization`. No
 
 ## Projected CRS (UTM)
 
-The EPSG database also constains 3D definitions, eliminating the need for compound specifications:
+Projected CRSs are built on a base geographic CRS. Familiar codes like EPSG:32610 (WGS 84 / UTM zone 10N) use the WGS84 *ensemble* as their base, so they carry the same ~2 m uncertainty as EPSG:4326:
 
 ```bash
 projinfo EPSG:32610 -o WKT2:2019

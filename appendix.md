@@ -1,7 +1,7 @@
 # Appendix
 
 :::{warning}
-This page contains a somewhat disorganized dump of notes from an improptu community tutorial session led by David Shean and Scott Henderson at the 2023 UW/NASA [ICESat-2 Hackweek event](https://icesat-2-2023.hackweek.io/).
+This page contains a somewhat disorganized dump of notes from an impromptu community tutorial session led by David Shean and Scott Henderson at the 2023 UW/NASA [ICESat-2 Hackweek event](https://icesat-2-2023.hackweek.io/).
 :::
 
 
@@ -21,7 +21,7 @@ This page contains a somewhat disorganized dump of notes from an improptu commun
 * https://www.meted.ucar.edu/oceans/navy_geodesy/
 * PSU Course GPS and GNSS for Geospatial Professionals (Lesson 5): https://www.e-education.psu.edu/geog862/node/1669
 * https://www.dnr.wa.gov/publications/eng_plso_state_plane_coord_refresher.pdf
-* https://www.uvm.edu/giv/resources/WGS84_NAD83.pdf
+* What is the difference between WGS84 and NAD83? (Mircea Neacsu, HYPACK; archived copy): https://web.archive.org/web/20230326023330/https://www.uvm.edu/giv/resources/WGS84_NAD83.pdf
 
 
 ## What is a CRS?
@@ -35,7 +35,7 @@ This page contains a somewhat disorganized dump of notes from an improptu commun
 
 ## Transformations
 * Allows you to go back and forth between different CRS
-* You've all done this - convert from cartesian to polar coordiantes (high school math)
+* You've all done this - convert from cartesian to polar coordinates (high school math)
 * Can be 2D or 3D
 * Most open-source packages depend on PROJ library (https://proj.org/) for CRS support and transformations
 
@@ -56,7 +56,7 @@ This page contains a somewhat disorganized dump of notes from an improptu commun
 * Elevation values are "height above the WGS84 ellipsoid" - but no details about specific realization used by vendor (Maxar) providing source stereo imagery
 * Most of the Maxar data were acquired and delivered after 2008, so should be using more modern realizations of ITRF (2008, 2014, 2020), which are similar
 * Can likely assume ITRF2014 for most of the available DEM products
-* Can use custom WKT2 definintions for these 3D CRS:
+* Can use custom WKT2 definitions for these 3D CRS:
     * Antarctica: https://github.com/ICESat2-SlideRule/sliderule/blob/cb8ead40d761c8d637397a28e7b6d53fcf1de3c4/plugins/pgc/plugin/ITRF2014_3031.wkt
     * Arctic: https://github.com/ICESat2-SlideRule/sliderule/blob/cb8ead40d761c8d637397a28e7b6d53fcf1de3c4/plugins/pgc/plugin/ITRF2014_3413.wkt
 

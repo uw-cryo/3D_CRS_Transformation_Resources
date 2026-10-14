@@ -9,13 +9,13 @@ Check with gdalinfo: `gdalinfo out_raster.vrt`
 
 Output dimensions and geographic extent should be larger than any individual tile.
 
-Note: To combine multiple point cloud tiles (las/laz), you can use PDAL merge command (https://pdal.io/en/2.6.0/apps/merge.html):
+Note: To combine multiple point cloud tiles (las/laz), you can use PDAL merge command (https://pdal.io/en/stable/apps/merge.html):
 `pdal merge tile1.laz tile2.laz tile3.laz out_merged.laz`
 
 ### Coordinate system transformation
 All products are distributed using one of two default CRS: either WA State Plane North or WA State Plane South, both using the NAD83(HARN) horizontal datum and the NAVD88 vertical datum (unsure if geoid2012 or geoid2018?), with all horizontal and vertical units in U.S. Survey Feet. There are historical reasons for these choices
-* EPSG:2926 - NAD83(HARN) / Washington North (ftUS), https://www.spatialreference.org/ref/epsg/2926/
-* EPSG:2927 - NAD83(HARN) / Washington South (ftUS), https://www.spatialreference.org/ref/epsg/2927/
+* EPSG:2926 - NAD83(HARN) / Washington North (ftUS), https://spatialreference.org/ref/epsg/2926/
+* EPSG:2927 - NAD83(HARN) / Washington South (ftUS), https://spatialreference.org/ref/epsg/2927/
 * EPSG:6360 - NAVD88 height (ftUS)
 
 PROJ information about conversion from these coordinate systems to UTM Zone 10N WGS84 with height in meters above the ellipsoid:

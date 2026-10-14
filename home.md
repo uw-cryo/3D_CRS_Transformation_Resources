@@ -24,7 +24,7 @@ This guide focuses on *practical examples* of using open source software to perf
 
 1. Efficiently intercompare various common global elevation datasets like SRTM, COPDEM, ICESat-2
 
-1. Convert between local projected coordinate systems and lontitude,latitude,elevation
+1. Convert between local projected coordinate systems and longitude,latitude,elevation
 
 
 ## Why is this important?

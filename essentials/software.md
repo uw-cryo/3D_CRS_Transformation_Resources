@@ -7,11 +7,9 @@ Example code in this repository relies heavily on the following open source libr
 | [GDAL](https://gdal.org) | Foundational C++ library for geospatial operations and format conversions | [@cite_gdal] |
 | [PROJ](https://proj.org) | Foundational C++ library for CRS handling and reprojection | [@cite_proj] |
 | [GeoPandas](https://geopandas.org) | Python library to work with geospatial vector data | [@cite_geopandas] |
-| [RioXarray](https://corteva.github.io) | Python library for geosptial raster data | [@cite_rioxarray] |
+| [RioXarray](https://vylor.github.io/rioxarray/) | Python library for geospatial raster data | [@cite_rioxarray] |
 
-In general it's easiest to install these libraries using [conda-forge](https://conda-forge.org) package distributions:
-
-You can recreate the software environment that we use to run all the examples in this online book with [Pixi](https://pixi.sh/latest/installation/):
+In general it's easiest to install these libraries using [conda-forge](https://conda-forge.org) package distributions. You can recreate the software environment that we use to run all the examples in this online book with [Pixi](https://pixi.sh/latest/installation/):
 ```
 git clone https://github.com/uw-cryo/3D_CRS_Transformation_Resources
 cd 3D_CRS_Transformation_Resources
@@ -19,7 +17,7 @@ pixi shell
 gdalinfo --version
 ```
 ```
-GDAL 3.10.3, released 2025/04/01
+GDAL 3.12.3 "Chicoutimi", released 2026/03/17
 ```
 
 ## PROJ

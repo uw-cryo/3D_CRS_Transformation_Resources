@@ -10,7 +10,7 @@ This section focuses on working with digital elevation models with global extent
 
 What if the data provider does not state the specific datum realization used? A reasonable assumption is to use the most recent published realization compared to the data acquisition date. This is because GNSS positioning uses the currently available WGS84 or ITRF realization.
 
-For example, the Copernicus DEM is a mosaic of TanDEM-X measurements acquired between (01/01/2011 - 07/01/2015). So the earliest acquisitions in 2011 would have used geolocation that relied on measurements relative to the WGS G1150 datum, and would might make sense to use a consistent CRS with that datum as subsequent acquisitions were made.
+For example, the Copernicus DEM is a mosaic of TanDEM-X measurements acquired between (01/01/2011 - 07/01/2015). So the earliest acquisitions in 2011 would have used geolocation that relied on measurements relative to the WGS G1150 datum, and it might make sense to use a consistent CRS with that datum as subsequent acquisitions were made.
 
 However, because the original positions can be transformed into more recent reference frames, it is also important to pay attention to dataset processing dates! Ultimately, it may be necessary to compare measurements against independent well-defined measurements (like GNSS station positions) to ascertain the correct CRS to use.
 
@@ -74,7 +74,7 @@ WGS (G1762) Compares to ITRF08 and ITRF2014 within 1cm Root Mean Square (RMS) ov
 :::
 
 :::{tip}
-ITRF uses a slightly different ellipsoid "GRS90" compared to WGS84.
+ITRF uses a slightly different ellipsoid "GRS80" compared to WGS84.
 :::
 
 ### Common Global Geoid Models:
@@ -85,13 +85,13 @@ Orthometric Heights are relative to the *geoid* rather than idealized {term}`ell
 * **EGM2008: EPSG:3855**
 
 ## Compound CRS
-A "CompoundCRS" can combine a 2D Geographic CRS with a 1D Vertical CRS to form a 3D Geodetic CRS, For example: EPSG:7661+3855. This is handy as way to indicate that 2D Rasters storing elevation values can instead be treated as 3D Coordinate values relative to a specific reference surface (like the geoid defined by EGM2008).
+A "CompoundCRS" can combine a 2D Geographic CRS with a 1D Vertical CRS to form a 3D Geodetic CRS, For example: EPSG:9055+3855. This is handy as way to indicate that 2D Rasters storing elevation values can instead be treated as 3D Coordinate values relative to a specific reference surface (like the geoid defined by EGM2008).
 
 ## Dynamic versus Static CRS
 
 A CRS is "dynamic" if coordinates change over time with respect to the origin. This is typical for modern global reference frames that have an origin of the Earth's center of mass rather than tied to a moving point on the surface (due to plate tectonics)
 
-Conversely coordinates in a "static" CRS like NAD83 which is tied to the North American plate no not change significantly over time.
+Conversely coordinates in a "static" CRS like NAD83 which is tied to the North American plate do not change significantly over time.
 
 This is an extremely important when comparing data recorded using different CRS. For example, positions in NAD83 move approximately 10 millimeters per year in relation to the positions in the ITRF and WGS84 reference frames. Here is a nice video explaining this concept:
 
@@ -101,5 +101,5 @@ Static versus dynamic CRS
 :::
 
 :::{important}
-NAD83 (2011) and WGS84 (G1764) positions can differ up to one or two meters within the continental United States b/c NAD83 is not geocentric! Read more about NAD [here](../regionaldems/readme.md)
+NAD83 (2011) and WGS84 (G1762) positions can differ up to one or two meters within the continental United States b/c NAD83 is not geocentric! Read more about NAD [here](../regionaldems/readme.md)
 :::

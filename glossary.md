@@ -3,7 +3,7 @@ datum
 : the geometric relationship between a coordinate system grid and coordinates on the Earth's surface
 
 ellipsoid
-: idealized ellipsoidal geometry representing a best-fit surface through the Earth's topography (e.g. GRS90)
+: idealized ellipsoidal geometry representing a best-fit approximation of the geoid (roughly mean sea level) (e.g. GRS80)
 
 ensemble
 : for datums like WGS that have many realizations, the 'ensemble' is the collection of all realizations. Data collected without specifying a realization consequently is *labeled as referenced to the ensemble* and has higher intrinsic uncertainty

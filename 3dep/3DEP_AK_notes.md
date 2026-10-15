@@ -188,7 +188,7 @@ PROJ string:
 
 This provides ~0.02-0.03 m uncertainty, as expected. 
 
-gdalwarp does not accept `ESRI:102394+EPSG:6360`, but does accept [OGC URN string](https://www.ogc.org/about-ogc/policies/ogc-urn-policy/) `urn:ogc:def:crs,crs:ESRI::102394,crs:EPSG::6360` :
+gdalwarp does not accept `ESRI:102394+EPSG:6360`, but does accept [OGC URN string](https://docs.ogc.org/bp/07-092r3/07-092r3.pdf) (see section 7.5.2 of OGC 07-092r3) `urn:ogc:def:crs,crs:ESRI::102394,crs:EPSG::6360` :
 
 `gdalwarp $gdal_opt -s_srs "urn:ogc:def:crs,crs:ESRI::102394,crs:EPSG::6360" -t_srs ~/UTM_4N_WGS84_G2139_3D.wkt USGS_OPR_AK_NorthSlopeBorough_2018_B18_bh_NSB6_0619.tif test.tif --debug ON `
 

@@ -15,7 +15,6 @@ cd 3D_CRS_Transformation_Resources
 
 ## Setup a software environment
 
-```
 You can recreate the software environment that we use to run all the examples in this online book with [Pixi](https://pixi.sh/latest/installation/)
 
 ```
@@ -26,7 +25,7 @@ gdalinfo --version
 
 ## Add content
 
-Develop your new content on a branch. See [JupyterBook Docs](https://jupyterbook.org/en/stable/intro.html) for guides on adding `.md`, `.ipynb` and other content.
+Develop your new content on a branch. See [MyST Docs](https://mystmd.org/guide) for guides on adding `.md`, `.ipynb` and other content.
 
 ```
 git checkout -b newcontent

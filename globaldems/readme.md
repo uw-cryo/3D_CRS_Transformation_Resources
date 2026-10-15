@@ -33,7 +33,7 @@ However, because the original positions can be transformed into more recent refe
 
 :::
 
-Source: https://www.e-education.psu.edu/geog862/node/1804
+See @cite_konyk2025 for the history of each WGS 84 realization and how it was aligned to the ITRF.
 
 Modern realizations are time-dependent to account for changes to mass/gravity distribution from moving plates and large earthquakes. So "standard" epochs are used to indicate the point in time for a given realization.
 

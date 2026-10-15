@@ -7,27 +7,27 @@ This page contains a somewhat disorganized dump of notes from an impromptu commu
 
 ## Curated list of additional resources
 
-* Awesome ICESat-2 Hackweek 2022 Tutorial from Tyler, Hannah and Scott: https://icesat-2-2022.hackweek.io/tutorials/geospatial/geospatial-advanced.html?highlight=datum
-* NSIDC notebook on `iceflow` tool (Kevin Beam) for combining (ICESat, Operation IceBridge and ICESat-2): https://github.com/nsidc/NSIDC-Data-Tutorials/blob/main/notebooks/iceflow/corrections.ipynb
-* David's GDA module on CRS and projections: https://uwgda-jupyterbook.readthedocs.io/en/latest/modules/04_Vector1_Geopandas_CRS_Proj/04_Vector1_Geopandas_CRS_Proj_prep.html
+* [Geospatial Transformations In-depth](https://icesat-2-2022.hackweek.io/tutorials/geospatial/geospatial-advanced.html): ICESat-2 Hackweek 2022 tutorial by Tyler Sutterley, Hannah Besso and Scott Henderson that reviews CRS fundamentals and shows how to read CRS metadata and warp vector and raster data between CRSs.
+* [Applying Coordinate Transformations to Facilitate Data Comparison](https://iceflow.readthedocs.io/en/latest/notebooks/corrections.html): NSIDC notebook that applies ITRF and plate-motion corrections so ICESat/GLAS, Operation IceBridge and ICESat-2 altimetry can be compared over 25+ years.
+* [UW Geospatial Data Analysis, Module 04: GeoPandas, CRS, Projections](https://uwgda-jupyterbook.readthedocs.io/en/latest/modules/04_Vector1_Geopandas_CRS_Proj/04_Vector1_Geopandas_CRS_Proj_prep.html): David Shean's course module introducing CRSs, projections and transformations, with GeoPandas exercises on ICESat data.
 
 ### Specific to North America
-* https://geodesy.noaa.gov/corbin/class_description/NGS_Video_Library.shtml
-   * What are Geodetic Datums (https://geodesy.noaa.gov/datums/index.shtml)?
+* [NGS Video Library](https://geodesy.noaa.gov/corbin/class_description/NGS_Video_Library.shtml): short videos from NOAA's National Geodetic Survey and the COMET Program, including a four-part series on geodetic datums:
+   * What are Geodetic Datums?
    * How Were Geodetic Datums Established?
    * What Is the Status of Today’s Geodetic Datums?
-   * What’s Next for Geodetic Datums (https://geodesy.noaa.gov/datums/newdatums/index.shtml)?
-
-* https://www.meted.ucar.edu/oceans/navy_geodesy/
-* PSU Course GPS and GNSS for Geospatial Professionals (Lesson 5): https://www.e-education.psu.edu/geog862/node/1669
-* https://www.dnr.wa.gov/publications/eng_plso_state_plane_coord_refresher.pdf
-* [What is the difference between WGS84 and NAD83?](files/WGS84_NAD83_Neacsu_HYPACK.pdf)
+   * What’s Next for Geodetic Datums?
+* [Datums and Reference Frames](https://geodesy.noaa.gov/datums/index.shtml): NGS overview of the official US datums, such as NAD83 and NAVD88, that make up the National Spatial Reference System (NSRS).
+* [New Datums](https://geodesy.noaa.gov/datums/newdatums/index.shtml): NGS hub for the modernized NSRS that will replace NAD83 and NAVD88, with timelines, FAQs and blueprint documents.
+* [Introduction to Geodesy and Maps](https://www.meted.ucar.edu/oceans/navy_geodesy/): COMET MetEd module, developed for the US Navy, on geodesy, datums, map projections and map coordinate systems. [Requires a free MetEd account](https://learn.meted.ucar.edu/#/signup-form).
+* [State Plane Coordinates: Washington State](https://www.dnr.wa.gov/publications/eng_plso_state_plane_coord_refresher.pdf): Larry Signani's 2007 refresher for the Washington State Land Surveyors Association, covering datums, ellipsoids, the geoid, map projections, and how State Plane grid coordinates relate to ground measurements.
+* [What is the difference between WGS84 and NAD83?](files/WGS84_NAD83_Neacsu_HYPACK.pdf): Short 2008 note by Mircea Neacsu (HYPACK) showing that the WGS84 and GRS80 ellipsoids are practically identical while the WGS84 and NAD83 datums have drifted about a meter apart.
 
 
 ## What is a CRS?
 
-* https://uwgda-jupyterbook.readthedocs.io/en/latest/modules/04_Vector1_Geopandas_CRS_Proj/04_Vector1_Geopandas_CRS_Proj_demo.html#crs-and-projections
-* Common geospatial CRS definitions are recorded in the EPSG database, stored as WKT format, or as JSON (https://github.com/opengeospatial/CRS-JSON-Encoding)
+* [UW Geospatial Data Analysis, Module 04 demo](https://uwgda-jupyterbook.readthedocs.io/en/latest/modules/04_Vector1_Geopandas_CRS_Proj/04_Vector1_Geopandas_CRS_Proj_demo.html#crs-and-projections): hands-on notebook that walks through CRS definitions and reprojection with GeoPandas.
+* Common geospatial CRS definitions are recorded in the EPSG database and stored as WKT or JSON. OGC's [CRS-JSON-Encoding](https://github.com/opengeospatial/CRS-JSON-Encoding) project is standardizing a JSON schema for CRSs, starting from PROJ's PROJJSON.
 
 ### Ellipsoid models
 ![](https://proj.org/en/9.2/_images/general_ellipsoid.png)
@@ -37,7 +37,7 @@ This page contains a somewhat disorganized dump of notes from an impromptu commu
 * Allows you to go back and forth between different CRS
 * You've all done this - convert from cartesian to polar coordinates (high school math)
 * Can be 2D or 3D
-* Most open-source packages depend on PROJ library (https://proj.org/) for CRS support and transformations
+* Most open-source packages depend on the [PROJ](https://proj.org/) library for CRS support and transformations
 
 ### Vector
 * `pyproj`: Python interface for PROJ
@@ -57,8 +57,8 @@ This page contains a somewhat disorganized dump of notes from an impromptu commu
 * Most of the Maxar data were acquired and delivered after 2008, so should be using more modern realizations of ITRF (2008, 2014, 2020), which are similar
 * Can likely assume ITRF2014 for most of the available DEM products
 * Can use custom WKT2 definitions for these 3D CRS:
-    * Antarctica: https://github.com/ICESat2-SlideRule/sliderule/blob/cb8ead40d761c8d637397a28e7b6d53fcf1de3c4/plugins/pgc/plugin/ITRF2014_3031.wkt
-    * Arctic: https://github.com/ICESat2-SlideRule/sliderule/blob/cb8ead40d761c8d637397a28e7b6d53fcf1de3c4/plugins/pgc/plugin/ITRF2014_3413.wkt
+    * Antarctica: [ITRF2014_3031.wkt](https://github.com/ICESat2-SlideRule/sliderule/blob/cb8ead40d761c8d637397a28e7b6d53fcf1de3c4/plugins/pgc/plugin/ITRF2014_3031.wkt) from SlideRule
+    * Arctic: [ITRF2014_3413.wkt](https://github.com/ICESat2-SlideRule/sliderule/blob/cb8ead40d761c8d637397a28e7b6d53fcf1de3c4/plugins/pgc/plugin/ITRF2014_3413.wkt) from SlideRule
 
 #### Copernicus 30 m DEM
 * EPSG:9518 (WGS84 + EGM2008)
@@ -67,7 +67,7 @@ This page contains a somewhat disorganized dump of notes from an impromptu commu
 #### 3DEP lidar
 * NAD83(2011) horizontal with NAVD88 vertical datum
 * Projection is Local UTM Zone
-* EPSG:6339+5703 (example for UTM Zone 10N with NAVD88 datum, https://epsg.io/6339)
+* EPSG:6339+5703 (example for UTM Zone 10N with NAVD88 datum, see [EPSG:6339](https://epsg.io/6339))
     * Note: this is not the same as EPSG:32610 (WGS84) or EPSG:26910 (NAD83), because we are using NAD83(2011) realization
 #### WA DNR
 * EPSG:2926+5703 (WA state plane N)
@@ -82,7 +82,9 @@ This page contains a somewhat disorganized dump of notes from an impromptu commu
 
 ## Testing and validation
 
-### vdatum (https://vdatum.noaa.gov/)
+### VDatum
+
+[VDatum](https://vdatum.noaa.gov/) is NOAA's free tool for transforming data between tidal, orthometric and ellipsoidal vertical datums.
 
 ### `cs2cs`
 `echo -120.4 48.6 1400 | PROJ_DEBUG=2 PROJ_NETWORK=ON cs2cs -f "%.3f" -r epsg:7912 epsg:2927+5703`
@@ -123,6 +125,6 @@ PROJ string:
 
 ## Gotchas and other notes
 * There is no perfect transformation approach, and all transformations have some uncertainty
-   * https://vdatum.noaa.gov/docs/est_uncertainties.html
+   * See [Estimation of Vertical Uncertainties in VDatum](https://vdatum.noaa.gov/docs/est_uncertainties.html) for how NOAA quantifies the uncertainty of each transformation step
 * There are many possible ways to go from one CRS to another, the PROJ pipelines allow you to control this
 * Many CRS (esp compound or 3D CRS) don't have EPSG codes - you can define the CRS with machine-readable, well-known text (use WKT2)

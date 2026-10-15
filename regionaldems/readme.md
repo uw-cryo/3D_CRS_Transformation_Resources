@@ -25,7 +25,7 @@ A great reference: https://vdatum.noaa.gov/docs/datums.html#geodetic
 ## Projected CRS
 
 :::{tip}
-A wonderful reference on projected CRSs: https://www.e-education.psu.edu/geog862/book/export/html/1644
+A wonderful reference on projected CRSs: John P. Snyder's [*Map Projections: A Working Manual*](https://doi.org/10.3133/pp1395) (USGS Professional Paper 1395).
 :::
 
 ### Universal Transverse Mercator

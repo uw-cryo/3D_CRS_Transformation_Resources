@@ -14,7 +14,7 @@ Notes and code to understand and successfully perform accurate 3D coordinate ref
 
 ## What will you *not* find here?
 
-This guide focuses on *practical examples* of using open source software to perform coordinate transforms necessary to compare elevation measurements collected over time by different sensors. It does not delve into much theory, but does provide links to more thorough references. If you're interested in more history and theory, we recommend reviewing the excellent free material from [Penn State's *GPS and GNSS for Geospatial Professionals (Lesson 5: Geodetic Datums)*](https://www.e-education.psu.edu/geog862/node/1669)
+This guide focuses on *practical examples* of using open source software to perform coordinate transforms necessary to compare elevation measurements collected over time by different sensors. It does not delve into much theory, but does provide links to more thorough references. If you're interested in more history and theory, we recommend the National Geodetic Survey's short [video series on geodetic datums](https://geodesy.noaa.gov/corbin/class_description/NGS_Video_Library.shtml), and the further reading in the [Appendix](appendix.md).
 
 ## Learning goals
 

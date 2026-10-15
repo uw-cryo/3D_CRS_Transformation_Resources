@@ -21,7 +21,7 @@ This page contains a somewhat disorganized dump of notes from an impromptu commu
 * https://www.meted.ucar.edu/oceans/navy_geodesy/
 * PSU Course GPS and GNSS for Geospatial Professionals (Lesson 5): https://www.e-education.psu.edu/geog862/node/1669
 * https://www.dnr.wa.gov/publications/eng_plso_state_plane_coord_refresher.pdf
-* Reference Frames: Second Question, "WGS84 = NAD83, right?" (Jan Van Sickle, Geo Week News, 2014): https://www.geoweeknews.com/articles/vol12no49-reference-frames-second-question/
+* [What is the difference between WGS84 and NAD83?](files/WGS84_NAD83_Neacsu_HYPACK.pdf)
 
 
 ## What is a CRS?

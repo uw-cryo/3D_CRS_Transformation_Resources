@@ -230,6 +230,58 @@ PROJCRS["WGS 84 / UTM zone 10N",
     ID["EPSG",32610]]
 ```
 
+(custom-crs)=
 ## Custom CRS
 
-EPSG Codes are hugely convenient, but sometimes you'd like to represent a CRS that is not in the EPSG database. For example:
+EPSG Codes are hugely convenient, but sometimes you'd like to represent a CRS that is not in the EPSG database. For example: UTM coordinates on a specific WGS84 {term}`realization` instead of the ensemble, with ellipsoidal heights. EPSG:32610 (above) sits on the ensemble, and compound codes such as `EPSG:32610+7912` are rejected because the 3D geographic part (ITRF2014) is not the base CRS of the projection.
+
+You can write such a CRS yourself by editing the WKT2 of the closest EPSG definitions:
+
+1. Start from the projected CRS, e.g. `projinfo EPSG:32610 -o WKT2:2019`.
+2. Replace its `BASEGEOGCRS` with the realization you want, e.g. WGS 84 (G2139) from `projinfo EPSG:9754 -o WKT2:2019` (3D) or `EPSG:9755` (2D).
+3. For a 3D CRS, change `CS[Cartesian,2]` to `CS[Cartesian,3]` and add an ellipsoidal height axis:
+
+```{code} python
+:linenos: true
+
+    CS[Cartesian,3],
+        AXIS["(E)",east,
+            ORDER[1],
+            LENGTHUNIT["metre",1]],
+        AXIS["(N)",north,
+            ORDER[2],
+            LENGTHUNIT["metre",1]],
+        AXIS["ellipsoidal height (h)",up,
+            ORDER[3],
+            LENGTHUNIT["metre",1]]]
+```
+
+Complete examples are in the [3dep](https://github.com/uw-cryo/3D_CRS_Transformation_Resources/tree/main/3dep) folder, for instance [UTM_10N_WGS84_G2139_3D.wkt](../3dep/UTM_10N_WGS84_G2139_3D.wkt) and its 2D counterpart [UTM_10N_WGS84_G2139_2D.wkt](../3dep/UTM_10N_WGS84_G2139_2D.wkt).
+
+GDAL accepts the file name directly, and PROJ tools take the text:
+
+```bash
+gdalsrsinfo UTM_10N_WGS84_G2139_3D.wkt
+projinfo -s EPSG:7912 -t "$(cat UTM_10N_WGS84_G2139_3D.wkt)" -o PROJ --hide-ballpark
+gdalwarp -t_srs UTM_10N_WGS84_G2139_3D.wkt input.tif output.tif
+```
+
+(custom-crs-geotiff)=
+### Saving a custom CRS in a GeoTIFF
+
+GeoTIFF stores a CRS as a set of keys (GeoKeys), and those keys cannot describe a projected CRS with a third (height) axis. With GDAL 3.12.3:
+
+* **3D projected CRS** (a custom 3D WKT, or even `EPSG:32610+4979`): GDAL writes the whole CRS to a sidecar file, `output.tif.aux.xml`, and **nothing** to the TIFF itself. This is the same for the GTiff and COG drivers, and with `-co GEOTIFF_VERSION=1.1`. If the TIFF is copied or shared without the `.aux.xml`, or opened by software that does not read it, it has no CRS at all.
+* **2D projected CRS** (e.g. [UTM_10N_WGS84_G2139_2D.wkt](../3dep/UTM_10N_WGS84_G2139_2D.wkt)): the CRS is stored in the GeoKeys, including the WGS 84 (G2139) realization (`GeographicTypeGeoKey` 9755), and no sidecar is written.
+
+You can check which case you have by turning off GDAL's sidecar reading:
+
+```bash
+gdalwarp -t_srs UTM_10N_WGS84_G2139_3D.wkt input.tif output.tif
+gdalinfo output.tif                       # Files: output.tif output.tif.aux.xml
+GDAL_PAM_ENABLED=NO gdalinfo output.tif   # no "Coordinate System is:" section
+```
+
+```{warning}
+If a GeoTIFF will be shared, write it with a 2D CRS so the horizontal CRS travels inside the file, and record the vertical reference (e.g. "heights above the WGS 84 (G2139) ellipsoid") separately, in the file name, band description or accompanying metadata. If you use a 3D CRS, always keep the `.aux.xml` with the TIFF.
+```

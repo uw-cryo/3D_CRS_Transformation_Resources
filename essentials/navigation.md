@@ -6,7 +6,9 @@ Examples of working with Raster data (DEM, DTM, etc) are separated into "Global"
 
 There is a section on Vector data, such as point measurements by altimeters.
 
-And finally, a section on working with LiDAR Point Clouds (LPC).
+There is a section on working with LiDAR Point Clouds (LPC).
+
+And finally, a section on Regional Geoids, which compares the geoid models used in North America.
 
 Visit different sections by using the table of contents on the left-hand side.
 

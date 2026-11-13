@@ -1,7 +1,7 @@
 # Regional CRS Essentials
 
 ## NAD83
-USGS 3DEP uses NAD83 + NAVD88 Heights. **This is not a global system and rather focuses on CONUS and US Territories**. Here we focus on the continental US (CONUS) where NAD83 defines a coordinate system that moves with the North American plate. *It's refered to as 'static' because to an observer measuring positions on the plate, the plate is not moving :)*
+USGS 3DEP uses NAD83 + NAVD88 Heights. **This is not a global system and rather focuses on CONUS and US Territories**. Here we focus on the continental US (CONUS) where NAD83 defines a coordinate system that moves with the North American plate. *It's referred to as 'static' because to an observer measuring positions on the plate, the plate is not moving :)*
 
 Just like WGS and ITRF, there are different, increasingly accurate "realizations" of the NAD83 datum over time:
 
@@ -35,7 +35,7 @@ UTM is a cylindrical map projection that divides the Earth into 60 zones, each s
 * **Northern Hemisphere EPSG = prefix 326 + zone #**
 * **Southern Hemisphere EPSG = prefix 327 + zone #**
 
-To figure out a UTM Zone for any location, take the longitude add 180°, divide by 6, and round up! For example, Seattle, WA is at (-122.3°, 47.6°), so it's UTM zone is 10N (EPSG:32610)
+To figure out a UTM Zone for any location, take the longitude add 180°, divide by 6, and round up! For example, Seattle, WA is at (-122.3°, 47.6°), so its UTM zone is 10N (EPSG:32610)
 
 :::{warning}
 Unfortunately all UTM EPSGs reference EPSG:4326 as the base CRS...

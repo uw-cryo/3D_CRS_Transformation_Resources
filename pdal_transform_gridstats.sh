@@ -7,7 +7,7 @@
 #David Shean
 #November 2023
 
-#Edit script for appropraite out_crs, sample_rad_m and run as:
+#Edit script for appropriate out_crs, sample_rad_m and run as:
 #pdal_transform_gridstats.sh input.laz | tell > input_pdal.log
 
 #Print commands and exit on error
@@ -66,7 +66,7 @@ class_num=''
 
 #Preserve all fields with original precision
 #pdal_filters="--writers.las.forward=all"
-#Assuming point cloud coordiantes are in meters, preserve mm precision (improves compression)
+#Assuming point cloud coordinates are in meters, preserve mm precision (improves compression)
 pdal_filters="--writers.las.forward='header,vlr' --writers.las.scale_x=0.001 --writers.las.scale_y=0.001 --writers.las.scale_z=0.001 --writers.las.offset_x='auto' --writers.las.offset_y='auto' --writers.las.offset_z='auto'"
 
 #Thin point cloud

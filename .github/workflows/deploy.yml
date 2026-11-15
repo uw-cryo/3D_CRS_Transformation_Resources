@@ -39,6 +39,10 @@ jobs:
         run: |
           pixi run build
 
+      - name: Add the geoid explorer (static page, not built by MyST)
+        run: |
+          cp -r explorer _build/html/explorer
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:

@@ -58,6 +58,17 @@ The result is a gridded geoid height model giving, at each location, the amount 
   <p>Geoid undulations from the EGM2008 gravity model. Source: NGA. Note that the separation between the lumpy surface of the geoid and the symmetrical reference GRS80 ellipsoid worldwide varies from roughly +85 meters west of Ireland to about -106 meters south of India near Ceylon.</p>
 </figure>
 
+The interactive map below shows the EGM2008 and EGM96 geoid heights above the WGS84 ellipsoid, and the difference between the two models.
+Drag to rotate, use the + and − buttons or Ctrl + scroll to zoom, and hover or tap for the value at a point.
+The button at the top right switches between the globe and an equal-area map.
+[Open the explorer in its own page](https://uw-cryo.github.io/3D_CRS_Transformation_Resources/explorer/) for more room.
+
+:::{iframe} https://uw-cryo.github.io/3D_CRS_Transformation_Resources/explorer/?embed=1
+:label: geoid_explorer
+:width: 100%
+Interactive map of EGM2008 and EGM96 geoid heights above the WGS84 ellipsoid.
+:::
+
 ## Geoid vs. vertical datums
 
 People often mix up the geoid and a vertical datum:

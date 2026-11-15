@@ -1,0 +1,807 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Geoid &amp; Ellipsoid Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one-screen instrument. Control rail on the left (stacks on top at phone width), globe fills the rest. */
+:root {
+  --bg: #f4f5f3;
+  --panel: #ffffff;
+  --fg: #1d2024;
+  --muted: #5d636b;
+  --line: #d9dcd8;
+  --accent: #2a5f8f;
+  --coast: rgba(20, 24, 28, 0.78);
+  --border: rgba(20, 24, 28, 0.38);
+  --grat: rgba(20, 24, 28, 0.13);
+  --space: #e9ebe8;
+  --warnbg: #fff6e0;
+  --warnline: #e3b54a;
+  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171a; --panel: #1d2024; --fg: #e7e9ec; --muted: #9aa1aa; --line: #30353b;
+    --accent: #7fb2e5; --coast: rgba(240, 242, 245, 0.85); --border: rgba(240, 242, 245, 0.4);
+    --grat: rgba(240, 242, 245, 0.12); --space: #101215; --warnbg: #3a3018; --warnline: #8a6d22; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15171a; --panel: #1d2024; --fg: #e7e9ec; --muted: #9aa1aa; --line: #30353b;
+  --accent: #7fb2e5; --coast: rgba(240, 242, 245, 0.85); --border: rgba(240, 242, 245, 0.4);
+  --grat: rgba(240, 242, 245, 0.12); --space: #101215; --warnbg: #3a3018; --warnline: #8a6d22; color-scheme: dark;
+}
+html, body { height: 100%; }
+[hidden] { display: none !important; }
+.check { display: flex; gap: 8px; align-items: center; font-size: 13px; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 14px; line-height: 1.45; }
+.app { height: 100%; display: grid; grid-template-columns: 340px minmax(0, 1fr); }
+.rail {
+  background: var(--panel); border-right: 1px solid var(--line); overflow-y: auto;
+  padding-block: 20px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: 18px;
+  display: flex; flex-direction: column; gap: 18px; min-width: 0;
+}
+h1 { font-family: var(--font-display); font-weight: 600; font-size: 22px; letter-spacing: 0.01em; margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); margin: 4px 0 0; font-size: 13px; }
+.group { display: flex; flex-direction: column; gap: 8px; }
+.label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.pair { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field span { font-size: 12.5px; color: var(--muted); }
+select, input[type="text"], input[type="number"] {
+  font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 6px;
+  padding: 7px 9px; width: 100%; min-width: 0; box-sizing: border-box;
+}
+select:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.minus { font-family: var(--font-mono); color: var(--muted); font-size: 12px; text-align: center; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+button {
+  font: inherit; font-size: 12.5px; color: var(--fg); background: var(--bg); border: 1px solid var(--line);
+  border-radius: 999px; padding: 5px 11px; cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button.square { border-radius: 6px; }
+.row { display: flex; gap: 6px; align-items: center; }
+.row > input { flex: 1; }
+.scale-row { display: grid; grid-template-columns: 1fr auto auto; gap: 6px; align-items: center; }
+.notes { font-size: 12.5px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; }
+.notes p { margin: 0; }
+.notes a { color: var(--accent); }
+.stage { position: relative; min-width: 0; min-height: 0; background: var(--space); overflow: hidden; }
+canvas#globe { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: grab; display: block; }
+canvas#globe.dragging { cursor: grabbing; }
+.overlay { position: absolute; pointer-events: none; display: flex; flex-direction: column; gap: 8px; }
+.legend {
+  right: max(14px, env(safe-area-inset-right, 0px)); bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; width: 300px; max-width: calc(100% - 28px); box-sizing: border-box;
+}
+.legend .title { font-size: 12.5px; font-weight: 500; }
+.legend canvas { width: 100%; height: 12px; border-radius: 2px; display: block; }
+.ticks { position: relative; height: 16px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ticks span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.ticks span:first-child { transform: none; }
+.ticks span:last-child { transform: translateX(-100%); }
+.readout {
+  left: max(14px, env(safe-area-inset-left, 0px)); top: 14px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; min-width: 220px; max-width: calc(100% - 28px); box-sizing: border-box;
+  font-variant-numeric: tabular-nums;
+}
+.readout .big { font-family: var(--font-mono); font-size: 22px; font-weight: 500; }
+.readout .coord { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.readout table { border-collapse: collapse; font-size: 12px; margin-top: 4px; }
+.readout td { padding: 1px 0; }
+.readout td:last-child { font-family: var(--font-mono); text-align: right; padding-left: 14px; }
+.readout .hint { font-size: 12px; color: var(--muted); }
+.status {
+  left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--panel); border: 1px solid var(--line);
+  border-radius: 8px; padding: 10px 14px; font-size: 13px;
+}
+.zoom { right: max(14px, env(safe-area-inset-right, 0px)); top: 14px; pointer-events: auto; flex-direction: column; gap: 6px; }
+.zoom { align-items: flex-end; }
+.warn {
+  left: 50%; transform: translateX(-50%); top: 14px; width: min(440px, calc(100% - 230px)); box-sizing: border-box;
+  background: var(--warnbg); color: var(--fg); border: 1px solid var(--warnline); border-radius: 8px; padding: 8px 12px; font-size: 12.5px;
+}
+@media (max-width: 760px) { .warn { left: max(14px, env(safe-area-inset-left, 0px)); transform: none; top: auto; bottom: 110px; width: calc(100% - 28px); } }
+.zoom button { width: 34px; height: 34px; padding: 0; border-radius: 6px; background: var(--panel); font-size: 17px; line-height: 1; }
+.zoom button.mode { width: auto; padding: 0 12px; font-size: 12.5px; }
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: auto minmax(420px, 1fr); height: auto; min-height: 100%; }
+  .rail { border-right: 0; border-bottom: 1px solid var(--line); overflow: visible; padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .stage { height: 78vh; order: -1; }
+  .legend { width: auto; left: max(14px, env(safe-area-inset-left, 0px)); }
+  .readout { min-width: 0; }
+}
+/* Compact mode for embedding in a page (?embed=1): no side panel, a preset menu instead. */
+.ebar { left: max(14px, env(safe-area-inset-left, 0px)); top: 14px; pointer-events: auto; flex-direction: row; align-items: center; gap: 8px; }
+.ebar select { width: auto; background: var(--panel); padding: 5px 8px; font-size: 12.5px; }
+.ebar a { font-size: 12.5px; color: var(--accent); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 5px 9px; text-decoration: none; }
+html.embed .app { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); height: 100%; min-height: 0; }
+html.embed .rail { display: none; }
+html.embed .stage { height: 100%; order: 0; }
+html.embed .readout { top: auto; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); min-width: 0; width: 210px; padding: 8px 10px; }
+html.embed .readout .big { font-size: 18px; }
+html.embed .legend { width: 230px; left: auto; padding: 8px 10px; }
+html.embed .warn { left: max(14px, env(safe-area-inset-left, 0px)); transform: none; top: 54px; bottom: auto; width: min(420px, calc(100% - 80px)); }
+html.embed .zoom button { width: 30px; height: 30px; }
+html.embed .zoom button.mode { width: auto; }
+@media (max-width: 520px) { html.embed .readout { display: none; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail">
+    <div>
+      <h1>Geoid &amp; Ellipsoid Explorer</h1>
+      <p class="sub">Height of one surface above another, on a globe. Drag to rotate, scroll or pinch to zoom, double-click to centre a point. “Flat map” shows the same values on the Equal Earth projection (equal area).</p>
+    </div>
+
+    <div class="group">
+      <div class="label">Compare</div>
+      <div class="pair">
+        <label class="field"><span>Surface</span><select id="surf"></select></label>
+        <div class="minus">height above</div>
+        <label class="field"><span>Reference</span><select id="ref"></select></label>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="label">Examples</div>
+      <div class="chips" id="presets"></div>
+    </div>
+
+    <div class="group">
+      <div class="label">Colour scale (± limit)</div>
+      <div class="scale-row">
+        <input type="number" id="limit" min="0" step="any" aria-label="Colour scale limit">
+        <select id="unit" aria-label="Unit" style="width:auto"><option value="1">m</option><option value="0.01">cm</option><option value="1000">km</option></select>
+        <button class="square" id="fit" title="Set the limit from the values on screen">Fit view</button>
+      </div>
+      <div class="row"><button class="square" id="autolim">Fit whole globe</button></div>
+    </div>
+
+    <div class="group">
+      <div class="label">Go to</div>
+      <div class="row">
+        <input type="text" id="goto" placeholder="lat, lon  e.g. 27.99, 86.93" aria-label="Latitude, longitude">
+        <button class="square" id="gobtn">Go</button>
+      </div>
+      <label class="check"><input type="checkbox" id="borders" checked> Coastlines and borders</label>
+      <label class="check"><input type="checkbox" id="grat" checked> Graticule (10°)</label>
+    </div>
+
+    <div class="group notes">
+      <div class="label">How the numbers are made</div>
+      <p>Value = height of the <em>surface</em> above the <em>reference</em>, measured along the normal of the reference ellipsoid (WGS&nbsp;84 when the reference is a geoid). Latitude and longitude are geodetic on that ellipsoid. Red: surface above reference. Blue: below.</p>
+      <p>Geoids: NGA EGM96 (15′ grid) and EGM2008 (2.5′ grid, shown here at 7.5′, every third node), from <a href="https://github.com/OSGeo/PROJ-data" target="_blank" rel="noopener">PROJ-data</a> (<code>us_nga_egm96_15.tif</code>, <code>us_nga_egm08_25.tif</code>). Both give geoid height above WGS&nbsp;84. Values are stored to 1&nbsp;cm and interpolated bilinearly between nodes. Thinning EGM2008 to 7.5′ changes values by 2&nbsp;cm RMS (maximum 0.7&nbsp;m) relative to the full grid.</p>
+      <p>The geoid comparisons are between models defined on the same ellipsoid (WGS&nbsp;84), so the same latitude and longitude is the same point. Differences between WGS&nbsp;84 realizations, at the centimetre level, are ignored.</p>
+      <p>The ellipsoids under “shape only” are placed with the WGS&nbsp;84 centre and axes, so only their shape differs. Real datums built on them (NAD27, ED50, OSGB36, …) are also shifted and rotated relative to WGS&nbsp;84, and a point's latitude and longitude change between datums. This page does not show those transformations; PROJ does them.</p>
+      <p>Coastlines and borders: Natural Earth 1:50m, via the <code>world-atlas</code> package.</p>
+    </div>
+  </aside>
+
+  <main class="stage" id="stage">
+    <canvas id="globe" aria-label="Globe coloured by height difference"></canvas>
+    <div class="overlay readout" id="readout"><div class="hint">Hover or tap for a value.</div></div>
+    <div class="overlay zoom">
+      <button id="mode" class="mode" aria-pressed="false" title="Switch between the globe and a flat equal-area map">Flat map</button>
+      <button id="zin" aria-label="Zoom in">+</button>
+      <button id="zout" aria-label="Zoom out">−</button>
+      <button id="zreset" aria-label="Reset view" style="font-size:13px">⟲</button>
+    </div>
+    <div class="overlay legend" id="legend">
+      <div class="title" id="legtitle"></div>
+      <canvas id="bar" width="600" height="24"></canvas>
+      <div class="ticks" id="ticks"></div>
+    </div>
+    <div class="overlay ebar" id="ebar" hidden>
+      <select id="epreset" aria-label="Comparison"></select>
+      <a href="./" target="_blank" rel="noopener">Full page ↗</a>
+    </div>
+    <div class="overlay status" id="status">Loading geoid grid…</div>
+    <div class="overlay warn" id="warn" hidden><strong>Ellipsoid shape only.</strong> This compares ellipsoid shapes placed at the WGS&nbsp;84 centre. A datum built on this ellipsoid (for example NAD27 on Clarke&nbsp;1866) is also offset from WGS&nbsp;84, and the latitude and longitude of a point change between datums. Neither effect is shown here.</div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+(() => {
+"use strict";
+const D2R = Math.PI / 180, R2D = 180 / Math.PI;
+
+// ---------- Surfaces ----------
+// Ellipsoids: semi-major axis a (m) and inverse flattening (0 = sphere).
+// shape: true marks ellipsoids shown by shape only, placed with the WGS 84 centre and axes.
+const ELLIPSOIDS = {
+  wgs84:   { name: "WGS 84 ellipsoid",    a: 6378137,     rf: 298.257223563 },
+  grs80:   { name: "GRS 80",              a: 6378137,     rf: 298.257222101, shape: true },
+  clarke66:{ name: "Clarke 1866",         a: 6378206.4,   rf: 294.978698214, shape: true },
+  intl24:  { name: "International 1924",  a: 6378388,     rf: 297.0,         shape: true },
+  bessel:  { name: "Bessel 1841",         a: 6377397.155, rf: 299.1528128,   shape: true },
+  sphere:  { name: "Sphere, R = 6371008.8 m", a: 6371008.8, rf: 0,           shape: true },
+};
+for (const k in ELLIPSOIDS) {
+  const e = ELLIPSOIDS[k]; const f = e.rf ? 1 / e.rf : 0;
+  e.f = f; e.e2 = f * (2 - f); e.b = e.a * (1 - f); e.kind = "ellipsoid"; e.key = k;
+}
+const GEOIDS = {
+  egm2008: { name: "EGM2008 geoid", file: "data/egm2008.png", nlat: 1441, nlon: 2880, step: 0.125, kind: "geoid" },
+  egm96:   { name: "EGM96 geoid",   file: "data/egm96.png",   nlat: 721,  nlon: 1440, step: 0.25,  kind: "geoid" },
+};
+for (const k in GEOIDS) GEOIDS[k].key = k;
+const ALL = { ...GEOIDS, ...ELLIPSOIDS };
+
+const PRESETS = [
+  { label: "EGM2008 on WGS 84", s: "egm2008", r: "wgs84" },
+  { label: "EGM96 on WGS 84",   s: "egm96",   r: "wgs84" },
+  { label: "EGM2008 − EGM96",   s: "egm2008", r: "egm96" },
+  { label: "Shape only: GRS 80 − WGS 84",     s: "grs80",    r: "wgs84" },
+  { label: "Shape only: Clarke 1866 − WGS 84", s: "clarke66", r: "wgs84" },
+];
+
+// ---------- Ellipsoid geometry (meridian plane: p = distance from axis, z) ----------
+function toPZ(E, phi, h) {
+  const s = Math.sin(phi), c = Math.cos(phi);
+  const N = E.a / Math.sqrt(1 - E.e2 * s * s);
+  return [(N + h) * c, (N * (1 - E.e2) + h) * s];
+}
+function fromPZ(E, p, z) {
+  if (E.e2 === 0) return [Math.atan2(z, p), Math.hypot(p, z) - E.a];
+  let phi = Math.atan2(z, p * (1 - E.e2)), h = 0;
+  for (let i = 0; i < 8; i++) {
+    const s = Math.sin(phi), c = Math.cos(phi);
+    const N = E.a / Math.sqrt(1 - E.e2 * s * s);
+    h = p * c + z * s - E.a * E.a / N;
+    phi = Math.atan2(z, p * (1 - E.e2 * N / (N + h)));
+  }
+  return [phi, h];
+}
+// Table over geodetic latitude on base ellipsoid B: height of ellipsoid T above B along B's normal,
+// and the geodetic latitude on T of the intersection point. 0.05° steps, linear interpolation.
+const TSTEP = 0.05, TN = Math.round(180 / TSTEP) + 1;
+const tableCache = new Map();
+function ellTable(B, T) {
+  const key = B.key + ">" + T.key;
+  if (tableCache.has(key)) return tableCache.get(key);
+  const h = new Float64Array(TN), lat = new Float64Array(TN);
+  for (let i = 0; i < TN; i++) {
+    const phi = (-90 + i * TSTEP) * D2R;
+    let hh = 0, latT = phi;
+    if (B !== T) {
+      for (let it = 0; it < 10; it++) {
+        const [p, z] = toPZ(B, phi, hh);
+        const [lt, ht] = fromPZ(T, p, z);
+        hh -= ht; latT = lt;
+        if (Math.abs(ht) < 1e-6) break;
+      }
+    }
+    h[i] = hh; lat[i] = latT * R2D;
+  }
+  const t = { h, lat, identity: B === T };
+  tableCache.set(key, t);
+  return t;
+}
+
+// ---------- Geoid grids ----------
+const gridData = {};
+const gridLoading = {};
+function loadGrid(g) {
+  if (gridData[g.key]) return Promise.resolve(gridData[g.key]);
+  if (gridLoading[g.key]) return gridLoading[g.key];
+  gridLoading[g.key] = fetch(g.file).then(r => {
+    if (!r.ok) throw new Error(g.file + ": HTTP " + r.status);
+    return r.blob();
+  }).then(blob => createImageBitmap(blob, { colorSpaceConversion: "none", premultiplyAlpha: "none" }))
+  .then(bmp => {
+    // PNG packs each int16 (cm) as uint16 = value + 32768: high byte in red, low byte in green.
+    if (bmp.width !== g.nlon || bmp.height !== g.nlat) throw new Error(g.file + ": unexpected size");
+    const c = document.createElement("canvas"); c.width = bmp.width; c.height = bmp.height;
+    const cx = c.getContext("2d", { willReadFrequently: true }); cx.drawImage(bmp, 0, 0);
+    const px = cx.getImageData(0, 0, c.width, c.height).data, n = g.nlat * g.nlon, a = new Int16Array(n);
+    for (let i = 0; i < n; i++) a[i] = ((px[i * 4] << 8) | px[i * 4 + 1]) - 32768;
+    gridData[g.key] = a; return a;
+  });
+  return gridLoading[g.key];
+}
+// Bilinear sample in metres; lat in [-90, 90], lon any.
+function sampleGrid(g, a, lat, lon) {
+  const inv = 1 / g.step;
+  let x = (lon + 180) * inv; x -= Math.floor(x / g.nlon) * g.nlon;
+  let y = (90 - lat) * inv; if (y < 0) y = 0; if (y > g.nlat - 1) y = g.nlat - 1;
+  const i0 = x | 0, j0 = Math.min(y | 0, g.nlat - 2);
+  const fx = x - i0, fy = y - j0, i1 = i0 + 1 === g.nlon ? 0 : i0 + 1;
+  const r0 = j0 * g.nlon, r1 = r0 + g.nlon;
+  const v = (a[r0 + i0] * (1 - fx) + a[r0 + i1] * fx) * (1 - fy) + (a[r1 + i0] * (1 - fx) + a[r1 + i1] * fx) * fy;
+  return v * 0.01;
+}
+
+// ---------- The comparison ----------
+// Build a function value(latDeg, lonDeg) -> metres, plus a breakdown function for the readout.
+let model = null;
+function buildModel(sKey, rKey) {
+  const S = ALL[sKey], R = ALL[rKey];
+  const W = ELLIPSOIDS.wgs84;
+  const B = R.kind === "ellipsoid" ? R : W;          // base ellipsoid: coordinates and normal
+  const sEll = S.kind === "ellipsoid" ? S : W;        // the ellipsoid the surface is defined on
+  const t = ellTable(B, sEll);
+  const sa = S.kind === "geoid" ? gridData[S.key] : null;
+  const ra = R.kind === "geoid" ? gridData[R.key] : null;
+  function tab(arr, lat) {
+    let u = (lat + 90) / TSTEP; if (u < 0) u = 0; if (u > TN - 1.000001) u = TN - 1.000001;
+    const i = u | 0, f = u - i; return arr[i] * (1 - f) + arr[i + 1] * f;
+  }
+  function parts(lat, lon) {
+    const ell = t.identity ? 0 : tab(t.h, lat);
+    const latS = t.identity ? lat : tab(t.lat, lat);
+    const nS = sa ? sampleGrid(S, sa, latS, lon) : 0;
+    const nR = ra ? sampleGrid(R, ra, lat, lon) : 0;
+    return { ell, nS, nR, v: ell + nS - nR };
+  }
+  return { S, R, B, sEll, value: (lat, lon) => parts(lat, lon).v, parts };
+}
+
+// ---------- Colour ----------
+function hexToLab(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  const lin = c => { c /= 255; return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+  const r = lin(n >> 16 & 255), g = lin(n >> 8 & 255), b = lin(n & 255);
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+  const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+  const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  return [0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
+          1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s,
+          0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s];
+}
+function labToRgb([L, A, Bb]) {
+  const l = (L + 0.3963377774 * A + 0.2158037573 * Bb) ** 3;
+  const m = (L - 0.1055613458 * A - 0.0638541728 * Bb) ** 3;
+  const s = (L - 0.0894841775 * A - 1.2914855480 * Bb) ** 3;
+  const g = c => { c = c <= 0.0031308 ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055; return Math.max(0, Math.min(255, Math.round(c * 255))); };
+  return [g(4.0767416621 * l - 3.3077085314 * m + 0.2309667693 * s),
+          g(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s),
+          g(-0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s)];
+}
+// Diverging blue <-> red with a neutral grey midpoint; separate light and dark ramps.
+const RAMP_LIGHT = ["#0d3b78", "#2a78d6", "#9cc1ee", "#f0efec", "#f2a7a2", "#e34948", "#7d1d1e"];
+const RAMP_DARK  = ["#c3dcfa", "#3987e5", "#1f4271", "#383835", "#6f2b2b", "#e66767", "#f7c0bd"];
+const NLUT = 512;
+let LUT = new Uint8ClampedArray(NLUT * 3);
+function buildLUT(stops) {
+  const labs = stops.map(hexToLab), n = labs.length - 1;
+  for (let i = 0; i < NLUT; i++) {
+    const u = i / (NLUT - 1) * n, k = Math.min(n - 1, Math.floor(u)), f = u - k;
+    const L = labs[k].map((v, j) => v * (1 - f) + labs[k + 1][j] * f);
+    const [r, g, b] = labToRgb(L); LUT[i * 3] = r; LUT[i * 3 + 1] = g; LUT[i * 3 + 2] = b;
+  }
+}
+function isDark() {
+  const t = document.documentElement.getAttribute("data-theme");
+  if (t) return t === "dark";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+// ---------- View state ----------
+const canvas = document.getElementById("globe");
+const ctx = canvas.getContext("2d");
+const stage = document.getElementById("stage");
+const view = { lon: -20, lat: 15, k: 1, flat: false };   // centre of view, zoom factor, globe or map
+let limit = 100;                             // colour limit, metres
+let W = 0, H = 0, dpr = 1, baseR = 1;
+let borders = null, coast = null;
+const off = document.createElement("canvas"), offCtx = off.getContext("2d");
+let lastVals = null;   // values of the last full render (for Fit view)
+
+function resize() {
+  const r = stage.getBoundingClientRect();
+  W = Math.max(1, r.width); H = Math.max(1, r.height);
+  dpr = Math.min(2, window.devicePixelRatio || 1);
+  canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+  baseR = Math.min(W, H) * 0.44;
+  requestRender(true);
+}
+function radiusPx() { return baseR * view.k; }
+// Equal Earth (Šavrič, Patterson & Jenny 2018), the same raw projection as d3.geoEqualEarth.
+const EA1 = 1.340264, EA2 = -0.081106, EA3 = 0.000893, EA4 = 0.003796, EM = Math.sqrt(3) / 2;
+const EE_XMAX = Math.PI / (EM * EA1), EE_YMAX = eeY(90);
+function eeY(latDeg) {
+  const l = Math.asin(EM * Math.sin(latDeg * D2R)), l2 = l * l, l6 = l2 * l2 * l2;
+  return l * (EA1 + EA2 * l2 + l6 * (EA3 + EA4 * l2));
+}
+// Raw y -> [l, fy] by Newton iteration; latitude = asin(sin l / M), lambda = M x fy / cos l.
+function eeRow(y) {
+  let l = y, fy = EA1;
+  for (let i = 0; i < 8; i++) {
+    const l2 = l * l, l6 = l2 * l2 * l2;
+    fy = EA1 + 3 * EA2 * l2 + l6 * (7 * EA3 + 9 * EA4 * l2);
+    const d = (l * (EA1 + EA2 * l2 + l6 * (EA3 + EA4 * l2)) - y) / fy;
+    l -= d; if (Math.abs(d) < 1e-12) break;
+  }
+  const l2 = l * l, l6 = l2 * l2 * l2;
+  fy = EA1 + 3 * EA2 * l2 + l6 * (7 * EA3 + 9 * EA4 * l2);
+  return [l, fy];
+}
+function flatScale() { return Math.min(W * 0.94 / (2 * EE_XMAX), H * 0.94 / (2 * EE_YMAX)) * view.k; }
+function flatTy() { return H / 2 + flatScale() * eeY(view.lat); }
+function projection() {
+  if (view.flat) return d3.geoEqualEarth().scale(flatScale()).translate([W / 2, flatTy()])
+    .rotate([-view.lon, 0, 0]).precision(0.3);
+  return d3.geoOrthographic().scale(radiusPx()).translate([W / 2, H / 2])
+    .rotate([-view.lon, -view.lat, 0]).clipAngle(90).precision(0.3);
+}
+// Inverse projection, screen (CSS px) -> [lat, lon] in degrees, or null off the map.
+function invert(px, py) {
+  if (view.flat) {
+    const s = flatScale(), x = (px - W / 2) / s, y = (flatTy() - py) / s;
+    if (Math.abs(y) > EE_YMAX) return null;
+    const [l, fy] = eeRow(y), lam = EM * x * fy / Math.cos(l);
+    if (Math.abs(lam) > Math.PI) return null;
+    const lon = ((view.lon + lam * R2D + 540) % 360) - 180;
+    return [Math.asin(Math.max(-1, Math.min(1, Math.sin(l) / EM))) * R2D, lon];
+  }
+  const Rr = radiusPx();
+  const x = (px - W / 2) / Rr, y = -(py - H / 2) / Rr, rho2 = x * x + y * y;
+  if (rho2 > 1) return null;
+  const z = Math.sqrt(1 - rho2), p1 = view.lat * D2R, sp = Math.sin(p1), cp = Math.cos(p1);
+  const lat = Math.asin(Math.max(-1, Math.min(1, z * sp + y * cp))) * R2D;
+  let lon = view.lon + Math.atan2(x, z * cp - y * sp) * R2D;
+  lon = ((lon + 540) % 360) - 180;
+  return [lat, lon];
+}
+
+// ---------- Render ----------
+let pending = false, pendingFull = false, idleTimer = 0, interacting = false;
+function requestRender(full) {
+  pendingFull = pendingFull || full;
+  if (!pending) { pending = true; requestAnimationFrame(draw); }
+}
+function draw() {
+  pending = false;
+  const full = pendingFull && !interacting; pendingFull = false;
+  if (!model) return;
+  const scale = full ? dpr : Math.min(dpr, 0.5 * dpr + 0.25);  // coarser while dragging
+  const w = Math.max(1, Math.round(W * scale)), h = Math.max(1, Math.round(H * scale));
+  if (off.width !== w || off.height !== h) { off.width = w; off.height = h; }
+  const img = offCtx.createImageData(w, h), px = img.data;
+  const Rr = radiusPx() * scale, cx = w / 2, cy = h / 2;
+  const p1 = view.lat * D2R, sp = Math.sin(p1), cp = Math.cos(p1);
+  const inv = (NLUT - 1) / (2 * limit), value = model.value;
+  const vals = full ? new Float32Array(w * h).fill(NaN) : null;
+  if (view.flat) {
+    const sc = flatScale() * scale, ty = flatTy() * scale;
+    for (let j = 0; j < h; j++) {
+      const y = (ty - (j + 0.5)) / sc;
+      if (Math.abs(y) > EE_YMAX) continue;
+      const [l, fy] = eeRow(y), lat = Math.asin(Math.max(-1, Math.min(1, Math.sin(l) / EM))) * R2D;
+      const kx = EM * fy / Math.cos(l) / sc * R2D;   // degrees of longitude per pixel on this row
+      const lamMax = 180 / kx;                       // map edge, in pixels from the centre
+      const ia = Math.max(0, Math.ceil(cx - lamMax - 0.5)), ib = Math.min(w, Math.floor(cx + lamMax - 0.5) + 1);
+      for (let i = ia; i < ib; i++) {
+        const v = value(lat, view.lon + (i + 0.5 - cx) * kx);
+        let u = ((v + limit) * inv) | 0; if (u < 0) u = 0; else if (u >= NLUT) u = NLUT - 1;
+        const o = (j * w + i) * 4;
+        px[o] = LUT[u * 3]; px[o + 1] = LUT[u * 3 + 1]; px[o + 2] = LUT[u * 3 + 2]; px[o + 3] = 255;
+        if (vals) vals[j * w + i] = v;
+      }
+    }
+  } else {
+  // Only loop over the globe's bounding box.
+  const y0 = Math.max(0, Math.floor(cy - Rr)), y1 = Math.min(h, Math.ceil(cy + Rr));
+  const x0 = Math.max(0, Math.floor(cx - Rr)), x1 = Math.min(w, Math.ceil(cx + Rr));
+  for (let j = y0; j < y1; j++) {
+    const y = -(j + 0.5 - cy) / Rr, y2 = y * y;
+    if (y2 > 1) continue;
+    const xm = Math.sqrt(1 - y2) * Rr;
+    const ja = Math.max(x0, Math.floor(cx - xm)), jb = Math.min(x1, Math.ceil(cx + xm));
+    for (let i = ja; i < jb; i++) {
+      const x = (i + 0.5 - cx) / Rr, rho2 = x * x + y2;
+      if (rho2 > 1) continue;
+      const z = Math.sqrt(1 - rho2);
+      const lat = Math.asin(z * sp + y * cp) * R2D;
+      const lon = view.lon + Math.atan2(x, z * cp - y * sp) * R2D;
+      const v = value(lat, lon);
+      let u = ((v + limit) * inv) | 0; if (u < 0) u = 0; else if (u >= NLUT) u = NLUT - 1;
+      const o = (j * w + i) * 4;
+      // Light shading toward the limb so the globe reads as a sphere.
+      const shade = 0.82 + 0.18 * z;
+      px[o] = LUT[u * 3] * shade; px[o + 1] = LUT[u * 3 + 1] * shade; px[o + 2] = LUT[u * 3 + 2] * shade; px[o + 3] = 255;
+      if (vals) vals[j * w + i] = v;
+    }
+  }
+  }
+  offCtx.putImageData(img, 0, 0);
+  if (vals) lastVals = vals;
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.imageSmoothingEnabled = true;
+  ctx.drawImage(off, 0, 0, canvas.width, canvas.height);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const proj = projection(), path = d3.geoPath(proj, ctx);
+  if (document.getElementById("grat").checked) {
+    ctx.beginPath(); path(d3.geoGraticule10()); ctx.strokeStyle = cssVar("--grat"); ctx.lineWidth = 0.7; ctx.stroke();
+  }
+  if (coast && document.getElementById("borders").checked) {
+    ctx.beginPath(); path(borders); ctx.strokeStyle = cssVar("--border"); ctx.lineWidth = 0.6; ctx.stroke();
+    ctx.beginPath(); path(coast); ctx.strokeStyle = cssVar("--coast"); ctx.lineWidth = 0.9; ctx.stroke();
+  }
+  ctx.beginPath(); path({ type: "Sphere" }); ctx.strokeStyle = cssVar("--coast"); ctx.lineWidth = 1; ctx.stroke();
+  if (pin) {
+    const p = proj([pin[1], pin[0]]);
+    const vis = view.flat || d3.geoDistance([pin[1], pin[0]], [view.lon, view.lat]) < Math.PI / 2;
+    if (p && vis) {
+      ctx.beginPath(); ctx.arc(p[0], p[1], 5, 0, 2 * Math.PI);
+      ctx.lineWidth = 2; ctx.strokeStyle = cssVar("--panel"); ctx.stroke();
+      ctx.beginPath(); ctx.arc(p[0], p[1], 3.5, 0, 2 * Math.PI); ctx.lineWidth = 1.5; ctx.strokeStyle = cssVar("--fg"); ctx.stroke();
+    }
+  }
+  if (!full) { clearTimeout(idleTimer); idleTimer = setTimeout(() => requestRender(true), 160); }
+}
+
+// ---------- Formatting ----------
+function unitFor(m) { return m >= 2000 ? ["km", 1000] : m < 1 ? ["cm", 0.01] : ["m", 1]; }
+function fmt(v, ref) {
+  const [u, f] = unitFor(Math.abs(ref ?? v));
+  const x = v / f, a = Math.abs(x);
+  const d = u === "km" ? 3 : u === "cm" ? (a < 1 ? 3 : 2) : (a < 10 ? 2 : 2);
+  return (x < 0 ? "−" : x > 0 ? "+" : "") + Math.abs(x).toFixed(d) + " " + u;
+}
+function niceCeil(x) {
+  if (!(x > 0)) return 1;
+  const e = Math.pow(10, Math.floor(Math.log10(x))), m = x / e;
+  const n = m <= 1 ? 1 : m <= 1.5 ? 1.5 : m <= 2 ? 2 : m <= 2.5 ? 2.5 : m <= 3 ? 3 : m <= 4 ? 4 : m <= 5 ? 5 : m <= 6 ? 6 : m <= 8 ? 8 : 10;
+  return n * e;
+}
+function fmtLat(l) { return Math.abs(l).toFixed(3) + "° " + (l >= 0 ? "N" : "S"); }
+function fmtLon(l) { return Math.abs(l).toFixed(3) + "° " + (l >= 0 ? "E" : "W"); }
+
+// ---------- Legend ----------
+function drawLegend() {
+  const bar = document.getElementById("bar"), b = bar.getContext("2d");
+  for (let i = 0; i < bar.width; i++) {
+    const u = Math.round(i / (bar.width - 1) * (NLUT - 1));
+    b.fillStyle = `rgb(${LUT[u * 3]},${LUT[u * 3 + 1]},${LUT[u * 3 + 2]})`; b.fillRect(i, 0, 1, bar.height);
+  }
+  const ticks = document.getElementById("ticks"); ticks.innerHTML = "";
+  const [u, uf] = unitFor(limit);
+  [-1, -0.5, 0, 0.5, 1].forEach(t => {
+    const s = document.createElement("span"); s.style.left = ((t + 1) / 2 * 100) + "%";
+    const x = t * limit / uf;
+    s.textContent = t === 0 ? "0" : (x > 0 ? "+" : "−") + +Math.abs(x).toPrecision(3); ticks.appendChild(s);
+  });
+  document.getElementById("legtitle").textContent = `${model.S.name} above ${model.R.name} (${u})`;
+}
+function setLimit(m, fromInput) {
+  limit = Math.max(1e-4, m);
+  if (!fromInput) {
+    const [u, f] = unitFor(limit);
+    document.getElementById("unit").value = String(f);
+    document.getElementById("limit").value = +(limit / f).toPrecision(4);
+  }
+  drawLegend(); requestRender(true);
+}
+function fitGlobe() {
+  let mx = 0;
+  for (let lat = -89.75; lat <= 89.75; lat += 0.5)
+    for (let lon = -180; lon < 180; lon += 0.5) { const v = Math.abs(model.value(lat, lon)); if (v > mx) mx = v; }
+  setLimit(niceCeil(mx));
+}
+function fitView() {
+  if (!lastVals) return;
+  const a = []; for (let i = 0; i < lastVals.length; i += 3) { const v = lastVals[i]; if (v === v) a.push(Math.abs(v)); }
+  if (!a.length) return;
+  a.sort((p, q) => p - q);
+  setLimit(niceCeil(a[Math.floor(0.995 * (a.length - 1))]));
+}
+
+// ---------- Readout ----------
+let pin = null;
+function showReadout(ll, pinned) {
+  const el = document.getElementById("readout");
+  if (!ll) { el.innerHTML = '<div class="hint">Hover or tap for a value.</div>'; return; }
+  const [lat, lon] = ll, p = model.parts(lat, lon);
+  const rows = [];
+  if (model.S.kind === "ellipsoid" || model.sEll !== model.B)
+    rows.push([`${model.sEll.name} above ${model.B.name}`, fmt(p.ell)]);
+  if (model.S.kind === "geoid") rows.push([`${model.S.name} above WGS 84`, fmt(p.nS)]);
+  if (model.R.kind === "geoid") rows.push([`${model.R.name} above WGS 84`, fmt(p.nR)]);
+  el.innerHTML = `<div class="coord">${fmtLat(lat)}, ${fmtLon(lon)}${pinned ? " · pinned" : ""}</div>
+    <div class="big">${fmt(p.v)}</div>
+    <table>${rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</table>`;
+}
+
+// ---------- Controls ----------
+const surfSel = document.getElementById("surf"), refSel = document.getElementById("ref");
+function fillSelect(sel) {
+  const add = (label, obj) => {
+    const og = document.createElement("optgroup"); og.label = label;
+    for (const k in obj) { const o = document.createElement("option"); o.value = k; o.textContent = obj[k].name; og.appendChild(o); }
+    sel.appendChild(og);
+  };
+  const pick = f => Object.fromEntries(Object.entries(ELLIPSOIDS).filter(([, e]) => f(e)));
+  add("Geoids (heights above WGS 84)", GEOIDS);
+  add("Reference ellipsoid", pick(e => !e.shape));
+  add("Ellipsoid shape only (WGS 84 centre and axes)", pick(e => e.shape));
+}
+fillSelect(surfSel); fillSelect(refSel);
+const EMBED = new URLSearchParams(location.search).has("embed");
+if (EMBED) { document.documentElement.classList.add("embed"); document.getElementById("ebar").hidden = false; }
+const epreset = document.getElementById("epreset");
+PRESETS.forEach((p, i) => { const o = document.createElement("option"); o.value = String(i); o.textContent = p.label; epreset.appendChild(o); });
+epreset.addEventListener("change", () => { const p = PRESETS[+epreset.value]; surfSel.value = p.s; refSel.value = p.r; update(true); });
+const presetBox = document.getElementById("presets");
+PRESETS.forEach(p => {
+  const b = document.createElement("button"); b.textContent = p.label;
+  b.addEventListener("click", () => { surfSel.value = p.s; refSel.value = p.r; update(true); });
+  presetBox.appendChild(b);
+});
+const status = document.getElementById("status");
+let updateSeq = 0;
+async function update(refit) {
+  const seq = ++updateSeq;
+  const needs = [ALL[surfSel.value], ALL[refSel.value]].filter(x => x.kind === "geoid" && !gridData[x.key]);
+  if (needs.length) {
+    status.hidden = false; status.textContent = "Loading " + needs.map(n => n.name).join(" and ") + "…";
+    try { await Promise.all(needs.map(loadGrid)); }
+    catch (e) { status.textContent = "Could not load the grid (" + e.message + "). Reload the page to try again."; return; }
+  }
+  if (seq !== updateSeq) return;
+  status.hidden = true;
+  model = buildModel(surfSel.value, refSel.value);
+  document.getElementById("warn").hidden = !(model.S.shape || model.R.shape);
+  if (refit) fitGlobe(); else { drawLegend(); requestRender(true); }
+  showReadout(pin, true);
+}
+surfSel.addEventListener("change", () => update(true));
+refSel.addEventListener("change", () => update(true));
+const limIn = document.getElementById("limit"), unitIn = document.getElementById("unit");
+function limFromInputs() { const v = parseFloat(limIn.value); if (v > 0) setLimit(v * parseFloat(unitIn.value), true); }
+limIn.addEventListener("input", limFromInputs);
+unitIn.addEventListener("change", limFromInputs);
+document.getElementById("fit").addEventListener("click", fitView);
+document.getElementById("autolim").addEventListener("click", fitGlobe);
+document.getElementById("borders").addEventListener("change", () => requestRender(true));
+document.getElementById("grat").addEventListener("change", () => requestRender(true));
+
+// ---------- Interaction ----------
+const KMAX = 60, KMIN = 0.6;  // same limits for globe and map
+function zoomBy(f) { view.k = Math.max(KMIN, Math.min(KMAX, view.k * f)); requestRender(true); }
+function flyTo(lat, lon, k) {
+  const a = { ...view }, b = { lat, lon, k: k ?? Math.max(view.k, 6) };
+  let dl = b.lon - a.lon; dl -= 360 * Math.round(dl / 360);
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const T = reduce ? 0 : 900, t0 = performance.now();
+  interacting = true;
+  function step(now) {
+    const t = T ? Math.min(1, (now - t0) / T) : 1, e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    view.lat = a.lat + (b.lat - a.lat) * e; view.lon = a.lon + dl * e;
+    view.k = Math.exp(Math.log(a.k) + (Math.log(b.k) - Math.log(a.k)) * e);
+    requestRender(false);
+    if (t < 1) requestAnimationFrame(step); else { interacting = false; requestRender(true); }
+  }
+  requestAnimationFrame(step);
+}
+document.getElementById("zin").addEventListener("click", () => zoomBy(1.6));
+document.getElementById("zout").addEventListener("click", () => zoomBy(1 / 1.6));
+document.getElementById("zreset").addEventListener("click", () => view.flat ? flyTo(0, view.lon, 1) : flyTo(15, -20, 1));
+const modeBtn = document.getElementById("mode");
+modeBtn.addEventListener("click", () => {
+  view.flat = !view.flat;
+  modeBtn.textContent = view.flat ? "Globe" : "Flat map";
+  modeBtn.setAttribute("aria-pressed", String(view.flat));
+  canvas.setAttribute("aria-label", view.flat ? "Equal Earth map coloured by height difference" : "Globe coloured by height difference");
+  if (view.flat) { view.k = 1; view.lat = 0; } else { view.k = 1; view.lat = 15; }
+  requestRender(true);
+});
+
+const pointers = new Map();
+let dragStart = null, pinchStart = null, moved = false;
+function local(e) { const r = canvas.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; }
+canvas.addEventListener("pointerdown", e => {
+  canvas.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId, local(e)); moved = false;
+  if (pointers.size === 1) dragStart = { p: local(e), lat: view.lat, lon: view.lon };
+  if (pointers.size === 2) {
+    const [a, b] = [...pointers.values()];
+    pinchStart = { d: Math.hypot(a[0] - b[0], a[1] - b[1]), k: view.k }; dragStart = null;
+  }
+});
+canvas.addEventListener("pointermove", e => {
+  const p = local(e);
+  if (pointers.has(e.pointerId)) {
+    pointers.set(e.pointerId, p);
+    if (pinchStart && pointers.size === 2) {
+      const [a, b] = [...pointers.values()];
+      view.k = Math.max(KMIN, Math.min(KMAX, pinchStart.k * Math.hypot(a[0] - b[0], a[1] - b[1]) / pinchStart.d));
+      interacting = true; moved = true; requestRender(false); return;
+    }
+    if (dragStart) {
+      const dx = p[0] - dragStart.p[0], dy = p[1] - dragStart.p[1];
+      if (Math.abs(dx) + Math.abs(dy) > 3) moved = true;
+      if (moved) {
+        interacting = true; canvas.classList.add("dragging");
+        if (view.flat) {
+          // Move the map centre by the drag, in projected units, then convert back to lon/lat.
+          const sc = flatScale(), x = -dx / sc, y = eeY(dragStart.lat) + dy / sc;
+          const yy = Math.max(-0.92 * EE_YMAX, Math.min(0.92 * EE_YMAX, y));
+          const [l, fy] = eeRow(yy);
+          view.lat = Math.asin(Math.sin(l) / EM) * R2D;
+          view.lon = dragStart.lon + EM * x * fy / Math.cos(l) * R2D;
+        } else {
+          const s = R2D / radiusPx();
+          view.lon = dragStart.lon - dx * s;
+          view.lat = Math.max(-89.9, Math.min(89.9, dragStart.lat + dy * s));
+        }
+        requestRender(false); return;
+      }
+    }
+  }
+  if (!pin && e.pointerType === "mouse") showReadout(invert(p[0], p[1]), false);
+});
+function endPointer(e) {
+  const wasTap = pointers.size === 1 && !moved;
+  pointers.delete(e.pointerId);
+  if (pointers.size < 2) pinchStart = null;
+  if (pointers.size === 0) {
+    dragStart = null; canvas.classList.remove("dragging");
+    if (interacting) { interacting = false; requestRender(true); }
+    if (wasTap && e.type === "pointerup") {
+      const p = local(e), ll = invert(p[0], p[1]);
+      pin = pin && !ll ? null : ll; showReadout(pin, true); requestRender(true);
+    }
+  }
+}
+canvas.addEventListener("pointerup", endPointer);
+canvas.addEventListener("pointercancel", endPointer);
+canvas.addEventListener("pointerleave", e => { if (!pin && e.pointerType === "mouse" && !pointers.size) showReadout(null); });
+canvas.addEventListener("dblclick", e => { const p = local(e), ll = invert(p[0], p[1]); if (ll) flyTo(ll[0], ll[1], view.k * 2); });
+canvas.addEventListener("wheel", e => {
+  // Embedded in a page, plain scrolling scrolls the page; Ctrl or Cmd + scroll zooms.
+  if (EMBED && !e.ctrlKey && !e.metaKey) return;
+  e.preventDefault();
+  const f = Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0018));
+  view.k = Math.max(KMIN, Math.min(KMAX, view.k * f));
+  interacting = true; requestRender(false);
+  clearTimeout(wheelTimer); wheelTimer = setTimeout(() => { interacting = false; requestRender(true); }, 160);
+}, { passive: false });
+let wheelTimer = 0;
+function go() {
+  const m = document.getElementById("goto").value.match(/(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)/);
+  if (!m) return;
+  const lat = Math.max(-90, Math.min(90, +m[1])), lon = +m[2];
+  pin = [lat, ((lon + 540) % 360) - 180]; showReadout(pin, true); flyTo(lat, lon);
+}
+document.getElementById("gobtn").addEventListener("click", go);
+document.getElementById("goto").addEventListener("keydown", e => { if (e.key === "Enter") go(); });
+
+// ---------- Theme ----------
+function applyTheme() { buildLUT(isDark() ? RAMP_DARK : RAMP_LIGHT); if (model) { drawLegend(); requestRender(true); } }
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyTheme);
+new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+// ---------- Start ----------
+window.addEventListener("resize", resize);
+new ResizeObserver(resize).observe(stage);
+applyTheme(); resize();
+surfSel.value = "egm2008"; refSel.value = "wgs84";
+update(true);
+fetch("data/countries-50m.json").then(r => r.json()).then(topo => {
+  const c = topo.objects.countries;
+  coast = topojson.mesh(topo, c, (a, b) => a === b);
+  borders = topojson.mesh(topo, c, (a, b) => a !== b);
+  requestRender(true);
+}).catch(() => {});
+// Exposed for testing.
+window.__geoid = { view, eeRow, eeY, get model() { return model; }, invert, projection, ellTable, ELLIPSOIDS, sampleGrid, GEOIDS, gridData };
+})();
+</script>
+</body>
+</html>

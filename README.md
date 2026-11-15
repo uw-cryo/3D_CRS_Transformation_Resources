@@ -18,7 +18,7 @@ You can launch a [GitHub Codespace](https://github.com/features/codespaces) with
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/uw-cryo/3D_CRS_Transformation_Resources)
 
 
-Or if you want to execute code examples on your own machine, we recommend using [pixi.sh](https://pixi.sh/latest/) for managing the Python evironment:
+Or if you want to execute code examples on your own machine, we recommend using [pixi.sh](https://pixi.sh/latest/) for managing the Python environment:
 
 ```bash
 gh repo clone uw-cryo/3D_CRS_Transformation_Resources

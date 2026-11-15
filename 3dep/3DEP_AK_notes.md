@@ -143,14 +143,10 @@ PROJCRS["WGS 84 (G2139) / UTM 4N",
             LENGTHUNIT["metre",1],
             ID["EPSG",8807]]],
     CS[Cartesian,3],
-        AXIS["(E)",north,
-            MERIDIAN[90,
-                ANGLEUNIT["degree", 0.0174532925199433]],
+        AXIS["(E)",east,
             ORDER[1],
             LENGTHUNIT["metre",1]],
         AXIS["(N)",north,
-            MERIDIAN[0,
-                ANGLEUNIT["degree", 0.0174532925199433]],
             ORDER[2],
             LENGTHUNIT["metre",1]],
         AXIS["ellipsoidal height (h)",up,
@@ -271,6 +267,10 @@ Band 1 Block=256x256 Type=Float32, ColorInterp=Gray
     STATISTICS_MINIMUM=3.1249737739563
     STATISTICS_STDDEV=1.0803329066908
     STATISTICS_VALID_PERCENT=96.69
+```
+
+```{warning}
+Note the `test.tif.aux.xml` in the `Files:` list. A GeoTIFF cannot store a 3D projected CRS, so the CRS above is only in that sidecar file; without it, `test.tif` has no CRS. See [Saving a custom CRS in a GeoTIFF](#custom-crs-geotiff) for a 2D alternative.
 ```
 
 ## Epoch support

@@ -82,7 +82,7 @@ project:
     - file: glossary.md
 
 site:
-  template: book-theme
+  template: https://github.com/jupyter-book/myst-theme/releases/download/myst-to-react%401.4.1/book-theme.zip
   options:
     # Best to set authors per-page rather than on *all* pages
     # https://github.com/jupyter-book/mystmd/issues/1664

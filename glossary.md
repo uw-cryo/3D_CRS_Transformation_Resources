@@ -21,5 +21,5 @@ orthometric height
 : Local elevation measured normal to *geoid* surface (rather than ellipsoid surface)
 
 realization
-: a specific datum definition consiting of origin, orientation, and scale of the coordinate system, usually determined empirically at a specific point in time
+: a specific datum definition consisting of origin, orientation, and scale of the coordinate system, usually determined empirically at a specific point in time
 :::

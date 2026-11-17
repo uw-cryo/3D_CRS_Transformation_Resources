@@ -7,7 +7,6 @@ This page contains a somewhat disorganized dump of notes from an impromptu commu
 
 ## Curated list of additional resources
 
-* [Introductory slides](https://docs.google.com/presentation/d/1z2JS1s2WB1bGjJLJg92GIPjiyFCG4n-yb3DeTCY2MNA/edit?usp=sharing): David Shean's slides introducing the 2023 ICESat-2 Hackweek session that the notes on this page come from.
 * [Geospatial Transformations In-depth](https://icesat-2-2022.hackweek.io/tutorials/geospatial/geospatial-advanced.html): ICESat-2 Hackweek 2022 tutorial by Tyler Sutterley, Hannah Besso and Scott Henderson that reviews CRS fundamentals and shows how to read CRS metadata and warp vector and raster data between CRSs.
 * [Applying Coordinate Transformations to Facilitate Data Comparison](https://iceflow.readthedocs.io/en/latest/notebooks/corrections.html): NSIDC notebook that applies ITRF and plate-motion corrections so ICESat/GLAS, Operation IceBridge and ICESat-2 altimetry can be compared over 25+ years.
 * [UW Geospatial Data Analysis, Module 04: GeoPandas, CRS, Projections](https://uwgda-jupyterbook.readthedocs.io/en/latest/modules/04_Vector1_Geopandas_CRS_Proj/04_Vector1_Geopandas_CRS_Proj_prep.html): David Shean's course module introducing CRSs, projections and transformations, with GeoPandas exercises on ICESat data.

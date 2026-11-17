@@ -12,11 +12,13 @@ Just like WGS and ITRF, there are different, increasingly accurate "realizations
 | 1998 | NAD83(CORS96)     | 2002.0 | 6783 | 6782 | 6781 |
 | 2007 | NAD83(NSRS2007)   | 2002.0 | 4759 | 4893 | 4892 |
 | 2012-06-12 | NAD83(2011) | 2010.0 | 6318 | 6319 | 6317 |
-| unreleased | NATRF2022   | 2020.0 |  -   |   -  |   -  |
+| beta (2025) | NATRF2022  | 2020.0 |  -   |   -  |   -  |
+
+NATRF2022 will replace NAD83 as part of the modernized National Spatial Reference System (NSRS). NGS is rolling out its components between 2024 and 2026, first as beta products on https://beta.ngs.noaa.gov/, and the current NSRS (NAD83 and NAVD88) remains the official one until the modernized NSRS is formally approved. Check the [NGS rollout timeline](https://geodesy.noaa.gov/datums/newdatums/release.shtml) for the latest status.
 
 ### NAVD88 (EPSG: 5703)
 
-To be updated ~2025: with  geopotential datum will be called North American-Pacific Geopotential Datum of 2022 (NAPGD2022). The most prominent of these products will be a time-dependent model of the geoid, provided in three regions (the first covering the entirety of North and Central America, Hawaii, Alaska, Greenland, and the Caribbean; the second covering American Samoa; and the third covering Guam and the Commonwealth of the Mariana Islands). The name of this model will be GEOID2022. Read more: https://www.ngs.noaa.gov/datums/newdatums
+NAVD88 will be replaced by a geopotential datum called the North American-Pacific Geopotential Datum of 2022 (NAPGD2022). The most prominent of these products will be a time-dependent model of the geoid, provided in three regions (the first covering the entirety of North and Central America, Hawaii, Alaska, Greenland, and the Caribbean; the second covering American Samoa; and the third covering Guam and the Commonwealth of the Mariana Islands). The name of this model will be GEOID2022. Read more: https://www.ngs.noaa.gov/datums/newdatums
 
 :::{tip}
 A great reference: https://vdatum.noaa.gov/docs/datums.html#geodetic

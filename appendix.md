@@ -71,8 +71,9 @@ This page contains a somewhat disorganized dump of notes from an impromptu commu
 * EPSG:6339+5703 (example for UTM Zone 10N with NAVD88 datum, see [EPSG:6339](https://epsg.io/6339))
     * Note: this is not the same as EPSG:32610 (WGS84) or EPSG:26910 (NAD83), because we are using NAD83(2011) realization
 #### WA DNR
-* EPSG:2926+5703 (WA state plane N)
-* EPSG:2927+5703 (WA state plane S)
+* EPSG:2926+6360 (WA state plane N)
+* EPSG:2927+6360 (WA state plane S)
+* All units, horizontal and vertical, are US survey feet: EPSG:6360 is NAVD88 height (ftUS), while EPSG:5703 would be NAVD88 in metres. See [WA DNR LiDAR products](lidar/readme.md).
 * NAVD88 model should be geoid2012 (I think, need to confirm)
 
 

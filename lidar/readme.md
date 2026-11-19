@@ -13,7 +13,7 @@ Note: To combine multiple point cloud tiles (las/laz), you can use PDAL merge co
 `pdal merge tile1.laz tile2.laz tile3.laz out_merged.laz`
 
 ### Coordinate system transformation
-All products are distributed using one of two default CRS: either WA State Plane North or WA State Plane South, both using the NAD83(HARN) horizontal datum and the NAVD88 vertical datum (unsure if geoid2012 or geoid2018?), with all horizontal and vertical units in U.S. Survey Feet. There are historical reasons for these choices
+All products are distributed using one of two default CRS: either WA State Plane North or WA State Plane South, both using the NAD83(HARN) horizontal datum and the NAVD88 vertical datum (the geoid model used varies by project; see the warning below), with all horizontal and vertical units in U.S. Survey Feet. There are historical reasons for these choices
 * EPSG:2926 - NAD83(HARN) / Washington North (ftUS), https://spatialreference.org/ref/epsg/2926/
 * EPSG:2927 - NAD83(HARN) / Washington South (ftUS), https://spatialreference.org/ref/epsg/2927/
 * EPSG:6360 - NAVD88 height (ftUS)
@@ -46,7 +46,15 @@ PROJ string:
   +step +proj=utm +zone=10 +ellps=WGS84
 ```
 
-There are 17 different possible operations, with subtle differences (and uncertainty) depending on the NAD83 and NAVD88 definitions and offset grids used. To be more precise, we should also unambiguously define the WGS84 realization (not just "WGS84"), but there are no convenient EPSG codes for UTM projections using "WGS 84 (G1762)", so we will need to create a custom WKT CRS (to be done later).
+There are 17 different possible operations, with subtle differences (and uncertainty) depending on the NAD83 and NAVD88 definitions and offset grids used. To be more precise, we should also unambiguously define the WGS84 realization (not just "WGS84"), but there are no convenient EPSG codes for UTM projections using "WGS 84 (G1762)", so we will need to create a custom WKT CRS (see [Custom CRS](#custom-crs)).
+
+:::{warning} Check which geoid PROJ picks
+The top-ranked operation above (Operation No. 1, still first with PROJ 9.7.1) applies **GEOID99** (`us_noaa_g1999u01.tif`) and the `NAD83(HARN) to WGS 84 (3)` Helmert transformation, with 1.05 m accuracy. The `gdalwarp` commands below use whatever operation PROJ ranks first, so they apply GEOID99 too, which is probably not the geoid the data were produced with.
+
+WA DNR projects were flown over many years with different geoid models (for example GEOID03, GEOID09, GEOID12B or GEOID18). Check the project's report or metadata on the lidar portal for the geoid it used. Then pick the `projinfo` operation whose `vgridshift` grid matches (for example `us_noaa_g2012bu0.tif` for GEOID12B or `us_noaa_g2018u0.tif` for GEOID18), and pass its PROJ string to `gdalwarp` with `-ct`, keeping `-s_srs` and `-t_srs` so the output is labelled. The 3DEP and Hawaii notebooks show this pattern.
+
+The target `EPSG:32610+4979` also uses the WGS84 {term}`ensemble`, so its horizontal position is only good to about 2 m.
+:::
 
 Sample gdalwarp command to transform sample WA DNR LiDAR product for Island County, WA, with output CRS of:
 

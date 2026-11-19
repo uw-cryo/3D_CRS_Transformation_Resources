@@ -74,7 +74,7 @@ This page contains a somewhat disorganized dump of notes from an impromptu commu
 * EPSG:2926+6360 (WA state plane N)
 * EPSG:2927+6360 (WA state plane S)
 * All units, horizontal and vertical, are US survey feet: EPSG:6360 is NAVD88 height (ftUS), while EPSG:5703 would be NAVD88 in metres. See [WA DNR LiDAR products](lidar/readme.md).
-* NAVD88 model should be geoid2012 (I think, need to confirm)
+* The geoid model used varies by project: check each project's report, and see the warning on the [WA DNR LiDAR products](lidar/readme.md) page
 
 
 

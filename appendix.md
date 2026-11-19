@@ -129,4 +129,5 @@ PROJ string:
 * There is no perfect transformation approach, and all transformations have some uncertainty
    * See [Estimation of Vertical Uncertainties in VDatum](https://vdatum.noaa.gov/docs/est_uncertainties.html) for how NOAA quantifies the uncertainty of each transformation step
 * There are many possible ways to go from one CRS to another, the PROJ pipelines allow you to control this
+   * When you pass a pipeline to `gdalwarp -ct`, also pass `-t_srs`. The pipeline transforms the pixels, but only `-t_srs` writes the target CRS to the output file; without it, the output keeps the source CRS label on coordinates that are now in the target CRS. The same applies to `gdal raster reproject --to COORDINATE_OPERATION=<pipeline>`, which needs `--dst-crs`. Checked with GDAL 3.12.3; see the [gdalwarp `-ct` docs](https://gdal.org/en/stable/programs/gdalwarp.html#cmdoption-gdalwarp-ct) and [OSGeo/gdal#8242](https://github.com/OSGeo/gdal/issues/8242).
 * Many CRS (esp compound or 3D CRS) don't have EPSG codes - you can define the CRS with machine-readable, well-known text (use WKT2)

@@ -45,12 +45,20 @@ PROJ string:
 
 There are 19 different possible operations, with subtle differences (and uncertainty) depending on the NAD83 and NAVD88 definitions and offset grids used. To be more precise, we should also unambiguously define the WGS84 realization (not just "WGS84"), but there are no convenient EPSG codes for UTM projections using "WGS 84 (G1762)", so we will need to create a custom WKT CRS (see [Custom CRS](#custom-crs)).
 
-:::{warning} Check which geoid PROJ picks
-The top-ranked operation above (Operation No. 1, still first with PROJ 9.7.1) applies **GEOID99** (`us_noaa_g1999u01.tif`) and the `NAD83(HARN) to WGS 84 (3)` Helmert transformation, with 1.05 m accuracy. The `gdalwarp` commands below use whatever operation PROJ ranks first, so they apply GEOID99 too, which is probably not the geoid the data were produced with.
+:::{warning} Check the horizontal datum step, not just the geoid
+The top-ranked operation above (Operation No. 1, still first with PROJ 9.7.1) applies **GEOID99** (`us_noaa_g1999u01.tif`) and the `NAD83(HARN) to WGS 84 (3)` Helmert transformation, with 1.05 m accuracy. The `gdalwarp` commands below use whatever operation PROJ ranks first.
 
-WA DNR projects were flown over many years with different geoid models (for example GEOID03, GEOID09, GEOID12B or GEOID18). Check the project's report or metadata on the lidar portal for the geoid it used. Then pick the `projinfo` operation whose `vgridshift` grid matches (for example `us_noaa_g2012bu0.tif` for GEOID12B or `us_noaa_g2018u0.tif` for GEOID18), and pass its PROJ string to `gdalwarp` with `-ct`, keeping `-s_srs` and `-t_srs` so the output is labelled. The 3DEP and Hawaii notebooks show this pattern.
+WA DNR projects were flown over many years with different geoid models (for example GEOID03, GEOID09, GEOID12B or GEOID18), so check the project's report or metadata on the lidar portal. The Island County 2014 example used **GEOID09**. Here the geoid choice hardly matters: GEOID99, GEOID09 and GEOID18 agree to within 1 cm in Island County. What matters is how each operation gets from NAD83 to WGS84. For a NAVD88 height of 100 m in Island County (48.22°N, 122.69°W), with PROJ 9.7.1:
 
-The target `EPSG:32610+4979` also uses the WGS84 {term}`ensemble`, so its horizontal position is only good to about 2 m.
+| Route | Ellipsoidal height |
+| - | - |
+| Operation No. 1 (GEOID99 + `NAD83(HARN) to WGS 84 (3)` Helmert) | 77.276 m |
+| Operations No. 5 and 8 (GEOID09, then a zero-shift NAD83 to WGS84 step, 2.1 m accuracy) | 77.607 m |
+| NAD83(2011) to ITRF2014 at epoch 2014.2, via the second command below | 77.300 m |
+
+So picking an operation only because its geoid matches can make the result worse: the GEOID09 operations treat NAD83 and WGS84 as identical and land 0.31 m above ITRF2014. Across the 19 candidates the heights span more than 0.5 m.
+
+The target `EPSG:32610+4979` uses the WGS84 {term}`ensemble`, which is only defined to about 2 m in all three axes, so PROJ is free to pick any of these routes. For comparison with ITRF-based data such as ICESat-2, use the NAD83(2011) command below, then apply the time-dependent NAD83(2011) to ITRF2014 transformation, as in the [3DEP 10 m seamless notebook](../3dep/10m-seamless.ipynb). That notebook uses the transformation's 2010 reference epoch; pass the data's own epoch to `gdalwarp` with `-t_coord_epoch` when horizontal motion matters (NAD83 moves 1–2 cm per year against ITRF in the contiguous US). Or target a specific realization with a [custom CRS](#custom-crs).
 :::
 
 Sample gdalwarp command to transform sample WA DNR LiDAR product for Island County, WA, with output CRS of:

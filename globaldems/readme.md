@@ -99,7 +99,7 @@ A CRS is "dynamic" if coordinates change over time with respect to the origin. T
 
 Conversely coordinates in a "static" CRS like NAD83 which is tied to the North American plate do not change significantly over time.
 
-This is an extremely important when comparing data recorded using different CRS. For example, positions in NAD83 move approximately 10 millimeters per year in relation to the positions in the ITRF and WGS84 reference frames. Here is a nice video explaining this concept:
+This is extremely important when comparing data recorded using different CRS. For example, positions in NAD83 move about 1–2 cm per year in relation to the positions in the ITRF and WGS84 reference frames across the contiguous US (from about 13 mm/yr in Miami to about 21 mm/yr in Seattle, using the EPSG NAD83(2011) to ITRF2014 transformation). Here is a nice video explaining this concept:
 
 :::{iframe} https://www.youtube.com/embed/IKM-bR6SwVs?si=BOQ8-4dNXvVTvYY6
 :width: 100%

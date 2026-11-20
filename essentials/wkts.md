@@ -95,7 +95,7 @@ Lines 2-4 identify that this CRS uses a specific WGS84 {term}`realization`, line
 Here we combine a horizontal and vertical reference to create an effective 3D CRS
 
 ```bash
-projinfo EPSG:9055+5703 -o WKT2:2019
+projinfo EPSG:9055+3855 -o WKT2:2019
 ```
 
 ```{code} python

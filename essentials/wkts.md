@@ -48,6 +48,20 @@ GEOGCRS["WGS 84",
 
 Line 2 identifies that this CRS uses the WGS84 {term}`ensemble`, line 16 identifies this is a 2D ellipsoidal CRS, and the final line always reports an EPSG code if present.
 
+:::{warning} Don't transform into the ensemble when comparing data
+The ensemble is only defined to about 2 m (`ENSEMBLEACCURACY[2.0]`), so PROJ treats its realizations as interchangeable within that 2 m and any route into it counts as good enough. That applies to `EPSG:4326`, its 3D version `EPSG:4979`, and every `WGS 84 / UTM` code such as `EPSG:32610`. Which operation you get then depends on details of how the *source* is written, not on what is correct. For example, here is one point in Atlanta (33.637°N, 84.428°W) with a NAVD88 height of 250 m, at epoch 2009.975, using PROJ 9.7.1:
+
+| Source → target | Operation PROJ picks | Ellipsoidal height |
+| - | - | - |
+| `EPSG:6318+5703` → `EPSG:7912` (ITRF2014) | GEOID18, then the time-dependent NAD83(2011) to ITRF2014 Helmert (0.015 m) | 219.165 m |
+| `EPSG:6318+5703` → `EPSG:4979` (ensemble) | NAD83(HARN) + GEOID99 + `NAD83(HARN) to WGS 84 (3)` (1.14 m) | 219.179 m |
+| `EPSG:6319` → `EPSG:4979` (ensemble), starting from the NAD83(2011) height 220.533 m | `+proj=noop`: `NAD83(2011) to WGS 84 (1)`, zero shift (2.0 m) | 220.533 m |
+
+The same point lands 1 cm or 1.37 m from ITRF2014, depending only on whether it arrives as a NAVD88 height or as a NAD83(2011) ellipsoidal height. The 1 cm result is luck: the [WA DNR lidar example](../lidar/readme.md) shows ensemble routes 0.3 m off.
+
+For comparisons, transform into a specific realization instead: for example ITRF2014 (`EPSG:7912`), ITRF2020 (`EPSG:9989`) or WGS 84 (G2139) (`EPSG:9754`), or a projected [custom CRS](#custom-crs) built on one. Check the operation with `projinfo -s … -t … --summary`, and be suspicious of `noop` or an accuracy of 1 m or more.
+:::
+
 :::{note} Axis order
 Lines 17–22 say that EPSG:4326 lists latitude first and longitude second. Most GIS software and file formats (GeoJSON, shapefiles, GeoTIFF) instead store longitude first, as x/y. Since PROJ 6 and GDAL 3, libraries follow the order the CRS definition gives unless told otherwise, so the same coordinates can come back swapped. In pyproj, pass `always_xy=True` to `Transformer.from_crs()` to get longitude/latitude order; in the GDAL API, set `OAMS_TRADITIONAL_GIS_ORDER` on the spatial reference. The GDAL command-line tools already use the traditional GIS order.
 :::

@@ -22,7 +22,7 @@ However, because the original positions can be transformed into more recent refe
 
 | Realization | Approximately equivalent to |
 | - | - |
-| WGS84 (ORIG)| NAD83 (1986)** |
+| WGS84 (ORIG)| NAD83 (1986), to about 2 m |
 | WGS (G730)| ITRF91/92 |
 | WGS (G873)| ITRF94/96 |
 | WGS (G1150) | ITRF00 |
@@ -34,6 +34,12 @@ However, because the original positions can be transformed into more recent refe
 :::
 
 See @cite_konyk2025 for the history of each WGS 84 realization and how it was aligned to the ITRF.
+
+For the rows that paper does not cover, see the EPSG registry, which cites NIMA TR8350.2 and NGA.STND.0036 for each realization:
+
+* [WGS 84 (G873)](https://epsg.org/datum_1153/World-Geodetic-System-1984-G873.html) was aligned to ITRF94 stations at epoch 1997.0.
+* [WGS 84 (G1150)](https://epsg.org/datum_1154/World-Geodetic-System-1984-G1150.html) was aligned to IGS stations in the ITRF2000 frame.
+* The original [WGS 84 (Transit)](https://epsg.org/datum_1166/World-Geodetic-System-1984-Transit.html) and NAD83(1986) were both aligned to the BIH Terrestrial System at epoch 1984.0. They are treated as coincident: the EPSG transformation [NAD83 to WGS 84 (1)](https://epsg.org/transformation_1188/NAD83-to-WGS-84-1.html) has zero shift, with an accuracy of about 2 m in each axis (DMA TR8350.2).
 
 Modern realizations are time-dependent to account for changes to mass/gravity distribution from moving plates and large earthquakes. So "standard" epochs are used to indicate the point in time for a given realization.
 
@@ -93,7 +99,7 @@ A CRS is "dynamic" if coordinates change over time with respect to the origin. T
 
 Conversely coordinates in a "static" CRS like NAD83 which is tied to the North American plate do not change significantly over time.
 
-This is an extremely important when comparing data recorded using different CRS. For example, positions in NAD83 move approximately 10 millimeters per year in relation to the positions in the ITRF and WGS84 reference frames. Here is a nice video explaining this concept:
+This is extremely important when comparing data recorded using different CRS. For example, positions in NAD83 move about 1–2 cm per year in relation to the positions in the ITRF and WGS84 reference frames across the contiguous US (from about 13 mm/yr in Miami to about 21 mm/yr in Seattle, using the EPSG NAD83(2011) to ITRF2014 transformation). Here is a nice video explaining this concept:
 
 :::{iframe} https://www.youtube.com/embed/IKM-bR6SwVs?si=BOQ8-4dNXvVTvYY6
 :width: 100%

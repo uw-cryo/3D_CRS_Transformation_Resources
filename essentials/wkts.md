@@ -59,7 +59,7 @@ Lines 17–22 say that EPSG:4326 lists latitude first and longitude second. Most
 (ensemble-target)=
 ### Don't transform into the ensemble when comparing data
 
-The ensemble is only defined to about 2 m (`ENSEMBLEACCURACY[2.0]`). PROJ therefore treats all its realizations as interchangeable within those 2 m, and any route into the ensemble counts as good enough. This applies to `EPSG:4326`, to its 3D version `EPSG:4979`, and to every `WGS 84 / UTM` code such as `EPSG:32610`. Which operation you get then depends on how the *source* coordinates are written, not on which operation is correct.
+The ensemble is only defined to about 2 m (`ENSEMBLEACCURACY[2.0]`). PROJ therefore treats all its realizations as interchangeable within those 2 m, and any route into the ensemble counts as good enough. This applies to `EPSG:4326`, to its 3D version `EPSG:4979`, and to every `WGS 84 / UTM` code such as `EPSG:32610`. Which operation you get then depends on which CRS your input coordinates are in, not on which operation is correct.
 
 For example, take one point in Atlanta (33.637°N, 84.428°W) with a NAVD88 height of 250 m, at epoch 2009.975, using PROJ 9.7.1. The same point can be given in two ways:
 

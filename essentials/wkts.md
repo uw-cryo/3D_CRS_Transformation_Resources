@@ -73,26 +73,37 @@ For example, take one point in Atlanta, at NAD83(2011) latitude 33.637°N, longi
 | NAD83(2011) 3D (`EPSG:6319`) | WGS 84 ensemble 3D (`EPSG:4979`) | `+proj=noop`, from `NAD83(2011) to WGS 84 (1)`: zero shift (2.0 m) | 220.533 m |
 
 ::::{dropdown} Commands to reproduce the table
-`projinfo` shows which operation PROJ ranks first for this area. The output lines below are shortened after the accuracy:
+`projinfo` shows which operation PROJ ranks first for this area. The output lines below are wrapped at each `+` step and shortened after the accuracy:
 
 ```bash
-projinfo -s EPSG:6318+5703 -t EPSG:7912 --bbox -84.5,33.6,-84.4,33.7 --spatial-test intersects --hide-ballpark --summary
+projinfo -s EPSG:6318+5703 -t EPSG:7912 \
+    --bbox -84.5,33.6,-84.4,33.7 --spatial-test intersects \
+    --hide-ballpark --summary
 ```
 ```
 Candidate operations found: 7
-unknown id, Inverse of NAD83(2011) to NAVD88 height (3) + Conversion from NAD83(2011) (geog3D) to NAD83(2011) (geocentric) + Inverse of ITRF2014 to NAD83(2011) (1) + Conversion from ITRF2014 (geocentric) to ITRF2014 (geog3D), 0.015 m, …
+unknown id, Inverse of NAD83(2011) to NAVD88 height (3)
+  + Conversion from NAD83(2011) (geog3D) to NAD83(2011) (geocentric)
+  + Inverse of ITRF2014 to NAD83(2011) (1)
+  + Conversion from ITRF2014 (geocentric) to ITRF2014 (geog3D), 0.015 m, …
 ```
 
 ```bash
-projinfo -s EPSG:6318+5703 -t EPSG:4979 --bbox -84.5,33.6,-84.4,33.7 --spatial-test intersects --hide-ballpark --summary
+projinfo -s EPSG:6318+5703 -t EPSG:4979 \
+    --bbox -84.5,33.6,-84.4,33.7 --spatial-test intersects \
+    --hide-ballpark --summary
 ```
 ```
 Candidate operations found: 14
-unknown id, Inverse of NAD83(HARN) to NAD83(2011) (NADCON5, CONUS) + Inverse of NAD83(HARN) to NAVD88 height (7) + NAD83(HARN) to WGS 84 (3), 1.14 m, …
+unknown id, Inverse of NAD83(HARN) to NAD83(2011) (NADCON5, CONUS)
+  + Inverse of NAD83(HARN) to NAVD88 height (7)
+  + NAD83(HARN) to WGS 84 (3), 1.14 m, …
 ```
 
 ```bash
-projinfo -s EPSG:6319 -t EPSG:4979 --bbox -84.5,33.6,-84.4,33.7 --spatial-test intersects --hide-ballpark --summary
+projinfo -s EPSG:6319 -t EPSG:4979 \
+    --bbox -84.5,33.6,-84.4,33.7 --spatial-test intersects \
+    --hide-ballpark --summary
 ```
 ```
 Candidate operations found: 1

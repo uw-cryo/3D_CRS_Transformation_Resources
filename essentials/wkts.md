@@ -124,7 +124,7 @@ echo "33.637 -84.428 220.533 2009.975" | cs2cs -d 7 EPSG:6319 EPSG:4979
 ```
 ::::
 
-So the same point lands either 1 cm or 1.37 m from ITRF2014, depending only on how its height was written. The 1 cm result is luck: in the [WA DNR lidar example](../lidar/readme.md), ensemble routes come out 0.3 m off.
+Row 1 is the correct result. The two ensemble rows differ from it by 1.4 cm and 1.37 m in height (and 0.2 m and 0.9 m horizontally). The only difference between those two rows is the input CRS. The small error in row 2 is a coincidence: PROJ's route uses GEOID99 and an older NAD83(HARN) to WGS 84 shift, which happens to land close to ITRF2014 in Atlanta. In the [WA DNR lidar example](../lidar/readme.md), similar ensemble routes are 0.3 m off.
 
 For comparisons, transform into a specific realization instead. Examples are ITRF2014 (`EPSG:7912`), ITRF2020 (`EPSG:9989`), WGS 84 (G2139) (`EPSG:9754`), or a projected [custom CRS](#custom-crs) built on one of these. Check the chosen operation with `projinfo -s … -t … --summary`, and be suspicious of `noop` or an accuracy of 1 m or more.
 

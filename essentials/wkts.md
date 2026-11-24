@@ -48,20 +48,6 @@ GEOGCRS["WGS 84",
 
 Line 2 identifies that this CRS uses the WGS84 {term}`ensemble`, line 16 identifies this is a 2D ellipsoidal CRS, and the final line always reports an EPSG code if present.
 
-:::{warning} Don't transform into the ensemble when comparing data
-The ensemble is only defined to about 2 m (`ENSEMBLEACCURACY[2.0]`), so PROJ treats its realizations as interchangeable within that 2 m and any route into it counts as good enough. That applies to `EPSG:4326`, its 3D version `EPSG:4979`, and every `WGS 84 / UTM` code such as `EPSG:32610`. Which operation you get then depends on details of how the *source* is written, not on what is correct. For example, here is one point in Atlanta (33.637°N, 84.428°W) with a NAVD88 height of 250 m, at epoch 2009.975, using PROJ 9.7.1:
-
-| Source → target | Operation PROJ picks | Ellipsoidal height |
-| - | - | - |
-| `EPSG:6318+5703` → `EPSG:7912` (ITRF2014) | GEOID18, then the time-dependent NAD83(2011) to ITRF2014 Helmert (0.015 m) | 219.165 m |
-| `EPSG:6318+5703` → `EPSG:4979` (ensemble) | NAD83(HARN) + GEOID99 + `NAD83(HARN) to WGS 84 (3)` (1.14 m) | 219.179 m |
-| `EPSG:6319` → `EPSG:4979` (ensemble), starting from the NAD83(2011) height 220.533 m | `+proj=noop`: `NAD83(2011) to WGS 84 (1)`, zero shift (2.0 m) | 220.533 m |
-
-The same point lands 1 cm or 1.37 m from ITRF2014, depending only on whether it arrives as a NAVD88 height or as a NAD83(2011) ellipsoidal height. The 1 cm result is luck: the [WA DNR lidar example](../lidar/readme.md) shows ensemble routes 0.3 m off.
-
-For comparisons, transform into a specific realization instead: for example ITRF2014 (`EPSG:7912`), ITRF2020 (`EPSG:9989`) or WGS 84 (G2139) (`EPSG:9754`), or a projected [custom CRS](#custom-crs) built on one. Check the operation with `projinfo -s … -t … --summary`, and be suspicious of `noop` or an accuracy of 1 m or more.
-:::
-
 :::{note} Axis order
 Lines 17–22 say that EPSG:4326 lists latitude first and longitude second. Most GIS software and file formats (GeoJSON, shapefiles, GeoTIFF) instead store longitude first, as x/y. Since PROJ 6 and GDAL 3, libraries follow the order the CRS definition gives unless told otherwise, so the same coordinates can come back swapped. In pyproj, pass `always_xy=True` to `Transformer.from_crs()` to get longitude/latitude order; in the GDAL API, set `OAMS_TRADITIONAL_GIS_ORDER` on the spatial reference. The GDAL command-line tools already use the traditional GIS order.
 :::
@@ -69,6 +55,67 @@ Lines 17–22 say that EPSG:4326 lists latitude first and longitude second. Most
 :::{seealso}
 [WGS 84: I don't know, I don't care](https://www.youtube.com/watch?v=M2ck3cAGvhg): Javier Jiménez Shaw's short FOSS4G Europe 2024 talk on the WGS84 ensemble, its realizations, and why mixing them can introduce apparent offsets.
 :::
+
+(ensemble-target)=
+### Don't transform into the ensemble when comparing data
+
+The ensemble is only defined to about 2 m (`ENSEMBLEACCURACY[2.0]`). PROJ therefore treats all its realizations as interchangeable within those 2 m, and any route into the ensemble counts as good enough. This applies to `EPSG:4326`, to its 3D version `EPSG:4979`, and to every `WGS 84 / UTM` code such as `EPSG:32610`. Which operation you get then depends on how the *source* coordinates are written, not on which operation is correct.
+
+For example, take one point in Atlanta (33.637°N, 84.428°W) with a NAVD88 height of 250 m, at epoch 2009.975, using PROJ 9.7.1. The same point can be given in two ways:
+
+* as NAD83(2011) latitude and longitude with a NAVD88 height: the compound CRS `EPSG:6318+5703`, where 6318 is NAD83(2011) 2D and 5703 is NAVD88 height;
+* as a NAD83(2011) ellipsoidal height (220.533 m): the 3D CRS `EPSG:6319`.
+
+| From | To | Operation PROJ picks (accuracy) | Ellipsoidal height |
+| - | - | - | - |
+| NAD83(2011) + NAVD88 (`EPSG:6318+5703`) | ITRF2014 3D (`EPSG:7912`) | GEOID18, then the time-dependent NAD83(2011) to ITRF2014 Helmert (0.015 m) | 219.165 m |
+| NAD83(2011) + NAVD88 (`EPSG:6318+5703`) | WGS 84 ensemble 3D (`EPSG:4979`) | NAD83(HARN) + GEOID99 + `NAD83(HARN) to WGS 84 (3)` (1.14 m) | 219.179 m |
+| NAD83(2011) 3D (`EPSG:6319`) | WGS 84 ensemble 3D (`EPSG:4979`) | `+proj=noop`, from `NAD83(2011) to WGS 84 (1)`: zero shift (2.0 m) | 220.533 m |
+
+::::{dropdown} Commands to reproduce the table
+`projinfo` shows which operation PROJ ranks first for this area. The output lines below are shortened after the accuracy:
+
+```bash
+projinfo -s EPSG:6318+5703 -t EPSG:7912 --bbox -84.5,33.6,-84.4,33.7 --spatial-test intersects --hide-ballpark --summary
+```
+```
+Candidate operations found: 7
+unknown id, Inverse of NAD83(2011) to NAVD88 height (3) + Conversion from NAD83(2011) (geog3D) to NAD83(2011) (geocentric) + Inverse of ITRF2014 to NAD83(2011) (1) + Conversion from ITRF2014 (geocentric) to ITRF2014 (geog3D), 0.015 m, …
+```
+
+```bash
+projinfo -s EPSG:6318+5703 -t EPSG:4979 --bbox -84.5,33.6,-84.4,33.7 --spatial-test intersects --hide-ballpark --summary
+```
+```
+Candidate operations found: 14
+unknown id, Inverse of NAD83(HARN) to NAD83(2011) (NADCON5, CONUS) + Inverse of NAD83(HARN) to NAVD88 height (7) + NAD83(HARN) to WGS 84 (3), 1.14 m, …
+```
+
+```bash
+projinfo -s EPSG:6319 -t EPSG:4979 --bbox -84.5,33.6,-84.4,33.7 --spatial-test intersects --hide-ballpark --summary
+```
+```
+Candidate operations found: 1
+DERIVED_FROM(EPSG):9774, NAD83(2011) to WGS 84 (1), 2.0 m, …
+```
+
+`cs2cs` transforms the point. Input is latitude, longitude, height and coordinate epoch (decimal year), in the axis order these CRSs define. Without the epoch, PROJ uses the transformation's reference epoch, 2010.0. Set `PROJ_NETWORK=ON` if the geoid grids are not installed locally.
+
+```bash
+echo "33.637 -84.428 250 2009.975" | cs2cs -d 3 EPSG:6318+5703 EPSG:7912
+echo "33.637 -84.428 250 2009.975" | cs2cs -d 3 EPSG:6318+5703 EPSG:4979
+echo "33.637 -84.428 220.533 2009.975" | cs2cs -d 3 EPSG:6319 EPSG:4979
+```
+```
+33.637	-84.428 219.165 2009.975
+33.637	-84.428 219.179 2009.975
+33.637	-84.428 220.533 2009.975
+```
+::::
+
+So the same point lands either 1 cm or 1.37 m from ITRF2014, depending only on how its height was written. The 1 cm result is luck: in the [WA DNR lidar example](../lidar/readme.md), ensemble routes come out 0.3 m off.
+
+For comparisons, transform into a specific realization instead. Examples are ITRF2014 (`EPSG:7912`), ITRF2020 (`EPSG:9989`), WGS 84 (G2139) (`EPSG:9754`), or a projected [custom CRS](#custom-crs) built on one of these. Check the chosen operation with `projinfo -s … -t … --summary`, and be suspicious of `noop` or an accuracy of 1 m or more.
 
 ## Specific WGS84 realization
 

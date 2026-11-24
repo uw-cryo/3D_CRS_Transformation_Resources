@@ -126,7 +126,13 @@ echo "33.637 -84.428 220.533 2009.975" | cs2cs -d 7 EPSG:6319 EPSG:4979
 
 Row 1 is the correct result. The two ensemble rows differ from it by 1.4 cm and 1.37 m in height (and 0.2 m and 0.9 m horizontally). The only difference between those two rows is the input CRS. The small error in row 2 is a coincidence: PROJ's route uses GEOID99 and an older NAD83(HARN) to WGS 84 shift, which happens to land close to ITRF2014 in Atlanta. In the [WA DNR lidar example](../lidar/readme.md), similar ensemble routes are 0.3 m off.
 
-For comparisons, transform into a specific {term}`realization` of a frame, not the ensemble. PROJ then has to use a transformation that actually reaches that frame, with published parameters and a stated accuracy, as in row 1. Pick the frame of the data you are comparing against: for example ITRF2014 (`EPSG:7912`) for ICESat-2 releases up to 006, ITRF2020 (`EPSG:9989`) for release 007, or WGS 84 (G2139) (`EPSG:9754`). These are geographic CRSs (latitude, longitude and ellipsoidal height). For UTM coordinates on one of them, build a projected [custom CRS](#custom-crs), since EPSG has no such codes. These frames are dynamic, so also give the coordinate epoch.
+For comparisons, transform into a specific {term}`realization` of a frame, not the ensemble. PROJ then has to use a transformation that actually reaches that frame, with published parameters and a stated accuracy, as in row 1. Pick the frame of the data you are comparing against, for example:
+
+* ITRF2014 (`EPSG:7912`) for ICESat-2 releases up to 006;
+* ITRF2020 (`EPSG:9989`) for ICESat-2 release 007;
+* WGS 84 (G2139) (`EPSG:9754`) for data in that realization, such as the post-eruption stereo DEMs in the [Mauna Loa notebook](../3dep/hawaii-mauna-loa.ipynb).
+
+These are geographic CRSs (latitude, longitude and ellipsoidal height). For UTM coordinates on one of them, build a projected [custom CRS](#custom-crs), since EPSG has no such codes. These frames are dynamic, so also give the coordinate epoch.
 
 Before transforming, check which operation PROJ will use with `projinfo -s <input CRS> -t <target CRS> --summary` (as in the dropdown above). The first operation listed is the one PROJ uses if its grids are available, followed by its accuracy. Be suspicious if it says `noop` (nothing is changed) or reports an accuracy of 1 m or more.
 

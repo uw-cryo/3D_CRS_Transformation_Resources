@@ -61,7 +61,7 @@ Lines 17–22 say that EPSG:4326 lists latitude first and longitude second. Most
 
 The ensemble is only defined to about 2 m (`ENSEMBLEACCURACY[2.0]`). PROJ therefore treats all its realizations as interchangeable within those 2 m, and any route into the ensemble counts as good enough. This applies to `EPSG:4326`, to its 3D version `EPSG:4979`, and to every `WGS 84 / UTM` code such as `EPSG:32610`. Which operation you get then depends on which CRS your input coordinates are in, not on which operation is correct.
 
-For example, take one point in Atlanta (33.637°N, 84.428°W) with a NAVD88 height of 250 m, at epoch 2009.975, using PROJ 9.7.1. The same point can be given in two ways:
+For example, take one point in Atlanta, at NAD83(2011) latitude 33.637°N, longitude 84.428°W, with a NAVD88 height of 250 m, at epoch 2009.975, using PROJ 9.7.1. The same point can be given in two ways:
 
 * as NAD83(2011) latitude and longitude with a NAVD88 height: the compound CRS `EPSG:6318+5703`, where 6318 is NAD83(2011) 2D and 5703 is NAVD88 height;
 * as a NAD83(2011) ellipsoidal height (220.533 m): the 3D CRS `EPSG:6319`.
@@ -99,17 +99,17 @@ Candidate operations found: 1
 DERIVED_FROM(EPSG):9774, NAD83(2011) to WGS 84 (1), 2.0 m, …
 ```
 
-`cs2cs` transforms the point. Input is latitude, longitude, height and coordinate epoch (decimal year), in the axis order these CRSs define. Without the epoch, PROJ uses the transformation's reference epoch, 2010.0. Set `PROJ_NETWORK=ON` if the geoid grids are not installed locally.
+`cs2cs` transforms the point. Input is latitude, longitude, height and coordinate epoch (decimal year), in the axis order these CRSs define. Without the epoch, PROJ uses the transformation's reference epoch, 2010.0. `-d 7` prints enough decimals to show the horizontal shift as well: 0.0000066° of latitude is about 0.7 m. Set `PROJ_NETWORK=ON` if the geoid grids are not installed locally.
 
 ```bash
-echo "33.637 -84.428 250 2009.975" | cs2cs -d 3 EPSG:6318+5703 EPSG:7912
-echo "33.637 -84.428 250 2009.975" | cs2cs -d 3 EPSG:6318+5703 EPSG:4979
-echo "33.637 -84.428 220.533 2009.975" | cs2cs -d 3 EPSG:6319 EPSG:4979
+echo "33.637 -84.428 250 2009.975" | cs2cs -d 7 EPSG:6318+5703 EPSG:7912
+echo "33.637 -84.428 250 2009.975" | cs2cs -d 7 EPSG:6318+5703 EPSG:4979
+echo "33.637 -84.428 220.533 2009.975" | cs2cs -d 7 EPSG:6319 EPSG:4979
 ```
 ```
-33.637	-84.428 219.165 2009.975
-33.637	-84.428 219.179 2009.975
-33.637	-84.428 220.533 2009.975
+33.6370066	-84.4280063 219.1645830 2009.975
+33.6370062	-84.4280041 219.1788117 2009.975
+33.6370000	-84.4280000 220.5330000 2009.975
 ```
 ::::
 

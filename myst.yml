@@ -53,6 +53,7 @@ project:
         - file: essentials/navigation.md
         - file: essentials/software.md
         - file: essentials/wkts.md
+        - file: essentials/transformations.md
         - file: essentials/geoid.md
     - title: Global DEMs
       children:

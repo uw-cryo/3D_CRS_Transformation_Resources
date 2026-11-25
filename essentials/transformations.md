@@ -7,7 +7,7 @@ To compare elevation data, every dataset has to end up in the same, fully specif
 
 The WGS84 {term}`ensemble` (see [WKT representations of CRS](wkts.md)) is only defined to about 2 m (`ENSEMBLEACCURACY[2.0]`). PROJ therefore treats all its realizations as interchangeable within those 2 m. Every operation into the ensemble has a stated accuracy of 1 m or more, so the accuracies PROJ ranks operations by can't separate a route that comes within 1 cm of ITRF2014 from one that is 1.4 m off. `EPSG:4326`, its 3D version `EPSG:4979`, and every `WGS 84 / UTM` code such as `EPSG:32610` use this ensemble. Which operation you get then depends on which CRS your input coordinates are in, not on which operation is correct.
 
-For example, take one point in Atlanta, at NAD83(2011) latitude 33.637°N, longitude 84.428°W, with a NAVD88 height of 250 m, at epoch 2009.975, using PROJ 9.7.1. The same point can be given in two ways:
+For example, take one point in Atlanta, at NAD83(2011) latitude 33.637°N, longitude 84.428°W, with a NAVD88 height of 250 m, at epoch 2009.975 (22 December 2009, the date of the SpaceNet WorldView-2 images of Atlanta), using PROJ 9.7.1. The same point can be given in two ways:
 
 * as NAD83(2011) latitude and longitude with a NAVD88 height: the compound CRS `EPSG:6318+5703`, where 6318 is NAD83(2011) 2D and 5703 is NAVD88 height;
 * as a NAD83(2011) ellipsoidal height (220.533 m): the 3D CRS `EPSG:6319`.

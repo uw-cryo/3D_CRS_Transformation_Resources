@@ -8,7 +8,7 @@
 #November 2023
 
 #Edit script for appropriate out_crs, sample_rad_m and run as:
-#pdal_transform_gridstats.sh input.laz | tell > input_pdal.log
+#pdal_transform_gridstats.sh input.laz | tee > input_pdal.log
 
 #Print commands and exit on error
 set -e -x
@@ -22,7 +22,7 @@ laz_out_fn=${laz_fn%.*}_pdal.laz
 #May need to override if CRS is not 3D, or vertical datum not properly defined
 in_crs=""
 #in_crs="32148+5703"
-#MD Anne Arrundel county
+#MD Anne Arundel County
 #in_crs="4152+5703"
 #in_crs="26985+5703"
 
@@ -36,7 +36,7 @@ out_crs=""
 #out_crs="6339+6319"
 #UTM 18N, MD
 #out_crs="6347+6319"
-#Utqigvik, UTM 4N
+#Utqiagvik, UTM 4N
 #out_crs="6333+6319"
 #out_crs="$(cat ~/src/3D_CRS_Transformation_Resources/examples/UTM_4N_WGS84_G2139_3D.wkt)"
 

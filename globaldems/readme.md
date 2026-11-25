@@ -44,7 +44,7 @@ For the rows that paper does not cover, see the EPSG registry, which cites NIMA 
 Modern realizations are time-dependent to account for changes to mass/gravity distribution from moving plates and large earthquakes. So "standard" epochs are used to indicate the point in time for a given realization.
 
 :::{tip}
-WGS (G1762) Compares to ITRF08 and ITRF2014 within 1cm Root Mean Square (RMS) overall if the epochs are the same
+WGS (G1762) compares to ITRF08 and ITRF2014 within 1cm Root Mean Square (RMS) overall if the epochs are the same
 :::
 
 ### WGS84 EPSG
@@ -85,17 +85,17 @@ ITRF uses a slightly different ellipsoid "GRS80" compared to WGS84.
 
 ### Common Global Geoid Models:
 
-Orthometric Heights are relative to the *geoid* rather than idealized {term}`ellipsoid`. So the vertical axis of a CRS related to geoid heights will often use the following EPSG Codes:
+Orthometric heights are relative to the *geoid* rather than idealized {term}`ellipsoid`. So the vertical axis of a CRS related to geoid heights will often use the following EPSG codes:
 
-* **EGM1996: EPSG:5773**
+* **EGM96: EPSG:5773**
 * **EGM2008: EPSG:3855**
 
 ## Compound CRS
-A "CompoundCRS" can combine a 2D Geographic CRS with a 1D Vertical CRS to form a 3D Geodetic CRS, For example: EPSG:9055+3855. This is handy as way to indicate that 2D Rasters storing elevation values can instead be treated as 3D Coordinate values relative to a specific reference surface (like the geoid defined by EGM2008).
+A "CompoundCRS" can combine a 2D Geographic CRS with a 1D Vertical CRS to form a 3D Geodetic CRS. For example: EPSG:9055+3855. This is handy as a way to indicate that 2D Rasters storing elevation values can instead be treated as 3D Coordinate values relative to a specific reference surface (like the geoid defined by EGM2008).
 
 ## Dynamic versus Static CRS
 
-A CRS is "dynamic" if coordinates change over time with respect to the origin. This is typical for modern global reference frames that have an origin of the Earth's center of mass rather than tied to a moving point on the surface (due to plate tectonics)
+A CRS is "dynamic" if coordinates change over time with respect to the origin. This is typical for modern global reference frames that have an origin of the Earth's center of mass rather than tied to a moving point on the surface (due to plate tectonics).
 
 Conversely coordinates in a "static" CRS like NAD83 which is tied to the North American plate do not change significantly over time.
 
@@ -107,5 +107,5 @@ Static versus dynamic CRS
 :::
 
 :::{important}
-NAD83 (2011) and WGS84 (G1762) positions can differ up to one or two meters within the continental United States b/c NAD83 is not geocentric! Read more about NAD [here](../regionaldems/readme.md)
+NAD83 (2011) and WGS84 (G1762) positions can differ up to one or two meters within the continental United States b/c NAD83 is not geocentric! Read more about NAD [here](../regionaldems/readme.md).
 :::

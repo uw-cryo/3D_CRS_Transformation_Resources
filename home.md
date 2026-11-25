@@ -6,8 +6,8 @@ Notes and code to understand and successfully perform accurate 3D coordinate ref
 
 :::{attention} If you're interested in the following topics, this resource is for you!
 
-   * How do I compare my orthometric height data to an global elevation model that uses ellipsoid heights?
-   * How do I use open source software (GDAL, PROJ, GeoPandas, Xarray) to reproject data to various coordinate reference systems
+   * How do I compare my orthometric height data to a global elevation model that uses ellipsoid heights?
+   * How do I use open source software (GDAL, PROJ, GeoPandas, Xarray) to reproject data to various coordinate reference systems?
    * How to digest the alphabet soup of CRS abbreviations: NAD83, WGS84, GRS80, NAVD88, EGM, ITRF
    * What’s next for geodetic datums?
 :::
@@ -40,8 +40,8 @@ Explanation of datums and their importance
 
 * The Earth's surface/shape is constantly changing
 * Our ability to measure the Earth's surface/shape and locations on the surface continues to improve (Thanks GNSS!)
-* The systems used to define coordinate systems and datums continues to evolve
-* The support for these systems in open-source tools continue to evolve, with a lot of confusing and/or outdated documentation out there on the web
+* The systems used to define coordinate systems and datums continue to evolve
+* The support for these systems in open-source tools continues to evolve, with a lot of confusing and/or outdated documentation out there on the web
 * There is a long (fascinating) history of surveying approaches, measurements, correction approaches, and definitions
 * Many legacy datasets use older CRS definitions
 * Many datasets have missing CRS information in metadata, sometimes incorrect information

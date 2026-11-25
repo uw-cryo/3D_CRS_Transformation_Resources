@@ -104,7 +104,7 @@ Using EPSG:32604+ESRI:115885 is valid, but WGS84 Ensemble uncertainty (~2.0 m) i
 
 Had to create a custom WKT2 text file combining relevant portions of:
 * [EPSG:32604](https://spatialreference.org/ref/epsg/32604/) projection and definitions, but using well-defined WGS84 CRS (not ensemble)
-* 3D ellipsoidal CRS (lat/lon, not cartesian) options:
+* 3D ellipsoidal CRS (lat/lon, not Cartesian) options:
   * ITRF2014 [EPSG:7912](https://spatialreference.org/ref/epsg/7912/)
   * WGS84 (G2139) [EPSG:9754](https://spatialreference.org/ref/epsg/9754/)
   * WGS84 (G1762) [EPSG:7665](https://spatialreference.org/ref/epsg/7665/)

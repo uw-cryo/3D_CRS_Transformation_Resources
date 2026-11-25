@@ -1,8 +1,8 @@
 # Site Navigation
 
-This website is mainly organized into sections focused on different data types and spatial coverage. The "Essentials" section that collects important background information, which you should start with before diving into examples.
+This website is mainly organized into sections focused on different data types and spatial coverage. The "Essentials" section collects important background information, which you should start with before diving into examples.
 
-Examples of working with Raster data (DEM, DTM, etc) are separated into "Global" and "Regional" datasets.
+Examples of working with Raster data (DEM, DTM, etc.) are separated into "Global" and "Regional" datasets.
 
 There is a section on Vector data, such as point measurements by altimeters.
 

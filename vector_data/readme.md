@@ -1,7 +1,7 @@
 # Quickstart
 
 :::{attention}
-GeoPandas is a great tool for reprojecting geospatial vector data, but historically it was developed to work with 2D data in a projected cartesian CRS. Be sure to set 3D geometries and 3D CRS when reprojecting:
+GeoPandas is a great tool for reprojecting geospatial vector data, but historically it was developed to work with 2D data in a projected Cartesian CRS. Be sure to set 3D geometries and 3D CRS when reprojecting:
 :::
 
 ```python

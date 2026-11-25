@@ -176,7 +176,7 @@ GEOGCRS["WGS 84 (G2139)",
     ID["EPSG",9754]]
 ```
 
-Lines 2-4 identify that this CRS uses a specific WGS84 {term}`realization`. Note that the {term}`frame epoch` is 2016.0 (see also @wgs_epsg) Line 9 identifies that this is a 3D CRS.
+Lines 2-4 identify that this CRS uses a specific WGS84 {term}`realization`. Note that the {term}`frame epoch` is 2016.0 (see also @wgs_epsg). Line 9 identifies that this is a 3D CRS.
 
 
 ## Projected CRS (UTM)
@@ -243,7 +243,7 @@ PROJCRS["WGS 84 / UTM zone 10N",
 (custom-crs)=
 ## Custom CRS
 
-EPSG Codes are hugely convenient, but sometimes you'd like to represent a CRS that is not in the EPSG database. For example: UTM coordinates on a specific WGS84 {term}`realization` instead of the ensemble, with ellipsoidal heights. EPSG:32610 (above) sits on the ensemble, and compound codes such as `EPSG:32610+7912` are rejected because the 3D geographic part (ITRF2014) is not the base CRS of the projection.
+EPSG codes are hugely convenient, but sometimes you'd like to represent a CRS that is not in the EPSG database. For example: UTM coordinates on a specific WGS84 {term}`realization` instead of the ensemble, with ellipsoidal heights. EPSG:32610 (above) sits on the ensemble, and compound codes such as `EPSG:32610+7912` are rejected because the 3D geographic part (ITRF2014) is not the base CRS of the projection.
 
 You can write such a CRS yourself by editing the WKT2 of the closest EPSG definitions:
 

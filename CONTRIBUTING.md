@@ -13,7 +13,7 @@ git clone https://github.com/YOURACCOUNT/3D_CRS_Transformation_Resources.git
 cd 3D_CRS_Transformation_Resources
 ```
 
-## Setup a software environment
+## Set up a software environment
 
 You can recreate the software environment that we use to run all the examples in this online book with [Pixi](https://pixi.sh/latest/installation/)
 
@@ -33,7 +33,7 @@ git checkout -b newcontent
 
 ## Preview your changes
 
-Myst will execute notebooks and render HTML pages for the website. Be sure to fix any execution errors and preview the website in your web browser to make sure everything looks good!
+MyST will execute notebooks and render HTML pages for the website. Be sure to fix any execution errors and preview the website in your web browser to make sure everything looks good!
 
 ```
 pixi run serve
@@ -41,7 +41,7 @@ pixi run serve
 
 NOTE: you can also run `pixi run build` to build without opening a server and browser window.
 
-Happy with how things look? Finally, open a pull request to merge you changes:
+Happy with how things look? Finally, open a pull request to merge your changes:
 
 ## Open a pull request
 

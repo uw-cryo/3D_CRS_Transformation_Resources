@@ -53,7 +53,7 @@ The result is a gridded geoid height model giving, at each location, the amount 
 
 <figure id="egm_geoid_global_map" class="numbered">
   <img src="https://bok-figures.s3.amazonaws.com/files/DM44_Fig5.png"
-       alt="egm goid heights map"
+       alt="egm geoid heights map"
        class="align-center">
   <p>Geoid undulations from the EGM2008 gravity model. Source: NGA. Note that the separation between the lumpy surface of the geoid and the symmetrical reference GRS80 ellipsoid worldwide varies from roughly +85 meters west of Ireland to about -106 meters south of India near Ceylon.</p>
 </figure>

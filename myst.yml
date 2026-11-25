@@ -5,7 +5,7 @@ project:
   title: 3D Coordinate Reference System Transformation Resources
   short_title: 3D CRS Guide
   description: Notes and code to understand and successfully perform accurate 3D coordinate reference system (CRS) transformations
-  keywords: [CRS, PROJ, GDAL, Python, Geopandas, Xarray, Geodesy, Datums]
+  keywords: [CRS, PROJ, GDAL, Python, GeoPandas, Xarray, Geodesy, Datums]
   authors: [David Shean, Scott Henderson, Shashank Bhushan]
   github: https://github.com/uw-cryo/3D_CRS_Transformation_Resources
   exports:
@@ -32,7 +32,7 @@ project:
     LPC: LiDAR Point Cloud
     NAD: North American Datum
     NAVD: North American Vertical Datum
-    NAPGD: North American Pacific Geopotential Datum
+    NAPGD: North American-Pacific Geopotential Datum
     NATRF: North American Terrestrial Reference Frame
     NSRS: National Spatial Reference System
     PROJ: Cartographic Projections and Coordinate Transformations Library

@@ -48,6 +48,8 @@ GEOGCRS["WGS 84",
 
 Line 2 identifies that this CRS uses the WGS84 {term}`ensemble`, line 16 identifies this is a 2D ellipsoidal CRS, and the final line always reports an EPSG code if present.
 
+Because the ensemble is only defined to about 2 m, don't use it as the target CRS when comparing data. See [Choosing and checking a transformation](transformations.md) for why, and for what to use instead.
+
 :::{note} Axis order
 Lines 17–22 say that EPSG:4326 lists latitude first and longitude second. Most GIS software and file formats (GeoJSON, shapefiles, GeoTIFF) instead store longitude first, as x/y. Since PROJ 6 and GDAL 3, libraries follow the order the CRS definition gives unless told otherwise, so the same coordinates can come back swapped. In pyproj, pass `always_xy=True` to `Transformer.from_crs()` to get longitude/latitude order; in the GDAL API, set `OAMS_TRADITIONAL_GIS_ORDER` on the spatial reference. The GDAL command-line tools already use the traditional GIS order.
 :::
